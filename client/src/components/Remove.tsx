@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import { MouseEvent, useRef } from "react";
 import feathersClient from "feathersClient";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
@@ -22,7 +22,7 @@ const Container = transition.div.attrs({
     left: 0;
     min-height: 3rem;
     border-radius: 4px;
-    overflow: hidden;
+    overflow: clip;
     background: var(--overlay);
     backdrop-filter: blur(0.5rem) saturate(0);
     display: grid;
@@ -73,7 +73,7 @@ const Buttons = styled.div<Props>`
     position: relative;
     width: 100%;
     height: 3rem;
-    overflow: hidden;
+    overflow: clip;
     border-top: 1px solid var(--primary-variant);
     display: flex;
     transition: 0.25s ease-out;
@@ -128,6 +128,7 @@ const Remove = function ({
     inline,
     className,
 }: ComponentProps) {
+    const nodeRef = useRef(null);
     const handleDelete = () => {
         feathersClient
             .service(service)
@@ -139,7 +140,13 @@ const Remove = function ({
     };
 
     return (
-        <Container in={isActive} className={className} inline={inline}>
+        <Container
+            nodeRef={nodeRef}
+            ref={nodeRef}
+            in={isActive}
+            className={className}
+            inline={inline}
+        >
             <h5>¿Borrar ?</h5>
             <Buttons inline={inline}>
                 <button type="button" onClick={exit}>

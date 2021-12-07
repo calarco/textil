@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from "react";
+import { MouseEvent, useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 
@@ -45,7 +45,7 @@ const Details = styled.div`
     padding: 0.75rem 1rem;
     border-top: 1px solid var(--primary);
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-columns: 1fr 2fr 1fr;
     gap: 1.5rem;
     text-align: center;
 `;
@@ -60,7 +60,7 @@ const Buttons = transition.div.attrs({
     position: relative;
     width: 100%;
     height: 3rem;
-    overflow: hidden;
+    overflow: clip;
     border-top: 1px solid var(--primary-variant);
     display: flex;
 
@@ -104,13 +104,24 @@ const Buttons = transition.div.attrs({
 type ComponentProps = {
     pago: Pago;
     isActive: boolean;
+    setOverlay: (overlay: boolean) => void;
     onClick?: (e: MouseEvent<HTMLDivElement>) => void;
     className?: string;
 };
 
-function Pago({ pago, isActive, onClick, className }: ComponentProps) {
+function Pago({
+    pago,
+    isActive,
+    setOverlay,
+    onClick,
+    className,
+}: ComponentProps) {
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
+
+    useEffect(() => {
+        setOverlay(form);
+    }, [form, setOverlay]);
 
     return (
         <Card
@@ -153,16 +164,16 @@ function Pago({ pago, isActive, onClick, className }: ComponentProps) {
                 <>
                     <Details>
                         <label>
-                            Estado
-                            <p>{pago.estado}</p>
-                        </label>
-                        <label>
                             Numero
                             <p>{pago.numero}</p>
                         </label>
                         <label>
                             Observaciones
                             <p>{pago.observaciones || "-"}</p>
+                        </label>
+                        <label>
+                            Estado
+                            <p>{pago.estado}</p>
                         </label>
                     </Details>
                     <Remove

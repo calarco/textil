@@ -112,7 +112,7 @@ const Label = function ({
             className={className}
         >
             <SwitchTransition>
-                <Span nodeRef={nodeRef} key={error ? 0 : 1}>
+                <Span nodeRef={nodeRef} ref={nodeRef} key={error ? 0 : 1}>
                     {error ? error : title}
                 </Span>
             </SwitchTransition>

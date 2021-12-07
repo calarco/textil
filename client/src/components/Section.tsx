@@ -25,7 +25,7 @@ const Container = styled.section<Props>`
     ${(props) =>
         props.overlay &&
         css`
-            overflow: hidden;
+            overflow: clip;
         `};
 `;
 

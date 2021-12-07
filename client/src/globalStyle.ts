@@ -79,6 +79,7 @@ const GlobalStyle = createGlobalStyle`
         --font-family-alt: "SpaceMono-Regular";
 
         --label: 300 0.75rem/1.25rem var(--font-family);
+        --label-alt: 300 0.75rem/1.25rem var(--font-family-alt);
         --body1: 300 0.9rem/1.25rem var(--font-family);
         --body2: 500 0.9rem/1.5rem var(--font-family);
         --body-alt: 300 0.9rem/1.25rem var(--font-family-alt);
@@ -98,7 +99,7 @@ const GlobalStyle = createGlobalStyle`
         background: var(--background);
         color: var(--on-background);
         
-        overflow: hidden;
+        overflow: clip;
         user-select: none;
     }
 
@@ -347,7 +348,7 @@ const GlobalStyle = createGlobalStyle`
         width: 100%;
         padding: 0.25rem 0.5rem;
         border-radius: 4px;
-        background: var(--overlay);
+        background: var(--secondary-variant);
         border: 1px solid rgba(0, 0, 0, 0);
         outline: none;
         font: var(--subhead1);
@@ -436,7 +437,7 @@ const GlobalStyle = createGlobalStyle`
         text-transform: uppercase;
         font: var(--body2);
         color: var(--primary);
-        transition: 0.1s ease-in;
+        transition: 0.15s ease-in;
         
         &:hover {
             cursor: pointer;

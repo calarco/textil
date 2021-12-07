@@ -45,7 +45,7 @@ const Details = styled.div`
     padding: 0.75rem 1rem;
     border-top: 1px solid var(--primary);
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-columns: 1fr 2fr 1fr;
     gap: 1.5rem;
     text-align: center;
 `;
@@ -60,7 +60,7 @@ const Buttons = transition.div.attrs({
     position: relative;
     width: 100%;
     height: 3rem;
-    overflow: hidden;
+    overflow: clip;
     border-top: 1px solid var(--primary-variant);
     display: flex;
 
@@ -166,16 +166,16 @@ function Cobro({ cobro, isActive, onClick, className }: ComponentProps) {
                             <p>{cobro.cuit}</p>
                         </label>
                         <label>
-                            Estado
-                            <p>{cobro.estado}</p>
-                        </label>
-                        <label>
                             Numero
                             <p>{cobro.numero}</p>
                         </label>
                         <label>
                             Observaciones
                             <p>{cobro.observaciones || "-"}</p>
+                        </label>
+                        <label>
+                            Estado
+                            <p>{cobro.estado}</p>
                         </label>
                     </Details>
                     <Remove

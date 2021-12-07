@@ -5,14 +5,16 @@ import styled, { ThemeProvider } from "styled-components";
 import { themeDark, themeLight } from "themes";
 import GlobalStyle from "globalStyle";
 import Login from "Login/Login";
-import Pagos from "./Pagos";
+import Header from "Header";
+import Pagos from "./sections/Pagos";
+import Cobros from "sections/Cobros";
 import Bar from "Bar";
-import Cobros from "Cobros";
+import Calendar from "Calendar";
 
 const Container = styled.main`
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
+    overflow: clip;
     display: grid;
     justify-content: center;
     grid-template-rows: 1fr 1.75rem;
@@ -25,7 +27,7 @@ const Panels = styled.div`
     padding: 1.5rem 2rem;
     display: grid;
     gap: 2rem;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 2fr;
 `;
 
 const Panel = styled.div`
@@ -44,6 +46,7 @@ function App() {
     const [darkTheme, setDarkTheme] = useState(
         localStorage.getItem("darkTheme") || ""
     );
+    const [tab, setTab] = useState(false);
 
     useEffect(() => {
         feathersClient
@@ -68,10 +71,11 @@ function App() {
                 <>
                     <Panels>
                         <Panel>
-                            <Pagos />
+                            <Header tab={tab} onClick={() => setTab(!tab)} />
+                            {tab ? <Cobros /> : <Pagos />}
                         </Panel>
                         <Panel>
-                            <Cobros />
+                            <Calendar />
                         </Panel>
                     </Panels>
                     <Bar

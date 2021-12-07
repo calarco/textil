@@ -1,4 +1,4 @@
-import { MouseEvent, FormEvent, ReactNode } from "react";
+import { MouseEvent, FormEvent, ReactNode, useRef } from "react";
 import styled from "styled-components";
 import transition from "styled-transition-group";
 
@@ -16,7 +16,7 @@ const Container = transition.form.attrs({
     top: 0;
     left: 0;
     right: 0;
-    overflow: hidden;
+    overflow: clip;
     border-radius: 4px;
     outline: 1px solid var(--primary);
     background: var(--primary);
@@ -52,7 +52,7 @@ const Buttons = styled.div`
     grid-column-end: span end;
     width: 100%;
     height: 3rem;
-    overflow: hidden;
+    overflow: clip;
     background: var(--surface);
     display: flex;
     transition: 0.25s ease-out;
@@ -93,8 +93,16 @@ const Form = function ({
     className,
     noButtons,
 }: ComponentProps) {
+    const nodeRef = useRef(null);
+
     return (
-        <Container in={isActive} onSubmit={onSubmit} className={className}>
+        <Container
+            nodeRef={nodeRef}
+            ref={nodeRef}
+            in={isActive}
+            onSubmit={onSubmit}
+            className={className}
+        >
             {children}
             {!noButtons && (
                 <Buttons>
