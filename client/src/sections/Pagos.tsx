@@ -1,18 +1,17 @@
-import { useState, useEffect, useCallback } from "react";
-import feathersClient from "feathersClient";
+import { useState } from "react";
 import styled from "styled-components";
 
-import Section from "components/Section";
+import usePagos from "hooks/usePagos";
 import Pago from "cards/Pago";
 
 const Columns = styled.div`
-    padding: 0.25rem 1rem;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 10rem 1fr 1fr 10rem;
     gap: 1.5rem;
 
     label {
         position: relative;
+        padding: 0.25rem 1rem;
         text-align: center;
 
         &:not(:first-child)::after {
@@ -26,80 +25,49 @@ const Columns = styled.div`
     }
 `;
 
-function Pagos() {
+const Empty = styled.h5`
+    padding: 2rem;
+    text-align: center;
+    color: var(--on-background-variant);
+`;
+
+type ComponentProps = {
+    overlay: boolean;
+    setOverlay: (overlay: boolean) => void;
+};
+
+function Pagos({ overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
-    const [overlay, setOverlay] = useState(false);
-    const [pagos, setPagos] = useState<Pagos>({
-        total: 0,
-        limit: 0,
-        skip: 0,
-        data: [
-            {
-                id: 0,
-                pagoDate: "",
-                proveedor: "",
-                numero: "",
-                monto: "",
-                emisionDate: "",
-                observaciones: "",
-                estado: "",
-                createdAt: "",
-                updatedAt: "",
-            },
-        ],
-    });
-
-    const loadPagos = useCallback(() => {
-        feathersClient
-            .service("pagos")
-            .find({
-                query: {
-                    $limit: 50,
-                    estado: "A pagar",
-                    $sort: {
-                        pagoDate: 1,
-                    },
-                },
-            })
-            .then((data: Pagos) => {
-                setPagos(data);
-            })
-            .catch((error: FeathersErrorJSON) => {
-                console.error(error.message);
-            });
-    }, []);
-
-    useEffect(() => {
-        loadPagos();
-        feathersClient.service("pagos").on("created", () => loadPagos());
-        feathersClient.service("pagos").on("removed", () => loadPagos());
-    }, [loadPagos]);
+    const { pagos } = usePagos();
 
     return (
-        <Section
-            overlay={overlay}
-            cancel={() => {
-                setOverlay(false);
-            }}
-        >
+        <>
             <Columns>
                 <label>Fecha de pago</label>
                 <label>Proveedor</label>
                 <label>Monto</label>
                 <label>Fecha de emision</label>
             </Columns>
-            {pagos.data.map((pago) => (
-                <Pago
-                    key={pago.id}
-                    pago={pago}
-                    isActive={pago.id === active}
-                    setOverlay={setOverlay}
-                    onClick={() =>
-                        pago.id === active ? setActive(0) : setActive(pago.id)
-                    }
-                />
-            ))}
-        </Section>
+            {pagos.data[0] ? (
+                pagos.data[0].id !== 0 &&
+                pagos.data.map((pago) => (
+                    <Pago
+                        key={pago.id}
+                        pago={pago}
+                        isActive={pago.id === active}
+                        overlay={overlay}
+                        setOverlay={setOverlay}
+                        onClick={() =>
+                            pago.id === active
+                                ? setActive(0)
+                                : setActive(pago.id)
+                        }
+                    />
+                ))
+            ) : (
+                <Empty>No se encontraron cheques</Empty>
+            )}
+        </>
     );
 }
 

@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 
 import PagarForm from "forms/PagarForm";
@@ -12,7 +12,7 @@ const Container = styled.div`
     position: relative;
     height: 3rem;
     display: grid;
-    grid-template-columns: 10rem 1fr 10rem;
+    grid-template-columns: 11.25rem 1fr 11.25rem;
     justify-content: space-between;
     gap: 0.5rem;
 `;
@@ -34,7 +34,12 @@ const Filter = styled.div`
 `;
 
 const Tabs = styled.div`
-    height: 3rem;
+    align-self: end;
+    overflow: clip;
+    border-radius: 4px 4px 0 0;
+    background: var(--surface-t);
+    box-shadow: var(--shadow);
+    border-bottom: 1px solid var(--primary-variant);
     display: grid;
     grid-auto-flow: column;
 `;
@@ -46,6 +51,7 @@ const Tab = styled.button<Props>`
     ${(props) =>
         props.isActive &&
         css`
+            pointer-events: none;
             background: var(--primary-variant);
             border-bottom: 2px solid var(--primary);
 
@@ -58,9 +64,7 @@ const Tab = styled.button<Props>`
 
 const New = styled.div`
     position: relative;
-    padding: 0 0.5rem;
     display: grid;
-    align-items: center;
 
     &::after {
         content: "";
@@ -79,10 +83,20 @@ const New = styled.div`
 type ComponentProps = {
     tab: boolean;
     onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+    overlay: boolean;
+    setOverlay: (overlay: boolean) => void;
 };
 
-function App({ tab, onClick }: ComponentProps) {
+function App({ tab, onClick, overlay, setOverlay }: ComponentProps) {
     const [create, setCreate] = useState(false);
+
+    useEffect(() => {
+        !overlay && setCreate(false);
+    }, [overlay, setCreate]);
+
+    useEffect(() => {
+        setOverlay(create);
+    }, [create, setOverlay]);
 
     return (
         <Container>

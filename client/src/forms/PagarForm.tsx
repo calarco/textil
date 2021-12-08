@@ -11,11 +11,12 @@ const Form = styled(FormComponent)`
 `;
 
 type ComponentProps = {
+    data?: Pago;
     isActive: boolean;
     close: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-const PagarForm = function ({ isActive, close }: ComponentProps) {
+const PagarForm = function ({ data, isActive, close }: ComponentProps) {
     const {
         register,
         handleSubmit,
@@ -23,26 +24,42 @@ const PagarForm = function ({ isActive, close }: ComponentProps) {
         formState: { errors },
     } = useForm<Inputs>();
 
-    const onSubmit: SubmitHandler<Inputs> = (data) =>
-        feathersClient
-            .service("pagos")
-            .create({
-                proveedor: data.proveedor,
-                monto: data.monto,
-                numero: data.numero,
-                observaciones: data.observaciones,
-                estado: data.estado,
-                pagoDate: data.pagoDate,
-                emisionDate: data.emisionDate,
-            })
-            .then(() => {})
-            .catch((error: FeathersErrorJSON) => {
-                console.error(error.message);
-            });
+    const onSubmit: SubmitHandler<Inputs> = (inputs) =>
+        data
+            ? feathersClient
+                  .service("pagos")
+                  .patch(data.id, {
+                      proveedor: inputs.proveedor,
+                      monto: inputs.monto,
+                      numero: inputs.numero,
+                      observaciones: inputs.observaciones,
+                      estado: inputs.estado,
+                      pagoDate: inputs.pagoDate,
+                      emisionDate: inputs.emisionDate,
+                  })
+                  .then(() => {})
+                  .catch((error: FeathersErrorJSON) => {
+                      console.error(error.message);
+                  })
+            : feathersClient
+                  .service("pagos")
+                  .create({
+                      proveedor: inputs.proveedor,
+                      monto: inputs.monto,
+                      numero: inputs.numero,
+                      observaciones: inputs.observaciones,
+                      estado: inputs.estado,
+                      pagoDate: inputs.pagoDate,
+                      emisionDate: inputs.emisionDate,
+                  })
+                  .then(() => {})
+                  .catch((error: FeathersErrorJSON) => {
+                      console.error(error.message);
+                  });
 
     useEffect(() => {
         reset();
-    }, [isActive, reset]);
+    }, [isActive, data, reset]);
 
     return (
         <Form
@@ -53,6 +70,7 @@ const PagarForm = function ({ isActive, close }: ComponentProps) {
             <Label title="Fecha de pago" error={errors.pagoDate?.message}>
                 <input
                     type="date"
+                    defaultValue={data?.pagoDate}
                     placeholder="-"
                     autoComplete="off"
                     {...register("pagoDate", {
@@ -62,8 +80,8 @@ const PagarForm = function ({ isActive, close }: ComponentProps) {
             </Label>
             <Label title="Monto" error={errors.monto?.message}>
                 <input
-                    type="number"
-                    defaultValue={""}
+                    type="text"
+                    defaultValue={data?.monto}
                     placeholder="-"
                     autoComplete="off"
                     {...register("monto", { required: "Ingrese el monto" })}
@@ -72,18 +90,21 @@ const PagarForm = function ({ isActive, close }: ComponentProps) {
             <Label title="Proveedor" error={errors.proveedor?.message}>
                 <input
                     type="text"
+                    defaultValue={data?.proveedor}
                     placeholder="-"
                     autoComplete="off"
                     {...register("proveedor", {
                         required: "Ingrese el proveedor ",
                     })}
-                    defaultValue={""}
                 />
             </Label>
             <Label title="Fecha de emision" error={errors.emisionDate?.message}>
                 <input
                     type="date"
-                    defaultValue={new Date().toISOString().substring(0, 10)}
+                    defaultValue={
+                        data?.emisionDate ||
+                        new Date().toISOString().substring(0, 10)
+                    }
                     placeholder="-"
                     autoComplete="off"
                     {...register("emisionDate", {
@@ -94,7 +115,7 @@ const PagarForm = function ({ isActive, close }: ComponentProps) {
             <Label title="Numero de cheque" error={errors.numero?.message}>
                 <input
                     type="text"
-                    defaultValue={""}
+                    defaultValue={data?.numero}
                     placeholder="-"
                     autoComplete="off"
                     {...register("numero", {
@@ -103,7 +124,7 @@ const PagarForm = function ({ isActive, close }: ComponentProps) {
                 />
             </Label>
             <Label title="Estado" error={errors.estado?.message}>
-                <select {...register("estado")} defaultValue={"A pagar"}>
+                <select {...register("estado")} defaultValue={data?.estado}>
                     <option value="A pagar">A pagar</option>
                     <option value="Pagado">Pagado</option>
                     <option value="Anulado">Anulado</option>
@@ -114,10 +135,10 @@ const PagarForm = function ({ isActive, close }: ComponentProps) {
             <Label title="Observaciones" length={3}>
                 <input
                     type="text"
+                    defaultValue={data?.observaciones}
                     placeholder="-"
                     autoComplete="off"
                     {...register("observaciones")}
-                    defaultValue={""}
                 />
             </Label>
         </Form>

@@ -11,9 +11,8 @@ type Props = {
 };
 
 const Box = styled.div<Props>`
-    padding: 0.75rem 1rem;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 10rem 1fr 1fr 10rem;
     gap: 1.5rem;
     text-align: center;
     transition: 0.2s ease-in;
@@ -23,12 +22,9 @@ const Box = styled.div<Props>`
         gap: 0.25rem;
     }
 
-    > pre:nth-child(3) {
-        text-align: right;
-    }
-
-    > p {
-        text-align: left;
+    > p,
+    pre {
+        padding: 0.75rem 1rem;
     }
 
     ${(props) =>
@@ -63,6 +59,7 @@ const Buttons = transition.div.attrs({
     overflow: clip;
     border-top: 1px solid var(--primary-variant);
     display: flex;
+    gap: 1px;
 
     button {
         width: 100%;
@@ -76,7 +73,7 @@ const Buttons = transition.div.attrs({
             content: "";
             position: absolute;
             top: calc(50% - 1rem);
-            left: 0;
+            left: -1px;
             height: 2rem;
             border-left: 1px solid var(--primary-variant);
         }
@@ -104,6 +101,7 @@ const Buttons = transition.div.attrs({
 type ComponentProps = {
     pago: Pago;
     isActive: boolean;
+    overlay: boolean;
     setOverlay: (overlay: boolean) => void;
     onClick?: (e: MouseEvent<HTMLDivElement>) => void;
     className?: string;
@@ -112,12 +110,17 @@ type ComponentProps = {
 function Pago({
     pago,
     isActive,
+    overlay,
     setOverlay,
     onClick,
     className,
 }: ComponentProps) {
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
+
+    useEffect(() => {
+        !overlay && setForm(false);
+    }, [overlay, setForm]);
 
     useEffect(() => {
         setOverlay(form);
@@ -183,6 +186,7 @@ function Pago({
                         exit={() => setRemove(false)}
                     />
                     <PagarForm
+                        data={pago}
                         isActive={isActive && form ? true : false}
                         close={() => setForm(false)}
                     />

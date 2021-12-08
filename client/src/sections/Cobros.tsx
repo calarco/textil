@@ -1,18 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
-import feathersClient from "feathersClient";
+import { useState } from "react";
 import styled from "styled-components";
 
+import useCobros from "hooks/useCobros";
 import Section from "components/Section";
 import Cobro from "cards/Cobro";
 
 const Columns = styled.div`
-    padding: 0.25rem 1rem;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 10rem 1fr 1fr 10rem;
     gap: 1.5rem;
 
     label {
         position: relative;
+        padding: 0.25rem 1rem;
         text-align: center;
 
         &:not(:first-child)::after {
@@ -26,55 +26,15 @@ const Columns = styled.div`
     }
 `;
 
+const Empty = styled.h5`
+    padding: 2rem;
+    text-align: center;
+    color: var(--on-background-variant);
+`;
+
 function Cobros() {
     const [active, setActive] = useState(0);
-    const [cobros, setCobros] = useState<Cobros>({
-        total: 0,
-        limit: 0,
-        skip: 0,
-        data: [
-            {
-                id: 1,
-                ingresoDate: "2021-10-5",
-                cliente: "Otranto",
-                numero: "89033577",
-                monto: "53.000,00",
-                depositoDate: "2021-12-31",
-                banco: "Nacion",
-                titular: "Seuoaeu Eueoaeu",
-                cuit: "5432452345",
-                observaciones: "",
-                estado: "A Cobrar",
-                createdAt: "",
-                updatedAt: "",
-            },
-        ],
-    });
-
-    const loadPagos = useCallback(() => {
-        feathersClient
-            .service("cobros")
-            .find({
-                query: {
-                    $limit: 50,
-                    $sort: {
-                        pagoDate: 1,
-                    },
-                },
-            })
-            .then((data: Cobros) => {
-                setCobros(data);
-            })
-            .catch((error: FeathersErrorJSON) => {
-                console.error(error.message);
-            });
-    }, []);
-
-    useEffect(() => {
-        loadPagos();
-        feathersClient.service("cobros").on("created", () => loadPagos());
-        feathersClient.service("cobros").on("removed", () => loadPagos());
-    }, [loadPagos]);
+    const { cobros } = useCobros();
 
     return (
         <Section overlay={false} cancel={() => {}}>
@@ -84,16 +44,23 @@ function Cobros() {
                 <label>Monto</label>
                 <label>Fecha de ingreso</label>
             </Columns>
-            {cobros.data.map((cobro) => (
-                <Cobro
-                    key={cobro.id}
-                    cobro={cobro}
-                    isActive={cobro.id === active}
-                    onClick={() =>
-                        cobro.id === active ? setActive(0) : setActive(cobro.id)
-                    }
-                />
-            ))}
+            {cobros.data[0] ? (
+                cobros.data[0].id !== 0 &&
+                cobros.data.map((cobro) => (
+                    <Cobro
+                        key={cobro.id}
+                        cobro={cobro}
+                        isActive={cobro.id === active}
+                        onClick={() =>
+                            cobro.id === active
+                                ? setActive(0)
+                                : setActive(cobro.id)
+                        }
+                    />
+                ))
+            ) : (
+                <Empty>No se encontraron cheques</Empty>
+            )}
         </Section>
     );
 }

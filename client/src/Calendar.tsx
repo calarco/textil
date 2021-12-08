@@ -1,4 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+import SectionComponent from "components/Section";
 
 const Year = styled.ul`
     position: sticky;
@@ -17,17 +19,19 @@ const Year = styled.ul`
     }
 `;
 
-const Container = styled.main`
+const Section = styled(SectionComponent)`
     overflow: auto;
     border-radius: 4px;
     background: var(--surface-t);
     box-shadow: var(--shadow);
 `;
 
-const Month = styled.div`
-    position: sticky;
-    top: 0;
-    z-index: 900;
+type Props = {
+    readonly isActive?: boolean;
+};
+
+const Month = styled.div<Props>`
+    position: relative;
     width: 100%;
     min-height: 3rem;
     padding: 0.5rem 1.5rem;
@@ -36,39 +40,56 @@ const Month = styled.div`
     align-items: center;
     text-transform: capitalize;
 
-    h6 {
-        color: var(--on-background-variant);
+    &:not(:first-child)::after {
+        content: "";
+        position: absolute;
+        top: -0.5rem;
+        z-index: 0;
+        width: 100%;
+        border-top: var(--border-variant);
     }
+
+    ${(props) =>
+        props.isActive &&
+        css`
+            h4 {
+                color: var(--secondary);
+            }
+        `};
 `;
 
 const Columns = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
     text-align: right;
 
     pre:not(:last-child) {
         font: var(--label-alt);
         color: var(--on-background-variant);
+
+        span {
+            color: var(--on-background-variant);
+        }
     }
 `;
 
 function Calendar() {
-    const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    const months = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
 
     return (
         <>
             <Year>
                 <h4>{2021}</h4>
                 <Columns>
-                    <pre>$2.664.357,15</pre>
-                    <pre>$2.559.243,82</pre>
-                    <pre>-$105.113,33</pre>
+                    <pre>
+                        $<span>2.429.664,24</span>
+                    </pre>
                 </Columns>
             </Year>
-            <Container>
+            <Section>
                 {months.map((number) => (
-                    <Month key={number}>
+                    <Month
+                        key={number}
+                        isActive={number === new Date().getMonth()}
+                    >
                         <h4>
                             {new Date(2021, number, 1).toLocaleDateString(
                                 "default",
@@ -78,13 +99,13 @@ function Calendar() {
                             )}
                         </h4>
                         <Columns>
-                            <pre>$2.664.357,15</pre>
-                            <pre>$2.559.243,82</pre>
-                            <pre>-$105.113,33</pre>
+                            <pre>
+                                $<span>-105.113,33</span>
+                            </pre>
                         </Columns>
                     </Month>
                 ))}
-            </Container>
+            </Section>
         </>
     );
 }

@@ -6,6 +6,7 @@ import { themeDark, themeLight } from "themes";
 import GlobalStyle from "globalStyle";
 import Login from "Login/Login";
 import Header from "Header";
+import Section from "components/Section";
 import Pagos from "./sections/Pagos";
 import Cobros from "sections/Cobros";
 import Bar from "Bar";
@@ -27,7 +28,7 @@ const Panels = styled.div`
     padding: 1.5rem 2rem;
     display: grid;
     gap: 2rem;
-    grid-template-columns: 3fr 2fr;
+    grid-template-columns: 2fr 1fr;
 `;
 
 const Panel = styled.div`
@@ -47,6 +48,7 @@ function App() {
         localStorage.getItem("darkTheme") || ""
     );
     const [tab, setTab] = useState(false);
+    const [overlay, setOverlay] = useState(false);
 
     useEffect(() => {
         feathersClient
@@ -71,8 +73,27 @@ function App() {
                 <>
                     <Panels>
                         <Panel>
-                            <Header tab={tab} onClick={() => setTab(!tab)} />
-                            {tab ? <Cobros /> : <Pagos />}
+                            <Header
+                                tab={tab}
+                                onClick={() => setTab(!tab)}
+                                overlay={overlay}
+                                setOverlay={setOverlay}
+                            />
+                            <Section
+                                overlay={overlay}
+                                cancel={() => {
+                                    setOverlay(false);
+                                }}
+                            >
+                                {tab ? (
+                                    <Cobros />
+                                ) : (
+                                    <Pagos
+                                        overlay={overlay}
+                                        setOverlay={setOverlay}
+                                    />
+                                )}
+                            </Section>
                         </Panel>
                         <Panel>
                             <Calendar />

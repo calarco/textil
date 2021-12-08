@@ -55,6 +55,7 @@ const Buttons = styled.div`
     overflow: clip;
     background: var(--surface);
     display: flex;
+    gap: 1px;
     transition: 0.25s ease-out;
 
     button {
@@ -69,7 +70,7 @@ const Buttons = styled.div`
             content: "";
             position: absolute;
             top: calc(50% - 1rem);
-            left: 0;
+            left: -1px;
             height: 2rem;
             border-left: 1px solid var(--primary-variant);
         }
