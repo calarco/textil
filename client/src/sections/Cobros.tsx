@@ -2,7 +2,6 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import useCobros from "hooks/useCobros";
-import Section from "components/Section";
 import Cobro from "cards/Cobro";
 
 const Columns = styled.div`
@@ -32,12 +31,18 @@ const Empty = styled.h5`
     color: var(--on-background-variant);
 `;
 
-function Cobros() {
+type ComponentProps = {
+    estado: string;
+    overlay: boolean;
+    setOverlay: (overlay: boolean) => void;
+};
+
+function Cobros({ estado, overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
-    const { cobros } = useCobros();
+    const { cobros } = useCobros(estado);
 
     return (
-        <Section overlay={false} cancel={() => {}}>
+        <>
             <Columns>
                 <label>Fecha de deposito</label>
                 <label>Cliente</label>
@@ -51,6 +56,8 @@ function Cobros() {
                         key={cobro.id}
                         cobro={cobro}
                         isActive={cobro.id === active}
+                        overlay={overlay}
+                        setOverlay={setOverlay}
                         onClick={() =>
                             cobro.id === active
                                 ? setActive(0)
@@ -61,7 +68,7 @@ function Cobros() {
             ) : (
                 <Empty>No se encontraron cheques</Empty>
             )}
-        </Section>
+        </>
     );
 }
 

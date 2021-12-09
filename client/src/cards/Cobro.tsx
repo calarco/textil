@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 
@@ -101,13 +101,30 @@ const Buttons = transition.div.attrs({
 type ComponentProps = {
     cobro: Cobro;
     isActive: boolean;
+    overlay: boolean;
+    setOverlay: (overlay: boolean) => void;
     onClick?: (e: MouseEvent<HTMLDivElement>) => void;
     className?: string;
 };
 
-function Cobro({ cobro, isActive, onClick, className }: ComponentProps) {
+function Cobro({
+    cobro,
+    isActive,
+    overlay,
+    setOverlay,
+    onClick,
+    className,
+}: ComponentProps) {
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
+
+    useEffect(() => {
+        !overlay && setForm(false);
+    }, [overlay, setForm]);
+
+    useEffect(() => {
+        setOverlay(form);
+    }, [form, setOverlay]);
 
     return (
         <Card

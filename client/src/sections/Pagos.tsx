@@ -32,13 +32,14 @@ const Empty = styled.h5`
 `;
 
 type ComponentProps = {
+    estado: string;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
 };
 
-function Pagos({ overlay, setOverlay }: ComponentProps) {
+function Pagos({ estado, overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
-    const { pagos } = usePagos();
+    const { pagos } = usePagos(estado);
 
     return (
         <>

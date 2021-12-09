@@ -349,8 +349,8 @@ const GlobalStyle = createGlobalStyle`
         padding: 0.25rem 0.5rem;
         border-radius: 4px;
         background: var(--secondary-variant);
-        border: 1px solid rgba(0, 0, 0, 0);
-        outline: none;
+        border: none;
+        outline: 1px solid rgba(0, 0, 0, 0);
         font: var(--subhead1);
         color: var(--on-background);
         transition: 0.1s ease-in;
@@ -362,7 +362,7 @@ const GlobalStyle = createGlobalStyle`
 
         &:focus {
             background: var(--primary-variant);
-            border: var(--border-primary);
+            outline: var(--border-primary);
             box-shadow: var(--shadow-variant);
         }
         
@@ -374,6 +374,12 @@ const GlobalStyle = createGlobalStyle`
             display: none !important;
         }
     }
+    
+    select option {
+        background: var(--surface);
+        color: var(--on-background);
+    }
+
 
     input[name="fabricante"]:focus:hover,
     input[name="modelo"]:focus:hover {

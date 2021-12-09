@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import feathersClient from "feathersClient";
 
-const useReparaciones = () => {
+const useReparaciones = (estado: string) => {
     const [pagos, setPagos] = useState<Pagos>({
         total: 0,
         limit: 0,
@@ -16,7 +16,7 @@ const useReparaciones = () => {
             .find({
                 query: {
                     $limit: 50,
-                    estado: "A pagar",
+                    estado: estado,
                     $sort: {
                         pagoDate: 1,
                     },
@@ -28,7 +28,7 @@ const useReparaciones = () => {
             .catch((error: FeathersErrorJSON) => {
                 setError(error.message);
             });
-    }, []);
+    }, [estado]);
 
     useEffect(() => {
         loadPagos();

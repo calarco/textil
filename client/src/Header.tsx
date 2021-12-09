@@ -1,4 +1,4 @@
-import { MouseEvent, useState, useEffect } from "react";
+import { MouseEvent, useState, useEffect, FormEvent } from "react";
 import styled, { css } from "styled-components";
 
 import PagarForm from "forms/PagarForm";
@@ -83,12 +83,28 @@ const New = styled.div`
 type ComponentProps = {
     tab: boolean;
     onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+    estado: string;
+    setEstado: (estado: string) => void;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
 };
 
-function App({ tab, onClick, overlay, setOverlay }: ComponentProps) {
+function App({
+    tab,
+    onClick,
+    estado,
+    setEstado,
+    overlay,
+    setOverlay,
+}: ComponentProps) {
     const [create, setCreate] = useState(false);
+
+    const handleInputChange = (
+        event: FormEvent<HTMLSelectElement> & { target: HTMLSelectElement }
+    ) => {
+        event.persist();
+        setEstado(event.target.value);
+    };
 
     useEffect(() => {
         !overlay && setCreate(false);
@@ -102,18 +118,22 @@ function App({ tab, onClick, overlay, setOverlay }: ComponentProps) {
         <Container>
             <Filter>
                 {tab ? (
-                    <select>
-                        <option value="A pagar">A depositar</option>
-                        <option value="Pagado">Depositado</option>
+                    <select
+                        name="estado"
+                        value={estado}
+                        onChange={handleInputChange}
+                    >
+                        <option value="A depositar">A depositar</option>
+                        <option value="Depositado">Depositado</option>
                         <option value="Anulado">Anulado</option>
-                        <option value="Recuperado">Posdatado</option>
-                        <option value="Vencido">Endosado</option>
-                        <option value="Recuperado">Devuelto</option>
-                        <option value="Recuperado">Falla tecnica</option>
-                        <option value="Vencido">Rechazado</option>
+                        <option value="Posdatado">Posdatado</option>
+                        <option value="Endosado">Endosado</option>
+                        <option value="Devuelto">Devuelto</option>
+                        <option value="Falla tecnica">Falla tecnica</option>
+                        <option value="Rechazado">Rechazado</option>
                     </select>
                 ) : (
-                    <select>
+                    <select value={estado} onChange={handleInputChange}>
                         <option value="A pagar">A pagar</option>
                         <option value="Pagado">Pagado</option>
                         <option value="Anulado">Anulado</option>

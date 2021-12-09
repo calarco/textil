@@ -49,6 +49,7 @@ function App() {
     );
     const [tab, setTab] = useState(false);
     const [overlay, setOverlay] = useState(false);
+    const [estado, setEstado] = useState("A pagar");
 
     useEffect(() => {
         feathersClient
@@ -76,6 +77,8 @@ function App() {
                             <Header
                                 tab={tab}
                                 onClick={() => setTab(!tab)}
+                                estado={estado}
+                                setEstado={setEstado}
                                 overlay={overlay}
                                 setOverlay={setOverlay}
                             />
@@ -86,9 +89,14 @@ function App() {
                                 }}
                             >
                                 {tab ? (
-                                    <Cobros />
+                                    <Cobros
+                                        estado={estado}
+                                        overlay={overlay}
+                                        setOverlay={setOverlay}
+                                    />
                                 ) : (
                                     <Pagos
+                                        estado={estado}
                                         overlay={overlay}
                                         setOverlay={setOverlay}
                                     />
