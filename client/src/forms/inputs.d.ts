@@ -1,15 +1,15 @@
 type Inputs = {
-    proveedor?: string;
-    observaciones: string;
-    estado?: string;
     pagoDate?: string;
+    depositoDate?: string;
+    monto: number;
+    proveedor?: string;
+    cliente?: string;
     emisionDate?: string;
     ingresoDate?: string;
-    cliente?: string;
-    numero: string;
-    monto: string;
-    depositoDate: string;
     banco?: string;
+    numero: string;
     titular?: string;
     cuit?: string;
+    observaciones: string;
+    estado: string;
 };

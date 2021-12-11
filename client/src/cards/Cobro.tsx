@@ -42,8 +42,27 @@ const Details = styled.div`
     border-top: 1px solid var(--primary);
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    gap: 1.5rem;
-    text-align: center;
+    gap: 2rem;
+
+    label {
+        position: relative;
+        display: grid;
+        grid-auto-flow: column;
+        gap: 1rem;
+
+        &:not(:first-child)::after {
+            content: "";
+            position: absolute;
+            top: calc(50% - 1rem);
+            left: -1rem;
+            height: 2rem;
+            border-left: 1px solid var(--primary-variant);
+        }
+
+        p {
+            text-align: right;
+        }
+    }
 `;
 
 const Buttons = transition.div.attrs({

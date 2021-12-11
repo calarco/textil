@@ -29,16 +29,16 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             ? feathersClient
                   .service("cobros")
                   .patch(data.id, {
-                      cliente: inputs.cliente,
-                      monto: inputs.monto,
-                      numero: inputs.numero,
-                      observaciones: inputs.observaciones,
-                      estado: inputs.estado,
                       depositoDate: inputs.depositoDate,
+                      monto: inputs.monto,
+                      cliente: inputs.cliente,
                       ingresoDate: inputs.ingresoDate,
                       banco: inputs.banco,
+                      numero: inputs.numero,
                       titular: inputs.titular,
                       cuit: inputs.cuit,
+                      observaciones: inputs.observaciones,
+                      estado: inputs.estado,
                   })
                   .then(() => {})
                   .catch((error: FeathersErrorJSON) => {
@@ -47,16 +47,16 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             : feathersClient
                   .service("cobros")
                   .create({
-                      cliente: inputs.cliente,
-                      monto: inputs.monto,
-                      numero: inputs.numero,
-                      observaciones: inputs.observaciones,
-                      estado: inputs.estado,
                       depositoDate: inputs.depositoDate,
+                      monto: inputs.monto,
+                      cliente: inputs.cliente,
                       ingresoDate: inputs.ingresoDate,
+                      numero: inputs.numero,
                       banco: inputs.banco,
                       titular: inputs.titular,
                       cuit: inputs.cuit,
+                      observaciones: inputs.observaciones,
+                      estado: inputs.estado,
                   })
                   .then(() => {})
                   .catch((error: FeathersErrorJSON) => {
@@ -82,8 +82,17 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     defaultValue={data?.depositoDate}
                     autoComplete="off"
                     {...register("depositoDate", {
-                        required: "Ingrese la fecha de pago",
+                        required: "Ingrese la fecha de deposito",
                     })}
+                />
+            </Label>
+            <Label title="Monto" error={errors.monto?.message}>
+                <input
+                    type="number"
+                    defaultValue={data?.monto}
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("monto", { required: "Ingrese el monto" })}
                 />
             </Label>
             <Label title="Cliente" error={errors.cliente?.message}>
@@ -97,15 +106,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     })}
                 />
             </Label>
-            <Label title="Monto" error={errors.monto?.message}>
-                <input
-                    type="text"
-                    defaultValue={data?.monto}
-                    placeholder="-"
-                    autoComplete="off"
-                    {...register("monto", { required: "Ingrese el monto" })}
-                />
-            </Label>
             <Label title="Fecha de ingreso" error={errors.ingresoDate?.message}>
                 <input
                     type="date"
@@ -116,7 +116,7 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     placeholder="-"
                     autoComplete="off"
                     {...register("ingresoDate", {
-                        required: "Ingrese la fecha",
+                        required: "Ingrese la fecha de ingreso",
                     })}
                 />
             </Label>
@@ -126,7 +126,7 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     defaultValue={data?.banco}
                     placeholder="-"
                     autoComplete="off"
-                    {...register("banco", { required: "Ingrese el monto" })}
+                    {...register("banco", { required: "Ingrese el banco" })}
                 />
             </Label>
             <Label title="Numero de cheque" error={errors.numero?.message}>
@@ -146,28 +146,28 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     defaultValue={data?.titular}
                     placeholder="-"
                     autoComplete="off"
-                    {...register("titular", { required: "Ingrese el monto" })}
+                    {...register("titular", { required: "Ingrese el titular" })}
                 />
             </Label>
             <Label title="CUIT" error={errors.cuit?.message}>
                 <input
-                    type="number"
+                    type="text"
                     defaultValue={data?.cuit}
                     placeholder="-"
                     autoComplete="off"
-                    {...register("monto", { required: "Ingrese el monto" })}
+                    {...register("cuit", { required: "Ingrese el CUIT" })}
                 />
             </Label>
-            <Label title="Estado" error={errors.estado?.message}>
+            <Label title="Estado">
                 <select {...register("estado")} defaultValue={data?.estado}>
-                    <option value="A pagar">A depositar</option>
-                    <option value="Pagado">Depositado</option>
+                    <option value="A depositar">A depositar</option>
+                    <option value="Depositado">Depositado</option>
                     <option value="Anulado">Anulado</option>
-                    <option value="Recuperado">Posdatado</option>
-                    <option value="Vencido">Endosado</option>
-                    <option value="Recuperado">Devuelto</option>
-                    <option value="Recuperado">Falla tecnica</option>
-                    <option value="Vencido">Rechazado</option>
+                    <option value="Posdatado">Posdatado</option>
+                    <option value="Endosado">Endosado</option>
+                    <option value="Devuelto">Devuelto</option>
+                    <option value="Falla tecnica">Falla tecnica</option>
+                    <option value="Rechazado">Rechazado</option>
                 </select>
             </Label>
             <Label title="Observaciones" length={3}>

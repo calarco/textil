@@ -29,13 +29,13 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
             ? feathersClient
                   .service("pagos")
                   .patch(data.id, {
-                      proveedor: inputs.proveedor,
+                      pagoDate: inputs.pagoDate,
                       monto: inputs.monto,
+                      proveedor: inputs.proveedor,
+                      emisionDate: inputs.emisionDate,
                       numero: inputs.numero,
                       observaciones: inputs.observaciones,
                       estado: inputs.estado,
-                      pagoDate: inputs.pagoDate,
-                      emisionDate: inputs.emisionDate,
                   })
                   .then(() => {})
                   .catch((error: FeathersErrorJSON) => {
@@ -44,13 +44,13 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
             : feathersClient
                   .service("pagos")
                   .create({
-                      proveedor: inputs.proveedor,
+                      pagoDate: inputs.pagoDate,
                       monto: inputs.monto,
+                      proveedor: inputs.proveedor,
+                      emisionDate: inputs.emisionDate,
                       numero: inputs.numero,
                       observaciones: inputs.observaciones,
                       estado: inputs.estado,
-                      pagoDate: inputs.pagoDate,
-                      emisionDate: inputs.emisionDate,
                   })
                   .then(() => {})
                   .catch((error: FeathersErrorJSON) => {
@@ -80,7 +80,7 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
             </Label>
             <Label title="Monto" error={errors.monto?.message}>
                 <input
-                    type="text"
+                    type="number"
                     defaultValue={data?.monto}
                     placeholder="-"
                     autoComplete="off"
@@ -123,7 +123,7 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                     })}
                 />
             </Label>
-            <Label title="Estado" error={errors.estado?.message}>
+            <Label title="Estado">
                 <select {...register("estado")} defaultValue={data?.estado}>
                     <option value="A pagar">A pagar</option>
                     <option value="Pagado">Pagado</option>

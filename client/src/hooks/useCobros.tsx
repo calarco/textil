@@ -18,7 +18,7 @@ const useReparaciones = (estado: string) => {
                     $limit: 50,
                     estado: estado,
                     $sort: {
-                        pagoDate: 1,
+                        depositoDate: 1,
                     },
                 },
             })

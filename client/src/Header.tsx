@@ -64,6 +64,8 @@ const Tab = styled.button<Props>`
 
 const New = styled.div`
     position: relative;
+    border-radius: 0 4px 0 0;
+    overflow: clip;
     display: grid;
 
     &::after {
@@ -76,6 +78,7 @@ const New = styled.div`
     }
 
     button {
+        border-radius: 0;
         color: var(--secondary);
     }
 `;

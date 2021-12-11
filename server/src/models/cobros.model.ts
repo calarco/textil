@@ -6,14 +6,14 @@ import { HookReturn } from "sequelize/types/lib/hooks";
 
 export default function (app: Application): typeof Model {
     const sequelizeClient: Sequelize = app.get("sequelizeClient");
-    const pagos = sequelizeClient.define(
-        "pagos",
+    const cobros = sequelizeClient.define(
+        "cobros",
         {
-            pagoDate: {
+            depositoDate: {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
-            proveedor: {
+            cliente: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 defaultValue: "",
@@ -22,11 +22,26 @@ export default function (app: Application): typeof Model {
                 type: DataTypes.DECIMAL(10, 2),
                 allowNull: false,
             },
-            emisionDate: {
+            ingresoDate: {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
+            banco: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: "",
+            },
             numero: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: "",
+            },
+            titular: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: "",
+            },
+            cuit: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 defaultValue: "",
@@ -38,14 +53,17 @@ export default function (app: Application): typeof Model {
             },
             estado: {
                 type: DataTypes.ENUM(
-                    "A pagar",
-                    "Pagado",
+                    "A depositar",
+                    "Depositado",
                     "Anulado",
-                    "Recuperado",
-                    "Vencido"
+                    "Posdatado",
+                    "Endosado",
+                    "Devuelto",
+                    "Falla tecnica",
+                    "Rechazado"
                 ),
                 allowNull: false,
-                defaultValue: "A pagar",
+                defaultValue: "A depositar",
             },
         },
         {
@@ -58,10 +76,10 @@ export default function (app: Application): typeof Model {
     );
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (pagos as any).associate = function (models: any): void {
+    (cobros as any).associate = function (models: any): void {
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
     };
 
-    return pagos;
+    return cobros;
 }
