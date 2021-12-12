@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import FormComponent from "components/Form";
 import Label from "components/Label";
+import CurrencyInput from "components/CurrencyInput";
 
 const Form = styled(FormComponent)`
     grid-template-columns: 1fr 1fr 1fr [end];
@@ -87,8 +88,9 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                 />
             </Label>
             <Label title="Monto" error={errors.monto?.message}>
-                <input
-                    type="number"
+                <CurrencyInput
+                    type="text"
+                    inputMode="numeric"
                     defaultValue={data?.monto}
                     placeholder="-"
                     autoComplete="off"

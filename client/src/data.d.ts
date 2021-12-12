@@ -1,7 +1,7 @@
 type Pago = {
     id: number;
     pagoDate: string;
-    monto: string;
+    monto: number;
     proveedor: string;
     emisionDate: string;
     numero: string;
@@ -21,7 +21,7 @@ type Pagos = {
 type Cobro = {
     id: number;
     ingresoDate: string;
-    monto: string;
+    monto: number;
     cliente: string;
     depositoDate: string;
     banco: string;

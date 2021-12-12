@@ -5,6 +5,8 @@ import transition from "styled-transition-group";
 import Card from "components/Card";
 import CobrarForm from "forms/CobrarForm";
 import Remove from "components/Remove";
+import Currency from "components/Currency";
+import Day from "components/Day";
 
 type Props = {
     readonly isActive?: boolean;
@@ -154,34 +156,10 @@ function Cobro({
             className={className}
         >
             <Box isActive={isActive} onClick={onClick}>
-                <pre>
-                    {cobro.depositoDate.substring(8, 10)}
-                    <span>
-                        {new Date(cobro.depositoDate)
-                            .toLocaleDateString("default", {
-                                month: "short",
-                            })
-                            .substring(0, 3)
-                            .toUpperCase()}
-                    </span>
-                    <small>{cobro.depositoDate.substring(0, 4)}</small>
-                </pre>
+                <Day date={cobro.depositoDate} />
                 <p>{cobro.cliente}</p>
-                <pre>
-                    $<span>{cobro.monto}</span>
-                </pre>
-                <pre>
-                    {cobro.ingresoDate.substring(8, 10)}
-                    <span>
-                        {new Date(cobro.ingresoDate)
-                            .toLocaleDateString("default", {
-                                month: "short",
-                            })
-                            .substring(0, 3)
-                            .toUpperCase()}
-                    </span>
-                    <small>{cobro.ingresoDate.substring(0, 4)}</small>
-                </pre>
+                <Currency number={cobro.monto} />
+                <Day date={cobro.ingresoDate} />
             </Box>
             {isActive && (
                 <>

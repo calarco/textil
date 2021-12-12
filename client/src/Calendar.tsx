@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import SectionComponent from "components/Section";
 import Card from "components/Card";
 import { useState } from "react";
+import Currency from "components/Currency";
 
 const Year = styled.div`
     width: 100%;
@@ -23,17 +24,6 @@ const Years = styled.div`
         pointer-events: none;
         background: var(--primary-variant);
         border-bottom: 2px solid var(--primary);
-    }
-`;
-
-const Number = styled.pre`
-    align-self: center;
-    text-align: right;
-    font: var(--label-alt);
-    color: var(--on-background-variant);
-
-    span {
-        font: var(--label-alt);
     }
 `;
 
@@ -130,31 +120,16 @@ function Calendar() {
                         <button>{2021}</button>
                         <button>{2022}</button>
                     </Years>
-                    <Number>
-                        $
-                        <span>
-                            -197.340<small>02</small>
-                        </span>
-                    </Number>
+                    <Currency number={-197340.02} integer />
                 </Box1>
                 <Details>
                     <label>
                         Pagos
-                        <Number>
-                            $
-                            <span>
-                                2.369.337<small>53</small>
-                            </span>
-                        </Number>
+                        <Currency number={2369337} integer />
                     </label>
                     <label>
                         Cobros
-                        <Number>
-                            $
-                            <span>
-                                2.171.997<small>51</small>
-                            </span>
-                        </Number>
+                        <Currency number={2171997} integer />
                     </label>
                 </Details>
             </Year>
@@ -179,23 +154,17 @@ function Calendar() {
                                     }
                                 )}
                             </h4>
-                            <Number>
-                                $<span>273.612</span>
-                            </Number>
+                            <Currency number={273612} integer />
                         </Box>
                         {active === number && (
                             <Details>
                                 <label>
                                     Pagos
-                                    <Number>
-                                        $<span>185.113</span>
-                                    </Number>
+                                    <Currency number={185113} integer />
                                 </label>
                                 <label>
                                     Cobros
-                                    <Number>
-                                        $<span>85.113</span>
-                                    </Number>
+                                    <Currency number={85113} integer />
                                 </label>
                             </Details>
                         )}

@@ -5,6 +5,8 @@ import transition from "styled-transition-group";
 import Card from "components/Card";
 import PagarForm from "forms/PagarForm";
 import Remove from "components/Remove";
+import Currency from "components/Currency";
+import Day from "components/Day";
 
 type Props = {
     readonly isActive?: boolean;
@@ -153,34 +155,10 @@ function Pago({
             className={className}
         >
             <Box isActive={isActive} onClick={onClick}>
-                <pre>
-                    {pago.pagoDate.substring(8, 10)}
-                    <span>
-                        {new Date(pago.pagoDate)
-                            .toLocaleDateString("default", {
-                                month: "short",
-                            })
-                            .substring(0, 3)
-                            .toUpperCase()}
-                    </span>
-                    <small>{pago.pagoDate.substring(0, 4)}</small>
-                </pre>
+                <Day date={pago.pagoDate} />
                 <p>{pago.proveedor}</p>
-                <pre>
-                    $<span>{pago.monto}</span>
-                </pre>
-                <pre>
-                    {pago.emisionDate.substring(8, 10)}
-                    <span>
-                        {new Date(pago.emisionDate)
-                            .toLocaleDateString("default", {
-                                month: "short",
-                            })
-                            .substring(0, 3)
-                            .toUpperCase()}
-                    </span>
-                    <small>{pago.emisionDate.substring(0, 4)}</small>
-                </pre>
+                <Currency number={pago.monto} />
+                <Day date={pago.emisionDate} />
             </Box>
             {isActive && (
                 <>
