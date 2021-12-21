@@ -41,7 +41,7 @@ const Box = styled.div<Props>`
 const Details = styled.div`
     grid-column-end: span 4;
     padding: 0.75rem 1rem;
-    border-top: 1px solid var(--primary);
+    border-top: var(--border-variant);
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     gap: 2rem;

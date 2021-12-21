@@ -65,6 +65,10 @@ function App() {
         localStorage.setItem("darkTheme", darkTheme);
     }, [darkTheme]);
 
+    useEffect(() => {
+        tab ? setEstado("A depositar") : setEstado("A pagar");
+    }, [tab]);
+
     return (
         <Container>
             <ThemeProvider theme={darkTheme ? themeDark : themeLight}>

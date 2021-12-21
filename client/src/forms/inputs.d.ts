@@ -1,7 +1,7 @@
 type Inputs = {
     pagoDate?: string;
     depositoDate?: string;
-    monto: number;
+    monto: string;
     proveedor?: string;
     cliente?: string;
     emisionDate?: string;

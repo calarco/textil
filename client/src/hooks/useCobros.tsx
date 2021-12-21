@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import feathersClient from "feathersClient";
 
-const useReparaciones = (estado: string) => {
+const useCobros = (estado: string) => {
     const [cobros, setCobros] = useState<Cobros>({
         total: 0,
         limit: 0,
@@ -40,4 +40,4 @@ const useReparaciones = (estado: string) => {
     return { cobros, error };
 };
 
-export default useReparaciones;
+export default useCobros;

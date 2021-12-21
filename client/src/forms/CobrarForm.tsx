@@ -1,5 +1,6 @@
 import { MouseEvent, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import MaskedInput from "react-text-mask";
 import feathersClient from "feathersClient";
 import styled from "styled-components";
 
@@ -22,6 +23,7 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
         register,
         handleSubmit,
         reset,
+        control,
         formState: { errors },
     } = useForm<Inputs>();
 
@@ -31,7 +33,10 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                   .service("cobros")
                   .patch(data.id, {
                       depositoDate: inputs.depositoDate,
-                      monto: inputs.monto,
+                      monto: inputs.monto
+                          .slice(1)
+                          .replace(/\./g, "")
+                          .replace(/,/g, "."),
                       cliente: inputs.cliente,
                       ingresoDate: inputs.ingresoDate,
                       banco: inputs.banco,
@@ -49,7 +54,10 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                   .service("cobros")
                   .create({
                       depositoDate: inputs.depositoDate,
-                      monto: inputs.monto,
+                      monto: inputs.monto
+                          .slice(1)
+                          .replace(/\./g, "")
+                          .replace(/,/g, "."),
                       cliente: inputs.cliente,
                       ingresoDate: inputs.ingresoDate,
                       numero: inputs.numero,
@@ -89,12 +97,8 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             </Label>
             <Label title="Monto" error={errors.monto?.message}>
                 <CurrencyInput
-                    type="text"
-                    inputMode="numeric"
-                    defaultValue={data?.monto}
-                    placeholder="-"
-                    autoComplete="off"
-                    {...register("monto", { required: "Ingrese el monto" })}
+                    control={control}
+                    defaultValue={data?.monto.toString().replace(/\./g, ",")}
                 />
             </Label>
             <Label title="Cliente" error={errors.cliente?.message}>
@@ -152,12 +156,36 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                 />
             </Label>
             <Label title="CUIT" error={errors.cuit?.message}>
-                <input
-                    type="text"
-                    defaultValue={data?.cuit}
-                    placeholder="-"
-                    autoComplete="off"
-                    {...register("cuit", { required: "Ingrese el CUIT" })}
+                <Controller
+                    name={"cuit"}
+                    control={control}
+                    rules={{ required: "Ingrese el CUIT" }}
+                    render={({ field }) => (
+                        <MaskedInput
+                            mask={[
+                                /\d/,
+                                /\d/,
+                                "-",
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                /\d/,
+                                "-",
+                                /\d/,
+                            ]}
+                            guide={false}
+                            type="text"
+                            inputMode="numeric"
+                            defaultValue={data?.cuit}
+                            placeholder="-"
+                            autoComplete="off"
+                            {...field}
+                        />
+                    )}
                 />
             </Label>
             <Label title="Estado">

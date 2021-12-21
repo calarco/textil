@@ -1,8 +1,13 @@
-import { forwardRef } from "react";
+import { Control, Controller } from "react-hook-form";
 import MaskedInput from "react-text-mask";
 import createNumberMask from "text-mask-addons/dist/createNumberMask";
 
-const CurrencyInput = forwardRef<HTMLInputElement, any>((props, ref) => {
+type ComponentProps = {
+    control: Control<Inputs>;
+    defaultValue?: string;
+};
+
+const CurrencyInput = ({ control, defaultValue }: ComponentProps) => {
     const currencyMask = createNumberMask({
         prefix: "$",
         suffix: "",
@@ -16,7 +21,24 @@ const CurrencyInput = forwardRef<HTMLInputElement, any>((props, ref) => {
         allowLeadingZeroes: false,
     });
 
-    return <MaskedInput mask={currencyMask} {...props} ref={ref} />;
-});
+    return (
+        <Controller
+            name={"monto"}
+            control={control}
+            rules={{ required: "Ingrese el monto" }}
+            render={({ field }) => (
+                <MaskedInput
+                    mask={currencyMask}
+                    type="text"
+                    inputMode="numeric"
+                    defaultValue={defaultValue}
+                    placeholder="-"
+                    autoComplete="off"
+                    {...field}
+                />
+            )}
+        />
+    );
+};
 
 export default CurrencyInput;

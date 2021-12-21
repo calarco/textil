@@ -1,5 +1,5 @@
 import { MouseEvent, useEffect } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import feathersClient from "feathersClient";
 import styled from "styled-components";
 
@@ -32,7 +32,10 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                   .service("pagos")
                   .patch(data.id, {
                       pagoDate: inputs.pagoDate,
-                      monto: inputs.monto,
+                      monto: inputs.monto
+                          .slice(1)
+                          .replace(/\./g, "")
+                          .replace(/,/g, "."),
                       proveedor: inputs.proveedor,
                       emisionDate: inputs.emisionDate,
                       numero: inputs.numero,
@@ -47,7 +50,10 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                   .service("pagos")
                   .create({
                       pagoDate: inputs.pagoDate,
-                      monto: inputs.monto,
+                      monto: inputs.monto
+                          .slice(1)
+                          .replace(/\./g, "")
+                          .replace(/,/g, "."),
                       proveedor: inputs.proveedor,
                       emisionDate: inputs.emisionDate,
                       numero: inputs.numero,
@@ -81,22 +87,9 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                 />
             </Label>
             <Label title="Monto" error={errors.monto?.message}>
-                <Controller
-                    name="monto"
+                <CurrencyInput
                     control={control}
-                    rules={{ required: "Ingrese el monto" }}
-                    render={({ field }) => (
-                        <CurrencyInput
-                            {...field}
-                            type="text"
-                            inputMode="numeric"
-                            defaultValue={data?.monto
-                                .toString()
-                                .replace(/\./g, ",")}
-                            placeholder="-"
-                            autoComplete="off"
-                        />
-                    )}
+                    defaultValue={data?.monto.toString().replace(/\./g, ",")}
                 />
             </Label>
             <Label title="Proveedor" error={errors.proveedor?.message}>

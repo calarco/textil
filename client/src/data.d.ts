@@ -41,6 +41,13 @@ type Cobros = {
     data: Cobro[];
 };
 
+type Total = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: [{ total: number }];
+};
+
 type FeathersErrorJSON = {
     name: string;
     message: string;

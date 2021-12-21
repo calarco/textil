@@ -380,10 +380,9 @@ const GlobalStyle = createGlobalStyle`
         color: var(--on-background);
     }
 
-
     input[name="fabricante"]:focus:hover,
     input[name="modelo"]:focus:hover {
-            cursor: text;
+        cursor: text;
     }
 
     input[type="checkbox"] {
