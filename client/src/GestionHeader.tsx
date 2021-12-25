@@ -29,7 +29,7 @@ const Filter = styled.div`
         top: calc(50% - 1rem);
         right: 0;
         height: 2rem;
-        border-right: 1px solid var(--primary-variant);
+        border-right: var(--border-variant);
     }
 `;
 
@@ -39,7 +39,7 @@ const Tabs = styled.div`
     border-radius: 4px 4px 0 0;
     background: var(--surface-t);
     box-shadow: var(--shadow);
-    border-bottom: 1px solid var(--primary-variant);
+    border-bottom: var(--border-variant);
     display: grid;
     grid-auto-flow: column;
 `;
@@ -74,7 +74,7 @@ const New = styled.div`
         top: calc(50% - 1rem);
         left: 0;
         height: 2rem;
-        border-left: 1px solid var(--primary-variant);
+        border-left: var(--border-variant);
     }
 
     button {

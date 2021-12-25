@@ -156,7 +156,7 @@ function Pago({
         >
             <Box isActive={isActive} onClick={onClick}>
                 <Day date={pago.pagoDate} />
-                <p>{pago.proveedor}</p>
+                <p>{pago.proveedoreId}</p>
                 <Currency number={pago.monto} />
                 <Day date={pago.emisionDate} />
             </Box>

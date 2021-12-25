@@ -28,6 +28,7 @@ const useTotal = ({ gte, lte }: HookProps) => {
                 setPagos(result.data[0].total);
             })
             .catch((error: FeathersErrorJSON) => {
+                setPagos(0);
                 setError(error.message);
             });
     }, [gte, lte]);
@@ -49,6 +50,7 @@ const useTotal = ({ gte, lte }: HookProps) => {
                 setCobros(result.data[0].total);
             })
             .catch((error: FeathersErrorJSON) => {
+                setCobros(0);
                 setError(error.message);
             });
     }, [gte, lte]);

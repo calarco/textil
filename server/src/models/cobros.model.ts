@@ -13,11 +13,6 @@ export default function (app: Application): typeof Model {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
-            cliente: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                defaultValue: "",
-            },
             monto: {
                 type: DataTypes.DECIMAL(10, 2),
                 allowNull: false,
@@ -25,11 +20,6 @@ export default function (app: Application): typeof Model {
             ingresoDate: {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
-            },
-            banco: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                defaultValue: "",
             },
             numero: {
                 type: DataTypes.STRING,
@@ -79,6 +69,8 @@ export default function (app: Application): typeof Model {
     (cobros as any).associate = function (models: any): void {
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
+        cobros.belongsTo(models.clientes);
+        cobros.belongsTo(models.bancos);
     };
 
     return cobros;

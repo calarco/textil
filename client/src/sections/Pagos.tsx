@@ -20,7 +20,7 @@ const Columns = styled.div`
             top: calc(50% - 1rem);
             left: -0.75rem;
             height: 2rem;
-            border-left: 1px solid var(--primary-variant);
+            border-left: var(--border-variant);
         }
     }
 `;

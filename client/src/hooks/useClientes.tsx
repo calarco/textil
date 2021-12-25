@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import feathersClient from "feathersClient";
 
-const usePagos = (estado: string) => {
-    const [pagos, setPagos] = useState<Pagos>({
+const useClientes = () => {
+    const [clientes, setClientes] = useState<Clientes>({
         total: 0,
         limit: 0,
         skip: 0,
@@ -12,32 +12,31 @@ const usePagos = (estado: string) => {
 
     const loadData = useCallback(() => {
         feathersClient
-            .service("pagos")
+            .service("clientes")
             .find({
                 query: {
                     $limit: 50,
-                    estado: estado,
                     $sort: {
-                        pagoDate: 1,
+                        nombre: 1,
                     },
                 },
             })
-            .then((data: Pagos) => {
-                setPagos(data);
+            .then((data: Clientes) => {
+                setClientes(data);
             })
             .catch((error: FeathersErrorJSON) => {
                 setError(error.message);
             });
-    }, [estado]);
+    }, []);
 
     useEffect(() => {
         loadData();
-        feathersClient.service("pagos").on("created", () => loadData());
-        feathersClient.service("pagos").on("patched", () => loadData());
-        feathersClient.service("pagos").on("removed", () => loadData());
+        feathersClient.service("clientes").on("created", () => loadData());
+        feathersClient.service("clientes").on("patched", () => loadData());
+        feathersClient.service("clientes").on("removed", () => loadData());
     }, [loadData]);
 
-    return { pagos, error };
+    return { clientes, error };
 };
 
-export default usePagos;
+export default useClientes;

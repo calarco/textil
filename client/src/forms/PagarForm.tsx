@@ -3,9 +3,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import feathersClient from "feathersClient";
 import styled from "styled-components";
 
+import useProveedores from "hooks/useProveedores";
 import FormComponent from "components/Form";
 import Label from "components/Label";
 import CurrencyInput from "components/CurrencyInput";
+import Select from "components/Select";
 
 const Form = styled(FormComponent)`
     grid-template-columns: 1fr 1fr 1fr [end];
@@ -21,49 +23,45 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
     const {
         register,
         handleSubmit,
+        watch,
+        setValue,
         reset,
         control,
         formState: { errors },
-    } = useForm<Inputs>();
+    } = useForm<Inputs>({
+        defaultValues: {
+            proveedoreId: 0,
+            proveedor: "",
+        },
+    });
+    const { proveedores } = useProveedores();
 
-    const onSubmit: SubmitHandler<Inputs> = (inputs) =>
+    const onSubmit: SubmitHandler<Inputs> = (inputs) => {
+        const payload = {
+            pagoDate: inputs.pagoDate,
+            monto: inputs.monto.slice(1).replace(/\./g, "").replace(/,/g, "."),
+            proveedoreId: inputs.proveedoreId,
+            emisionDate: inputs.emisionDate,
+            numero: inputs.numero,
+            observaciones: inputs.observaciones,
+            estado: inputs.estado,
+        };
         data
             ? feathersClient
                   .service("pagos")
-                  .patch(data.id, {
-                      pagoDate: inputs.pagoDate,
-                      monto: inputs.monto
-                          .slice(1)
-                          .replace(/\./g, "")
-                          .replace(/,/g, "."),
-                      proveedor: inputs.proveedor,
-                      emisionDate: inputs.emisionDate,
-                      numero: inputs.numero,
-                      observaciones: inputs.observaciones,
-                      estado: inputs.estado,
-                  })
+                  .patch(data.id, payload)
                   .then(() => {})
                   .catch((error: FeathersErrorJSON) => {
                       console.error(error.message);
                   })
             : feathersClient
                   .service("pagos")
-                  .create({
-                      pagoDate: inputs.pagoDate,
-                      monto: inputs.monto
-                          .slice(1)
-                          .replace(/\./g, "")
-                          .replace(/,/g, "."),
-                      proveedor: inputs.proveedor,
-                      emisionDate: inputs.emisionDate,
-                      numero: inputs.numero,
-                      observaciones: inputs.observaciones,
-                      estado: inputs.estado,
-                  })
+                  .create(payload)
                   .then(() => {})
                   .catch((error: FeathersErrorJSON) => {
                       console.error(error.message);
                   });
+    };
 
     useEffect(() => {
         reset();
@@ -92,17 +90,16 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                     defaultValue={data?.monto.toString().replace(/\./g, ",")}
                 />
             </Label>
-            <Label title="Proveedor" error={errors.proveedor?.message}>
-                <input
-                    type="text"
-                    defaultValue={data?.proveedor}
-                    placeholder="-"
-                    autoComplete="off"
-                    {...register("proveedor", {
-                        required: "Ingrese el proveedor ",
-                    })}
-                />
-            </Label>
+            <Select
+                nameId="proveedoreId"
+                name="proveedor"
+                nameService="proveedores"
+                list={proveedores}
+                register={register}
+                watch={watch}
+                setValue={setValue}
+                error={errors.proveedoreId?.message}
+            />
             <Label title="Fecha de emision" error={errors.emisionDate?.message}>
                 <input
                     type="date"

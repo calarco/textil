@@ -2,7 +2,7 @@ type Pago = {
     id: number;
     pagoDate: string;
     monto: number;
-    proveedor: string;
+    proveedoreId: number;
     emisionDate: string;
     numero: string;
     observaciones: string;
@@ -22,9 +22,9 @@ type Cobro = {
     id: number;
     ingresoDate: string;
     monto: number;
-    cliente: string;
+    clienteId: number;
     depositoDate: string;
-    banco: string;
+    bancoId: number;
     numero: string;
     titular?: string;
     cuit?: string;
@@ -46,6 +46,48 @@ type Total = {
     limit: number;
     skip: number;
     data: [{ total: number }];
+};
+
+type Proveedor = {
+    id: number;
+    nombre: string;
+    createdAt: string;
+    updatedAt: string;
+};
+
+type Proveedores = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Proveedor[];
+};
+
+type Cliente = {
+    id: number;
+    nombre: string;
+    createdAt: string;
+    updatedAt: string;
+};
+
+type Clientes = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Cliente[];
+};
+
+type Banco = {
+    id: number;
+    nombre: string;
+    createdAt: string;
+    updatedAt: string;
+};
+
+type Bancos = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Banco[];
 };
 
 type FeathersErrorJSON = {

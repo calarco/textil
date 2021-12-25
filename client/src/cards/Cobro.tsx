@@ -157,7 +157,7 @@ function Cobro({
         >
             <Box isActive={isActive} onClick={onClick}>
                 <Day date={cobro.depositoDate} />
-                <p>{cobro.cliente}</p>
+                <p>{cobro.clienteId}</p>
                 <Currency number={cobro.monto} />
                 <Day date={cobro.ingresoDate} />
             </Box>
@@ -166,7 +166,7 @@ function Cobro({
                     <Details>
                         <label>
                             Banco
-                            <p>{cobro.banco}</p>
+                            <p>{cobro.bancoId}</p>
                         </label>
                         <label>
                             Titular

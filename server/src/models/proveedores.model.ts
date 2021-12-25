@@ -1,4 +1,4 @@
-// See http://docs.sequelizejs.com/en/latest/docs/models-definition/
+// See https://sequelize.org/master/manual/model-basics.html
 // for more of what you can do here.
 import { Sequelize, DataTypes, Model } from "sequelize";
 import { Application } from "../declarations";
@@ -6,17 +6,13 @@ import { HookReturn } from "sequelize/types/lib/hooks";
 
 export default function (app: Application): typeof Model {
     const sequelizeClient: Sequelize = app.get("sequelizeClient");
-    const users = sequelizeClient.define(
-        "users",
+    const proveedores = sequelizeClient.define(
+        "proveedores",
         {
-            email: {
+            nombre: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 unique: true,
-            },
-            password: {
-                type: DataTypes.STRING,
-                allowNull: false,
             },
         },
         {
@@ -29,10 +25,10 @@ export default function (app: Application): typeof Model {
     );
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (users as any).associate = function (models: any): void {
+    (proveedores as any).associate = function (models: any): void {
         // Define associations here
-        // See http://docs.sequelizejs.com/en/latest/docs/associations/
+        // See https://sequelize.org/master/manual/assocs.html
     };
 
-    return users;
+    return proveedores;
 }

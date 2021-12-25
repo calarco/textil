@@ -10,7 +10,7 @@ const useCobros = (estado: string) => {
     });
     const [error, setError] = useState("");
 
-    const loadCobros = useCallback(() => {
+    const loadData = useCallback(() => {
         feathersClient
             .service("cobros")
             .find({
@@ -31,11 +31,11 @@ const useCobros = (estado: string) => {
     }, [estado]);
 
     useEffect(() => {
-        loadCobros();
-        feathersClient.service("cobros").on("created", () => loadCobros());
-        feathersClient.service("cobros").on("patched", () => loadCobros());
-        feathersClient.service("cobros").on("removed", () => loadCobros());
-    }, [loadCobros]);
+        loadData();
+        feathersClient.service("cobros").on("created", () => loadData());
+        feathersClient.service("cobros").on("patched", () => loadData());
+        feathersClient.service("cobros").on("removed", () => loadData());
+    }, [loadData]);
 
     return { cobros, error };
 };

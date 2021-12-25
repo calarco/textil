@@ -290,7 +290,6 @@ const GlobalStyle = createGlobalStyle`
     input[type="number"],
     input[type="email"],
     input[type="tel"],
-    input[type="date"],
     input[type="time"],
     input[type="password"],
     textarea {
@@ -332,16 +331,14 @@ const GlobalStyle = createGlobalStyle`
         text-align: inherit;
     }
 
-    input[type="date"] {
-        width: auto;
-    }
-
     textarea {
         resize: none;
     }
 
-    input[name="fabricante"],
-    input[name="modelo"],
+    input[name="proveedor"],
+    input[name="cliente"],
+    input[name="banco"],
+    input[type="date"],
     select {
         display: block;
         appearance: none;
@@ -374,14 +371,25 @@ const GlobalStyle = createGlobalStyle`
             display: none !important;
         }
     }
+
+    input[type="date"] {
+        appearance: initial;
+        width: auto;
+        font: 300 1rem/1.5rem var(--font-family-alt);
+
+        &::-webkit-calendar-picker-indicator {
+            display: initial !important;
+        }
+    }
     
     select option {
         background: var(--surface);
         color: var(--on-background);
     }
 
-    input[name="fabricante"]:focus:hover,
-    input[name="modelo"]:focus:hover {
+    input[name="proveedor"]:focus:hover,
+    input[name="cliente"]:focus:hover,
+    input[name="banco"]:focus:hover {
         cursor: text;
     }
 
@@ -404,8 +412,9 @@ const GlobalStyle = createGlobalStyle`
     input[type="time"]:disabled,
     input[type="password"]:disabled,
     textarea:disabled,
-    input[name="fabricante"]:disabled,
-    input[name="modelo"]:disabled,
+    input[name="proveedor"]:disabled,
+    input[name="cliente"]:disabled,
+    input[name="banco"]:disabled,
     select:disabled {
         pointer-events: none;
         

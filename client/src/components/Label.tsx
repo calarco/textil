@@ -9,12 +9,14 @@ type Props = {
 };
 
 const Container = styled.label<Props>`
+    position: relative;
     min-height: 5rem;
     padding: 0.5rem 1rem 0.75rem 1rem;
     background: var(--surface);
     display: grid;
     align-content: space-between;
     gap: 0.25rem;
+    text-transform: capitalize;
     transition: 0.15s ease-in;
 
     ${(props) =>

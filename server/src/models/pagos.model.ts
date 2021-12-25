@@ -13,11 +13,6 @@ export default function (app: Application): typeof Model {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
-            proveedor: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                defaultValue: "",
-            },
             monto: {
                 type: DataTypes.DECIMAL(10, 2),
                 allowNull: false,
@@ -61,6 +56,7 @@ export default function (app: Application): typeof Model {
     (pagos as any).associate = function (models: any): void {
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
+        pagos.belongsTo(models.proveedores);
     };
 
     return pagos;

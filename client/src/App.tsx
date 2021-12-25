@@ -5,12 +5,9 @@ import styled, { ThemeProvider } from "styled-components";
 import { themeDark, themeLight } from "themes";
 import GlobalStyle from "globalStyle";
 import Login from "Login/Login";
-import Header from "Header";
-import Section from "components/Section";
-import Pagos from "./sections/Pagos";
-import Cobros from "sections/Cobros";
 import Bar from "Bar";
 import Calendar from "Calendar";
+import Gestion from "Gestion";
 
 const Container = styled.main`
     width: 100vw;
@@ -47,9 +44,6 @@ function App() {
     const [darkTheme, setDarkTheme] = useState(
         localStorage.getItem("darkTheme") || ""
     );
-    const [tab, setTab] = useState(false);
-    const [overlay, setOverlay] = useState(false);
-    const [estado, setEstado] = useState("A pagar");
 
     useEffect(() => {
         feathersClient
@@ -65,10 +59,6 @@ function App() {
         localStorage.setItem("darkTheme", darkTheme);
     }, [darkTheme]);
 
-    useEffect(() => {
-        tab ? setEstado("A depositar") : setEstado("A pagar");
-    }, [tab]);
-
     return (
         <Container>
             <ThemeProvider theme={darkTheme ? themeDark : themeLight}>
@@ -78,34 +68,7 @@ function App() {
                 <>
                     <Panels>
                         <Panel>
-                            <Header
-                                tab={tab}
-                                onClick={() => setTab(!tab)}
-                                estado={estado}
-                                setEstado={setEstado}
-                                overlay={overlay}
-                                setOverlay={setOverlay}
-                            />
-                            <Section
-                                overlay={overlay}
-                                cancel={() => {
-                                    setOverlay(false);
-                                }}
-                            >
-                                {tab ? (
-                                    <Cobros
-                                        estado={estado}
-                                        overlay={overlay}
-                                        setOverlay={setOverlay}
-                                    />
-                                ) : (
-                                    <Pagos
-                                        estado={estado}
-                                        overlay={overlay}
-                                        setOverlay={setOverlay}
-                                    />
-                                )}
-                            </Section>
+                            <Gestion />
                         </Panel>
                         <Panel>
                             <Calendar />

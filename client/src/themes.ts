@@ -10,7 +10,7 @@ const themeLight: DefaultTheme = {
 
     borders: {
         border: "1px solid rgba(0, 0, 0, 0.2)",
-        borderVariant: "1px solid rgba(0, 0, 0, 0.1)",
+        borderVariant: "1px solid var(--secondary-variant)",
         borderPrimary: "1px solid rgba(80, 152, 206, 0.3)",
     },
 

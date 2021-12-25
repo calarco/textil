@@ -61,16 +61,17 @@ const Details = styled.div`
 `;
 
 type ComponentProps = {
+    year: number;
     month: number;
     isActive?: boolean;
     setActive: (active: number) => void;
 };
 
-function Month({ month, isActive, setActive }: ComponentProps) {
+function Month({ year, month, isActive, setActive }: ComponentProps) {
     const { pagos, cobros } = useTotal({
-        gte: `2021-${(month + 1).toString().padStart(2, "0")}-01`,
-        lte: `2021-${(month + 1).toString().padStart(2, "0")}-${new Date(
-            2021,
+        gte: `${year}-${(month + 1).toString().padStart(2, "0")}-01`,
+        lte: `${year}-${(month + 1).toString().padStart(2, "0")}-${new Date(
+            year,
             month + 1,
             0
         ).getDate()}`,
@@ -86,7 +87,7 @@ function Month({ month, isActive, setActive }: ComponentProps) {
                 }}
             >
                 <h4>
-                    {new Date(2021, month, 1).toLocaleDateString("default", {
+                    {new Date(year, month, 1).toLocaleDateString("default", {
                         month: "long",
                     })}
                 </h4>
