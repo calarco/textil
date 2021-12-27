@@ -6,13 +6,14 @@ import styled from "styled-components";
 
 import useClientes from "hooks/useClientes";
 import useBancos from "hooks/useBancos";
+import useProveedores from "hooks/useProveedores";
 import FormComponent from "components/Form";
 import Label from "components/Label";
 import CurrencyInput from "components/CurrencyInput";
 import Select from "components/Select";
 
 const Form = styled(FormComponent)`
-    grid-template-columns: 1fr 1fr 1fr [end];
+    grid-template-columns: 2fr 3fr 2fr [end];
 `;
 
 type ComponentProps = {
@@ -36,10 +37,12 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             cliente: "",
             bancoId: 0,
             banco: "",
+            proveedor: "",
         },
     });
     const { clientes } = useClientes();
     const { bancos } = useBancos();
+    const { proveedores } = useProveedores();
 
     const onSubmit: SubmitHandler<Inputs> = (inputs) => {
         const payload = {
@@ -53,6 +56,8 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             cuit: inputs.cuit,
             observaciones: inputs.observaciones,
             estado: inputs.estado,
+            salidaDate: inputs.salidaDate,
+            proveedoreId: inputs.proveedoreId,
         };
         data
             ? feathersClient
@@ -81,19 +86,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             onSubmit={handleSubmit(onSubmit)}
             close={close}
         >
-            <Label
-                title="Fecha de deposito"
-                error={errors.depositoDate?.message}
-            >
-                <input
-                    type="date"
-                    defaultValue={data?.depositoDate}
-                    autoComplete="off"
-                    {...register("depositoDate", {
-                        required: "Ingrese la fecha de deposito",
-                    })}
-                />
-            </Label>
             <Label title="Monto" error={errors.monto?.message}>
                 <CurrencyInput
                     control={control}
@@ -110,6 +102,46 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                 setValue={setValue}
                 error={errors.clienteId?.message}
             />
+            <Label title="Estado">
+                <select {...register("estado")} defaultValue={data?.estado}>
+                    <option value="A depositar">A depositar</option>
+                    <option value="Depositado">Depositado</option>
+                    <option value="Anulado">Anulado</option>
+                    <option value="Posdatado">Posdatado</option>
+                    <option value="Endosado">Endosado</option>
+                    <option value="Devuelto">Devuelto</option>
+                    <option value="Falla tecnica">Falla tecnica</option>
+                    <option value="Rechazado">Rechazado</option>
+                </select>
+            </Label>
+            {watch("estado") === "Endosado" && (
+                <>
+                    <Label
+                        title="Fecha de salida"
+                        error={errors.salidaDate?.message}
+                    >
+                        <input
+                            type="date"
+                            defaultValue={data?.salidaDate}
+                            autoComplete="off"
+                            {...register("salidaDate", {
+                                required: "Ingrese la fecha de salida",
+                            })}
+                        />
+                    </Label>
+                    <Select
+                        nameId="proveedoreId"
+                        name="proveedor"
+                        nameService="proveedores"
+                        list={proveedores}
+                        register={register}
+                        watch={watch}
+                        setValue={setValue}
+                        length={2}
+                        error={errors.proveedoreId?.message}
+                    />
+                </>
+            )}
             <Label title="Fecha de ingreso" error={errors.ingresoDate?.message}>
                 <input
                     type="date"
@@ -132,6 +164,19 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     autoComplete="off"
                     {...register("numero", {
                         required: "Ingrese el numero de cheque",
+                    })}
+                />
+            </Label>
+            <Label
+                title="Fecha de deposito"
+                error={errors.depositoDate?.message}
+            >
+                <input
+                    type="date"
+                    defaultValue={data?.depositoDate}
+                    autoComplete="off"
+                    {...register("depositoDate", {
+                        required: "Ingrese la fecha de deposito",
                     })}
                 />
             </Label>
@@ -186,18 +231,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                         />
                     )}
                 />
-            </Label>
-            <Label title="Estado">
-                <select {...register("estado")} defaultValue={data?.estado}>
-                    <option value="A depositar">A depositar</option>
-                    <option value="Depositado">Depositado</option>
-                    <option value="Anulado">Anulado</option>
-                    <option value="Posdatado">Posdatado</option>
-                    <option value="Endosado">Endosado</option>
-                    <option value="Devuelto">Devuelto</option>
-                    <option value="Falla tecnica">Falla tecnica</option>
-                    <option value="Rechazado">Rechazado</option>
-                </select>
             </Label>
             <Label title="Observaciones" length={3}>
                 <input

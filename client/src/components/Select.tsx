@@ -67,6 +67,7 @@ type ComponentProps = {
     register: UseFormRegister<Inputs>;
     watch: UseFormWatch<Inputs>;
     setValue: UseFormSetValue<Inputs>;
+    length?: number;
     error?: string;
     className?: string;
 };
@@ -79,6 +80,7 @@ const Select = function ({
     register,
     watch,
     setValue,
+    length,
     error,
     className,
 }: ComponentProps) {
@@ -119,6 +121,7 @@ const Select = function ({
     return (
         <Label
             title={name}
+            length={length}
             error={error}
             onBlur={() => watchName === selected && setValue(name, "")}
             className={className}

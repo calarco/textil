@@ -10,7 +10,7 @@ import CurrencyInput from "components/CurrencyInput";
 import Select from "components/Select";
 
 const Form = styled(FormComponent)`
-    grid-template-columns: 1fr 1fr 1fr [end];
+    grid-template-columns: 2fr 3fr 2fr [end];
 `;
 
 type ComponentProps = {
@@ -73,17 +73,6 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
             close={close}
             onSubmit={handleSubmit(onSubmit)}
         >
-            <Label title="Fecha de pago" error={errors.pagoDate?.message}>
-                <input
-                    type="date"
-                    defaultValue={data?.pagoDate}
-                    placeholder="-"
-                    autoComplete="off"
-                    {...register("pagoDate", {
-                        required: "Ingrese la fecha de pago",
-                    })}
-                />
-            </Label>
             <Label title="Monto" error={errors.monto?.message}>
                 <CurrencyInput
                     control={control}
@@ -100,6 +89,15 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                 setValue={setValue}
                 error={errors.proveedoreId?.message}
             />
+            <Label title="Estado">
+                <select {...register("estado")} defaultValue={data?.estado}>
+                    <option value="A pagar">A pagar</option>
+                    <option value="Pagado">Pagado</option>
+                    <option value="Anulado">Anulado</option>
+                    <option value="Recuperado">Recuperado</option>
+                    <option value="Vencido">Vencido</option>
+                </select>
+            </Label>
             <Label title="Fecha de emision" error={errors.emisionDate?.message}>
                 <input
                     type="date"
@@ -125,14 +123,16 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                     })}
                 />
             </Label>
-            <Label title="Estado">
-                <select {...register("estado")} defaultValue={data?.estado}>
-                    <option value="A pagar">A pagar</option>
-                    <option value="Pagado">Pagado</option>
-                    <option value="Anulado">Anulado</option>
-                    <option value="Recuperado">Recuperado</option>
-                    <option value="Vencido">Vencido</option>
-                </select>
+            <Label title="Fecha de pago" error={errors.pagoDate?.message}>
+                <input
+                    type="date"
+                    defaultValue={data?.pagoDate}
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("pagoDate", {
+                        required: "Ingrese la fecha de pago",
+                    })}
+                />
             </Label>
             <Label title="Observaciones" length={3}>
                 <input

@@ -30,6 +30,8 @@ type Cobro = {
     cuit?: string;
     observaciones: string;
     estado: string;
+    salidaDate?: string;
+    proveedoreId?: number;
     createdAt: string;
     updatedAt: string;
 };

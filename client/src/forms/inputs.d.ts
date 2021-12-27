@@ -8,6 +8,7 @@ type Inputs = {
     cliente?: string;
     emisionDate?: string;
     ingresoDate?: string;
+    salidaDate?: string;
     bancoId?: number;
     banco?: string;
     numero: string;

@@ -55,6 +55,10 @@ export default function (app: Application): typeof Model {
                 allowNull: false,
                 defaultValue: "A depositar",
             },
+            salidaDate: {
+                type: DataTypes.DATEONLY,
+                allowNull: true,
+            },
         },
         {
             hooks: {
@@ -71,6 +75,7 @@ export default function (app: Application): typeof Model {
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
         cobros.belongsTo(models.clientes);
         cobros.belongsTo(models.bancos);
+        cobros.belongsTo(models.proveedores);
     };
 
     return cobros;
