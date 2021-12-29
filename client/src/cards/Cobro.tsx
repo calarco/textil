@@ -1,5 +1,5 @@
 import { MouseEvent, useState, useEffect } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import transition from "styled-transition-group";
 
 import { useCheques } from "hooks/chequesContext";
@@ -9,18 +9,13 @@ import Remove from "components/Remove";
 import Currency from "components/Currency";
 import Day from "components/Day";
 
-type Props = {
-    readonly isActive?: boolean;
-};
-
-const Box = styled.div<Props>`
+const Box = styled.div`
     display: grid;
     grid-template-columns: 10rem 1fr 1fr 10rem;
     gap: 1.5rem;
     text-align: center;
-    transition: 0.2s ease-in;
 
-    label {
+    > label {
         display: grid;
         gap: 0.25rem;
     }
@@ -29,14 +24,6 @@ const Box = styled.div<Props>`
     pre {
         padding: 0.75rem 1rem;
     }
-
-    ${(props) =>
-        props.isActive &&
-        css`
-            background: var(--surface);
-            box-shadow: var(--shadow);
-            transition: 0.3s ease-out;
-        `};
 `;
 
 const Details = styled.div`
@@ -157,7 +144,7 @@ function Cobro({
             isForm={form}
             className={className}
         >
-            <Box isActive={isActive} onClick={onClick}>
+            <Box onClick={onClick}>
                 <Day date={cobro.depositoDate} />
                 <p>{getCliente(cobro.clienteId)}</p>
                 <Currency number={cobro.monto} />

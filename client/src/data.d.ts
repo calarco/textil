@@ -1,3 +1,38 @@
+type Pagos = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Pago[];
+};
+
+type Cobros = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Cobro[];
+};
+
+type Proveedores = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Proveedor[];
+};
+
+type Clientes = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Cliente[];
+};
+
+type Bancos = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Banco[];
+};
+
 type Pago = {
     id: number;
     pagoDate: string;
@@ -9,13 +44,6 @@ type Pago = {
     estado: string;
     createdAt: string;
     updatedAt: string;
-};
-
-type Pagos = {
-    total: number;
-    limit: number;
-    skip: number;
-    data: Pago[];
 };
 
 type Cobro = {
@@ -36,13 +64,6 @@ type Cobro = {
     updatedAt: string;
 };
 
-type Cobros = {
-    total: number;
-    limit: number;
-    skip: number;
-    data: Cobro[];
-};
-
 type Total = {
     total: number;
     limit: number;
@@ -57,13 +78,6 @@ type Proveedor = {
     updatedAt: string;
 };
 
-type Proveedores = {
-    total: number;
-    limit: number;
-    skip: number;
-    data: Proveedor[];
-};
-
 type Cliente = {
     id: number;
     nombre: string;
@@ -71,25 +85,11 @@ type Cliente = {
     updatedAt: string;
 };
 
-type Clientes = {
-    total: number;
-    limit: number;
-    skip: number;
-    data: Cliente[];
-};
-
 type Banco = {
     id: number;
     nombre: string;
     createdAt: string;
     updatedAt: string;
-};
-
-type Bancos = {
-    total: number;
-    limit: number;
-    skip: number;
-    data: Banco[];
 };
 
 type FeathersErrorJSON = {

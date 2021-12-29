@@ -35,7 +35,9 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             banco: "",
             proveedor: "",
             depositoDate: data?.depositoDate,
-            monto: "$" + data?.monto.toString().replace(/\./g, ","),
+            monto: data?.monto
+                ? `$${data.monto.toString().replace(/\./g, ",")}`
+                : "",
             clienteId: data?.clienteId || 0,
             ingresoDate:
                 data?.ingresoDate || new Date().toISOString().substring(0, 10),

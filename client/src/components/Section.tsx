@@ -12,14 +12,13 @@ const Container = styled.section<Props>`
     height: 100%;
     min-height: 25rem;
     max-height: 100%;
-    padding: 0.5rem;
+    padding: 1px;
     border-radius: 4px;
     background: var(--surface);
     box-shadow: var(--shadow);
     overflow-y: overlay;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     transition: 0.3s ease-out;
 
     ${(props) =>

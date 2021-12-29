@@ -455,13 +455,13 @@ const GlobalStyle = createGlobalStyle`
         
         &:hover {
             cursor: pointer;
-            background: var(--primary-variant);
+            background: var(--secondary-variant);
             transition: 0.15s ease-out;
         }
         
         &:focus {
             outline: none;
-            background: var(--secondary-variant);
+            background: var(--primary-variant);
         }
 
         &:disabled {

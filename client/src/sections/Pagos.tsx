@@ -8,10 +8,11 @@ const Columns = styled.div`
     display: grid;
     grid-template-columns: 10rem 1fr 1fr 10rem;
     gap: 1.5rem;
+    border-bottom: var(--border-variant);
 
-    label {
+    > label {
         position: relative;
-        padding: 0.25rem 1rem;
+        padding: 0.75rem 1rem;
         text-align: center;
 
         &:not(:first-child)::after {

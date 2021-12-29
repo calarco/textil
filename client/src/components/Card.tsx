@@ -9,8 +9,7 @@ type Props = {
 
 const Container = styled.div<Props>`
     position: relative;
-    border-radius: 4px;
-    outline: 1px solid rgba(0, 0, 0, 0);
+    min-height: 3rem;
     transition: 0.2s ease-in;
 
     ${(props) =>
@@ -19,7 +18,7 @@ const Container = styled.div<Props>`
         css`
             &:hover {
                 cursor: pointer;
-                background: var(--primary-variant);
+                background: var(--secondary-variant);
                 transition: 0.2s ease-in;
             }
         `};
@@ -33,7 +32,6 @@ const Container = styled.div<Props>`
             z-index: 1000;
             background: var(--primary-variant);
             backdrop-filter: blur(0.4rem);
-            outline: 1px solid var(--primary);
             box-shadow: var(--shadow-variant);
             transition: 0.3s ease-out;
 
@@ -61,10 +59,9 @@ const Container = styled.div<Props>`
     &:not(:first-child)::after {
         content: "";
         position: absolute;
-        top: -0.5rem;
+        top: 0;
         z-index: 0;
         width: 100%;
-        border-top: var(--border-variant);
 
         ${(props) =>
             props.isForm &&

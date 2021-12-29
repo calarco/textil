@@ -6,13 +6,12 @@ import Currency from "components/Currency";
 
 type Props = {
     readonly isCurrent?: boolean;
-    readonly isActive?: boolean;
 };
 
 const Box = styled.div<Props>`
     width: 100%;
     min-height: 3rem;
-    padding: 0.5rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     display: grid;
     grid-template-columns: 5.5rem 1fr;
     align-items: center;
@@ -25,14 +24,6 @@ const Box = styled.div<Props>`
             h4 {
                 color: var(--secondary);
             }
-        `};
-
-    ${(props) =>
-        props.isActive &&
-        css`
-            background: var(--surface);
-            box-shadow: var(--shadow);
-            transition: 0.3s ease-out;
         `};
 `;
 
@@ -81,7 +72,6 @@ function Month({ year, month, isActive, setActive }: ComponentProps) {
         <Card isActive={isActive}>
             <Box
                 isCurrent={month === new Date().getMonth()}
-                isActive={isActive}
                 onClick={() => {
                     isActive ? setActive(12) : setActive(month);
                 }}

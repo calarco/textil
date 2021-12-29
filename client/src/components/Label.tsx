@@ -1,4 +1,4 @@
-import { ReactNode, useRef } from "react";
+import { FocusEventHandler, ReactNode, useRef } from "react";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
@@ -91,7 +91,7 @@ type ComponentProps = {
     title: string;
     length?: number;
     error?: string;
-    onBlur?: any;
+    onBlur?: FocusEventHandler<HTMLLabelElement>;
     className?: string;
     children: ReactNode;
 };

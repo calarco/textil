@@ -32,7 +32,9 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
         defaultValues: {
             proveedor: "",
             pagoDate: data?.pagoDate,
-            monto: "$" + data?.monto.toString().replace(/\./g, ","),
+            monto: data?.monto
+                ? `$${data.monto.toString().replace(/\./g, ",")}`
+                : "",
             proveedoreId: data?.proveedoreId || 0,
             emisionDate:
                 data?.emisionDate || new Date().toISOString().substring(0, 10),
