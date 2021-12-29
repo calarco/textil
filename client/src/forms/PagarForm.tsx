@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import feathersClient from "feathersClient";
 import styled from "styled-components";
 
-import useProveedores from "hooks/useProveedores";
+import { useCheques } from "hooks/chequesContext";
 import FormComponent from "components/Form";
 import Label from "components/Label";
 import CurrencyInput from "components/CurrencyInput";
@@ -30,11 +30,18 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
         formState: { errors },
     } = useForm<Inputs>({
         defaultValues: {
-            proveedoreId: 0,
             proveedor: "",
+            pagoDate: data?.pagoDate,
+            monto: "$" + data?.monto.toString().replace(/\./g, ","),
+            proveedoreId: data?.proveedoreId || 0,
+            emisionDate:
+                data?.emisionDate || new Date().toISOString().substring(0, 10),
+            numero: data?.numero || "",
+            observaciones: data?.observaciones || "",
+            estado: data?.estado || "A pagar",
         },
     });
-    const { proveedores } = useProveedores();
+    const { proveedores } = useCheques();
 
     const onSubmit: SubmitHandler<Inputs> = (inputs) => {
         const payload = {
@@ -74,10 +81,7 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
             onSubmit={handleSubmit(onSubmit)}
         >
             <Label title="Monto" error={errors.monto?.message}>
-                <CurrencyInput
-                    control={control}
-                    defaultValue={data?.monto.toString().replace(/\./g, ",")}
-                />
+                <CurrencyInput control={control} />
             </Label>
             <Select
                 nameId="proveedoreId"
@@ -90,7 +94,7 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                 error={errors.proveedoreId?.message}
             />
             <Label title="Estado">
-                <select {...register("estado")} defaultValue={data?.estado}>
+                <select {...register("estado")}>
                     <option value="A pagar">A pagar</option>
                     <option value="Pagado">Pagado</option>
                     <option value="Anulado">Anulado</option>
@@ -101,10 +105,6 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
             <Label title="Fecha de emision" error={errors.emisionDate?.message}>
                 <input
                     type="date"
-                    defaultValue={
-                        data?.emisionDate ||
-                        new Date().toISOString().substring(0, 10)
-                    }
                     placeholder="-"
                     autoComplete="off"
                     {...register("emisionDate", {
@@ -115,7 +115,6 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
             <Label title="Numero de cheque" error={errors.numero?.message}>
                 <input
                     type="text"
-                    defaultValue={data?.numero}
                     placeholder="-"
                     autoComplete="off"
                     {...register("numero", {
@@ -126,7 +125,6 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
             <Label title="Fecha de pago" error={errors.pagoDate?.message}>
                 <input
                     type="date"
-                    defaultValue={data?.pagoDate}
                     placeholder="-"
                     autoComplete="off"
                     {...register("pagoDate", {
@@ -137,7 +135,6 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
             <Label title="Observaciones" length={3}>
                 <input
                     type="text"
-                    defaultValue={data?.observaciones}
                     placeholder="-"
                     autoComplete="off"
                     {...register("observaciones")}

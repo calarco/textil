@@ -4,9 +4,7 @@ import MaskedInput from "react-text-mask";
 import feathersClient from "feathersClient";
 import styled from "styled-components";
 
-import useClientes from "hooks/useClientes";
-import useBancos from "hooks/useBancos";
-import useProveedores from "hooks/useProveedores";
+import { useCheques } from "hooks/chequesContext";
 import FormComponent from "components/Form";
 import Label from "components/Label";
 import CurrencyInput from "components/CurrencyInput";
@@ -33,16 +31,25 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
         formState: { errors },
     } = useForm<Inputs>({
         defaultValues: {
-            clienteId: 0,
             cliente: "",
-            bancoId: 0,
             banco: "",
             proveedor: "",
+            depositoDate: data?.depositoDate,
+            monto: "$" + data?.monto.toString().replace(/\./g, ","),
+            clienteId: data?.clienteId || 0,
+            ingresoDate:
+                data?.ingresoDate || new Date().toISOString().substring(0, 10),
+            bancoId: data?.bancoId || 0,
+            numero: data?.numero || "",
+            titular: data?.titular || "",
+            cuit: data?.cuit || "",
+            observaciones: data?.observaciones || "",
+            estado: data?.estado || "A depositar",
+            salidaDate: data?.salidaDate,
+            proveedoreId: data?.proveedoreId || 0,
         },
     });
-    const { clientes } = useClientes();
-    const { bancos } = useBancos();
-    const { proveedores } = useProveedores();
+    const { clientes, proveedores, bancos } = useCheques();
 
     const onSubmit: SubmitHandler<Inputs> = (inputs) => {
         const payload = {
@@ -87,10 +94,7 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             close={close}
         >
             <Label title="Monto" error={errors.monto?.message}>
-                <CurrencyInput
-                    control={control}
-                    defaultValue={data?.monto.toString().replace(/\./g, ",")}
-                />
+                <CurrencyInput control={control} />
             </Label>
             <Select
                 nameId="clienteId"
@@ -103,7 +107,7 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                 error={errors.clienteId?.message}
             />
             <Label title="Estado">
-                <select {...register("estado")} defaultValue={data?.estado}>
+                <select {...register("estado")}>
                     <option value="A depositar">A depositar</option>
                     <option value="Depositado">Depositado</option>
                     <option value="Anulado">Anulado</option>
@@ -122,7 +126,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     >
                         <input
                             type="date"
-                            defaultValue={data?.salidaDate}
                             autoComplete="off"
                             {...register("salidaDate", {
                                 required: "Ingrese la fecha de salida",
@@ -145,10 +148,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             <Label title="Fecha de ingreso" error={errors.ingresoDate?.message}>
                 <input
                     type="date"
-                    defaultValue={
-                        data?.ingresoDate ||
-                        new Date().toISOString().substring(0, 10)
-                    }
                     placeholder="-"
                     autoComplete="off"
                     {...register("ingresoDate", {
@@ -159,7 +158,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             <Label title="Numero de cheque" error={errors.numero?.message}>
                 <input
                     type="text"
-                    defaultValue={data?.numero}
                     placeholder="-"
                     autoComplete="off"
                     {...register("numero", {
@@ -173,7 +171,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             >
                 <input
                     type="date"
-                    defaultValue={data?.depositoDate}
                     autoComplete="off"
                     {...register("depositoDate", {
                         required: "Ingrese la fecha de deposito",
@@ -193,7 +190,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             <Label title="Titular del cheque" error={errors.titular?.message}>
                 <input
                     type="text"
-                    defaultValue={data?.titular}
                     placeholder="-"
                     autoComplete="off"
                     {...register("titular", { required: "Ingrese el titular" })}
@@ -224,7 +220,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                             guide={false}
                             type="text"
                             inputMode="numeric"
-                            defaultValue={data?.cuit}
                             placeholder="-"
                             autoComplete="off"
                             {...field}
@@ -235,7 +230,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             <Label title="Observaciones" length={3}>
                 <input
                     type="text"
-                    defaultValue={data?.observaciones}
                     placeholder="-"
                     autoComplete="off"
                     {...register("observaciones")}

@@ -4,10 +4,9 @@ import createNumberMask from "text-mask-addons/dist/createNumberMask";
 
 type ComponentProps = {
     control: Control<Inputs>;
-    defaultValue?: string;
 };
 
-const CurrencyInput = ({ control, defaultValue }: ComponentProps) => {
+const CurrencyInput = ({ control }: ComponentProps) => {
     const currencyMask = createNumberMask({
         prefix: "$",
         suffix: "",
@@ -31,7 +30,6 @@ const CurrencyInput = ({ control, defaultValue }: ComponentProps) => {
                     mask={currencyMask}
                     type="text"
                     inputMode="numeric"
-                    defaultValue={defaultValue}
                     placeholder="-"
                     autoComplete="off"
                     {...field}

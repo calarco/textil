@@ -2,6 +2,7 @@ import { MouseEvent, useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 
+import { useCheques } from "hooks/chequesContext";
 import Card from "components/Card";
 import CobrarForm from "forms/CobrarForm";
 import Remove from "components/Remove";
@@ -138,6 +139,7 @@ function Cobro({
 }: ComponentProps) {
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
+    const { getCliente, getBanco } = useCheques();
 
     useEffect(() => {
         !overlay && setForm(false);
@@ -157,7 +159,7 @@ function Cobro({
         >
             <Box isActive={isActive} onClick={onClick}>
                 <Day date={cobro.depositoDate} />
-                <p>{cobro.clienteId}</p>
+                <p>{getCliente(cobro.clienteId)}</p>
                 <Currency number={cobro.monto} />
                 <Day date={cobro.ingresoDate} />
             </Box>
@@ -166,7 +168,7 @@ function Cobro({
                     <Details>
                         <label>
                             Banco
-                            <p>{cobro.bancoId}</p>
+                            <p>{getBanco(cobro.bancoId)}</p>
                         </label>
                         <label>
                             Titular

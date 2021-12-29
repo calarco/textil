@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import { ChequesProvider } from "hooks/chequesContext";
 import Header from "GestionHeader";
 import Section from "components/Section";
 import Pagos from "./sections/Pagos";
@@ -15,7 +16,7 @@ function Gestion() {
     }, [tab]);
 
     return (
-        <>
+        <ChequesProvider>
             <Header
                 tab={tab}
                 onClick={() => setTab(!tab)}
@@ -44,7 +45,7 @@ function Gestion() {
                     />
                 )}
             </Section>
-        </>
+        </ChequesProvider>
     );
 }
 

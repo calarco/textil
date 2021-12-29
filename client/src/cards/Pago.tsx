@@ -2,6 +2,7 @@ import { MouseEvent, useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 
+import { useCheques } from "hooks/chequesContext";
 import Card from "components/Card";
 import PagarForm from "forms/PagarForm";
 import Remove from "components/Remove";
@@ -138,6 +139,7 @@ function Pago({
 }: ComponentProps) {
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
+    const { getProveedor } = useCheques();
 
     useEffect(() => {
         !overlay && setForm(false);
@@ -156,7 +158,7 @@ function Pago({
         >
             <Box isActive={isActive} onClick={onClick}>
                 <Day date={pago.pagoDate} />
-                <p>{pago.proveedoreId}</p>
+                <p>{getProveedor(pago.proveedoreId)}</p>
                 <Currency number={pago.monto} />
                 <Day date={pago.emisionDate} />
             </Box>
