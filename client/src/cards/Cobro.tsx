@@ -37,8 +37,9 @@ const Details = styled.div`
     label {
         position: relative;
         display: grid;
-        grid-auto-flow: column;
+        grid-template-columns: auto auto;
         gap: 1rem;
+        justify-content: center;
 
         &:not(:first-child)::after {
             content: "";
@@ -47,10 +48,6 @@ const Details = styled.div`
             left: -1rem;
             height: 2rem;
             border-left: 1px solid var(--primary-variant);
-        }
-
-        p {
-            text-align: right;
         }
     }
 `;

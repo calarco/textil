@@ -12,13 +12,11 @@ const Container = styled.section<Props>`
     height: 100%;
     min-height: 25rem;
     max-height: 100%;
-    padding: 1px;
+    padding: 1rem;
     border-radius: 4px;
     background: var(--surface);
     box-shadow: var(--shadow);
     overflow-y: overlay;
-    display: flex;
-    flex-direction: column;
     transition: 0.3s ease-out;
 
     ${(props) =>
@@ -26,6 +24,13 @@ const Container = styled.section<Props>`
         css`
             overflow: clip;
         `};
+`;
+
+const List = styled.div`
+    border-radius: 4px;
+    outline: var(--border-variant);
+    display: flex;
+    flex-direction: column;
 `;
 
 const Overlay = styled.div<Props>`
@@ -70,7 +75,7 @@ const Section = function ({
 }: ComponentProps) {
     return (
         <Container overlay={overlay} className={className}>
-            {children}
+            <List>{children}</List>
             <Overlay overlay={overlay} onClick={cancel} />
         </Container>
     );

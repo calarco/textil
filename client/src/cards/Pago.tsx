@@ -9,20 +9,18 @@ import Remove from "components/Remove";
 import Currency from "components/Currency";
 import Day from "components/Day";
 
-const Box = styled.div`
+const Box = styled.ul`
     display: grid;
-    grid-template-columns: 10rem 1fr 1fr 10rem;
+    grid-template-columns: 10.5rem 1fr 1fr 10.5rem;
     gap: 1.5rem;
     text-align: center;
 
-    > label {
-        display: grid;
-        gap: 0.25rem;
+    > li {
+        padding: 0.75rem 1.75rem;
     }
 
-    > p,
-    pre {
-        padding: 0.75rem 1rem;
+    > li:nth-child(3) {
+        text-align: right;
     }
 `;
 
@@ -37,8 +35,9 @@ const Details = styled.div`
     label {
         position: relative;
         display: grid;
-        grid-auto-flow: column;
+        grid-template-columns: auto auto;
         gap: 1rem;
+        justify-content: center;
 
         &:not(:first-child)::after {
             content: "";
@@ -47,10 +46,6 @@ const Details = styled.div`
             left: -1rem;
             height: 2rem;
             border-left: 1px solid var(--primary-variant);
-        }
-
-        p {
-            text-align: right;
         }
     }
 `;
@@ -112,7 +107,7 @@ type ComponentProps = {
     isActive: boolean;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
-    onClick?: (e: MouseEvent<HTMLDivElement>) => void;
+    onClick?: (e: MouseEvent<HTMLUListElement>) => void;
     className?: string;
 };
 
@@ -144,10 +139,18 @@ function Pago({
             className={className}
         >
             <Box onClick={onClick}>
-                <Day date={pago.pagoDate} />
-                <p>{getProveedor(pago.proveedoreId)}</p>
-                <Currency number={pago.monto} />
-                <Day date={pago.emisionDate} />
+                <li>
+                    <Day date={pago.pagoDate} />
+                </li>
+                <li>
+                    <p>{getProveedor(pago.proveedoreId)}</p>
+                </li>
+                <li>
+                    <Currency number={pago.monto} />
+                </li>
+                <li>
+                    <Day date={pago.emisionDate} />
+                </li>
             </Box>
             {isActive && (
                 <>

@@ -11,7 +11,7 @@ type Props = {
 const Box = styled.div<Props>`
     width: 100%;
     min-height: 3rem;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1.75rem;
     display: grid;
     grid-template-columns: 5.5rem 1fr;
     align-items: center;

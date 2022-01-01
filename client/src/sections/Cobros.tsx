@@ -4,28 +4,6 @@ import styled from "styled-components";
 import useCobros from "hooks/useCobros";
 import Cobro from "cards/Cobro";
 
-const Columns = styled.div`
-    display: grid;
-    grid-template-columns: 10rem 1fr 1fr 10rem;
-    gap: 1.5rem;
-    border-bottom: var(--border-variant);
-
-    > label {
-        position: relative;
-        padding: 0.75rem 1rem;
-        text-align: center;
-
-        &:not(:first-child)::after {
-            content: "";
-            position: absolute;
-            top: calc(50% - 1rem);
-            left: -0.75rem;
-            height: 2rem;
-            border-left: var(--border-variant);
-        }
-    }
-`;
-
 const Empty = styled.h5`
     padding: 2rem;
     text-align: center;
@@ -44,12 +22,6 @@ function Cobros({ estado, overlay, setOverlay }: ComponentProps) {
 
     return (
         <>
-            <Columns>
-                <label>Fecha de deposito</label>
-                <label>Cliente</label>
-                <label>Monto</label>
-                <label>Fecha de ingreso</label>
-            </Columns>
             {cobros.data[0] ? (
                 cobros.data[0].id !== 0 &&
                 cobros.data.map((cobro) => (

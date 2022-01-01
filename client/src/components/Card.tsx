@@ -59,9 +59,11 @@ const Container = styled.div<Props>`
     &:not(:first-child)::after {
         content: "";
         position: absolute;
+        left: 0;
         top: 0;
+        right: 0;
         z-index: 0;
-        width: 100%;
+        border-top: var(--border-variant);
 
         ${(props) =>
             props.isForm &&

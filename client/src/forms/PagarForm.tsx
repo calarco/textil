@@ -82,8 +82,14 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
             close={close}
             onSubmit={handleSubmit(onSubmit)}
         >
-            <Label title="Monto" error={errors.monto?.message}>
-                <CurrencyInput control={control} />
+            <Label title="Estado">
+                <select {...register("estado")}>
+                    <option value="A pagar">A pagar</option>
+                    <option value="Pagado">Pagado</option>
+                    <option value="Anulado">Anulado</option>
+                    <option value="Recuperado">Recuperado</option>
+                    <option value="Vencido">Vencido</option>
+                </select>
             </Label>
             <Select
                 nameId="proveedoreId"
@@ -95,22 +101,16 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                 setValue={setValue}
                 error={errors.proveedoreId?.message}
             />
-            <Label title="Estado">
-                <select {...register("estado")}>
-                    <option value="A pagar">A pagar</option>
-                    <option value="Pagado">Pagado</option>
-                    <option value="Anulado">Anulado</option>
-                    <option value="Recuperado">Recuperado</option>
-                    <option value="Vencido">Vencido</option>
-                </select>
+            <Label title="Monto" error={errors.monto?.message}>
+                <CurrencyInput control={control} />
             </Label>
-            <Label title="Fecha de emision" error={errors.emisionDate?.message}>
+            <Label title="Fecha de pago" error={errors.pagoDate?.message}>
                 <input
                     type="date"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("emisionDate", {
-                        required: "Ingrese la fecha de emision",
+                    {...register("pagoDate", {
+                        required: "Ingrese la fecha de pago",
                     })}
                 />
             </Label>
@@ -124,13 +124,13 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                     })}
                 />
             </Label>
-            <Label title="Fecha de pago" error={errors.pagoDate?.message}>
+            <Label title="Fecha de emision" error={errors.emisionDate?.message}>
                 <input
                     type="date"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("pagoDate", {
-                        required: "Ingrese la fecha de pago",
+                    {...register("emisionDate", {
+                        required: "Ingrese la fecha de emision",
                     })}
                 />
             </Label>

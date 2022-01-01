@@ -7,8 +7,8 @@ import Pagos from "./sections/Pagos";
 import Cobros from "sections/Cobros";
 
 function Gestion() {
-    const [tab, setTab] = useState(false);
     const [estado, setEstado] = useState("A pagar");
+    const [tab, setTab] = useState(false);
     const [overlay, setOverlay] = useState(false);
 
     useEffect(() => {

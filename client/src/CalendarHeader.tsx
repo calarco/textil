@@ -5,12 +5,17 @@ import Currency from "components/Currency";
 
 const Container = styled.div`
     width: 100%;
-    min-height: 3rem;
+    height: 6rem;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    align-items: center;
 `;
 
 const Years = styled.div`
-    border-radius: 4px 0 0 0;
     overflow: clip;
+    border-radius: 4px;
+    background: var(--surface-t);
+    box-shadow: var(--shadow);
     display: grid;
     grid-auto-flow: column;
 
@@ -33,10 +38,11 @@ type Props = {
 
 const Box = styled.div<Props>`
     width: 100%;
-    padding-right: 1.5rem;
+    padding: 0 1.5rem 0 0.5rem;
     min-height: 3rem;
     display: grid;
     grid-template-columns: 1fr 10rem;
+    align-items: center;
     text-transform: capitalize;
 
     ${(props) =>
@@ -49,7 +55,8 @@ const Box = styled.div<Props>`
 `;
 
 const Details = styled.div`
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 1rem;
+    height: 2.5rem;
     border-top: var(--border-variant);
     display: grid;
     grid-template-columns: 1fr 1fr;

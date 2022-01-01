@@ -95,19 +95,6 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             onSubmit={handleSubmit(onSubmit)}
             close={close}
         >
-            <Label title="Monto" error={errors.monto?.message}>
-                <CurrencyInput control={control} />
-            </Label>
-            <Select
-                nameId="clienteId"
-                name="cliente"
-                nameService="clientes"
-                list={clientes}
-                register={register}
-                watch={watch}
-                setValue={setValue}
-                error={errors.clienteId?.message}
-            />
             <Label title="Estado">
                 <select {...register("estado")}>
                     <option value="A depositar">A depositar</option>
@@ -119,6 +106,19 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     <option value="Falla tecnica">Falla tecnica</option>
                     <option value="Rechazado">Rechazado</option>
                 </select>
+            </Label>
+            <Select
+                nameId="clienteId"
+                name="cliente"
+                nameService="clientes"
+                list={clientes}
+                register={register}
+                watch={watch}
+                setValue={setValue}
+                error={errors.clienteId?.message}
+            />
+            <Label title="Monto" error={errors.monto?.message}>
+                <CurrencyInput control={control} />
             </Label>
             {watch("estado") === "Endosado" && (
                 <>
@@ -147,13 +147,15 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     />
                 </>
             )}
-            <Label title="Fecha de ingreso" error={errors.ingresoDate?.message}>
+            <Label
+                title="Fecha de deposito"
+                error={errors.depositoDate?.message}
+            >
                 <input
                     type="date"
-                    placeholder="-"
                     autoComplete="off"
-                    {...register("ingresoDate", {
-                        required: "Ingrese la fecha de ingreso",
+                    {...register("depositoDate", {
+                        required: "Ingrese la fecha de deposito",
                     })}
                 />
             </Label>
@@ -167,15 +169,13 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     })}
                 />
             </Label>
-            <Label
-                title="Fecha de deposito"
-                error={errors.depositoDate?.message}
-            >
+            <Label title="Fecha de ingreso" error={errors.ingresoDate?.message}>
                 <input
                     type="date"
+                    placeholder="-"
                     autoComplete="off"
-                    {...register("depositoDate", {
-                        required: "Ingrese la fecha de deposito",
+                    {...register("ingresoDate", {
+                        required: "Ingrese la fecha de ingreso",
                     })}
                 />
             </Label>

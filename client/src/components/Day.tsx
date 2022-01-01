@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const Container = styled.pre`
-    align-self: center;
     font: var(--label-alt);
     color: var(--on-background-variant);
 
