@@ -31,7 +31,7 @@ const Filter = styled.div`
         top: calc(50% - 1rem);
         right: 0;
         height: 2rem;
-        border-right: var(--border-variant);
+        //border-right: var(--border-variant);
     }
 `;
 
@@ -46,18 +46,15 @@ const Tabs = styled.div`
 
 const Tab = styled.button<Props>`
     border-radius: 0;
-    border-bottom: 2px solid rgba(0, 0, 0, 0);
 
     ${(props) =>
         props.isActive &&
         css`
             pointer-events: none;
             background: var(--primary-variant);
-            border-bottom: 2px solid var(--primary);
 
             &:focus {
                 background: var(--primary-variant);
-                border-bottom: 2px solid var(--primary);
             }
         `};
 `;
@@ -76,7 +73,7 @@ const New = styled.div`
         top: calc(50% - 1rem);
         left: 0;
         height: 2rem;
-        border-left: var(--border-variant);
+        //border-left: var(--border-variant);
     }
 
     button {
@@ -90,25 +87,39 @@ const Columns = styled.div`
     height: 2.5rem;
     border-top: var(--border-variant);
     display: grid;
-    align-items: center;
-    grid-template-columns: 10.5rem 1fr 1fr 10.5rem;
-    gap: 1.5rem;
+    grid-template-columns: 11.25rem 1fr 1fr 11.25rem;
+`;
 
-    > label {
-        position: relative;
-        padding: 0.5rem 1rem;
+const Sort = styled.label<Props>`
+    position: relative;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    transition: 0.15s ease-in;
 
-        text-align: center;
-
-        &:not(:first-child)::after {
-            content: "";
-            position: absolute;
-            top: calc(50% - 1rem);
-            left: -0.75rem;
-            height: 2rem;
-            border-left: var(--border-variant);
-        }
+    &:hover {
+        cursor: pointer;
+        background-color: var(--primary-variant);
     }
+
+    &:not(:first-child)::after {
+        content: "";
+        position: absolute;
+        top: calc(50% - 1rem);
+        left: 0;
+        height: 2rem;
+        border-left: var(--border-variant);
+    }
+
+    ${(props) =>
+        props.isActive &&
+        css`
+            pointer-events: none;
+            color: var(--primary);
+
+            &:focus {
+                background: var(--primary-variant);
+            }
+        `};
 `;
 
 const Overlay = styled.div<Props>`
@@ -142,6 +153,8 @@ type ComponentProps = {
     onClick: (e: MouseEvent<HTMLButtonElement>) => void;
     estado: string;
     setEstado: (estado: string) => void;
+    sort: string;
+    setSort: (sort: string) => void;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
 };
@@ -151,6 +164,8 @@ function App({
     onClick,
     estado,
     setEstado,
+    sort,
+    setSort,
     overlay,
     setOverlay,
 }: ComponentProps) {
@@ -210,12 +225,61 @@ function App({
             <New>
                 <button onClick={() => setCreate(true)}>Nuevo</button>
             </New>
-            <Columns>
-                <label>{tab ? "Fecha de deposito" : "Fecha de pago"}</label>
-                <label>{tab ? "Cliente" : "Proveedor"}</label>
-                <label>Monto</label>
-                <label>Fecha de emision</label>
-            </Columns>
+            {tab ? (
+                <Columns>
+                    <Sort
+                        isActive={sort === "depositoDate"}
+                        onClick={() => setSort("depositoDate")}
+                    >
+                        Fecha de deposito
+                    </Sort>
+                    <Sort
+                        isActive={sort === "cliente"}
+                        onClick={() => setSort("cliente")}
+                    >
+                        Cliente
+                    </Sort>
+                    <Sort
+                        isActive={sort === "monto"}
+                        onClick={() => setSort("monto")}
+                    >
+                        Monto
+                    </Sort>
+                    <Sort
+                        isActive={sort === "ingresoDate"}
+                        onClick={() => setSort("ingresoDate")}
+                    >
+                        Fecha de ingreso
+                    </Sort>
+                </Columns>
+            ) : (
+                <Columns>
+                    <Sort
+                        isActive={sort === "pagoDate"}
+                        onClick={() => setSort("pagoDate")}
+                    >
+                        Fecha de pago
+                    </Sort>
+                    <Sort
+                        isActive={sort === "proveedor"}
+                        onClick={() => setSort("proveedor")}
+                    >
+                        Proveedor
+                    </Sort>
+                    <Sort
+                        isActive={sort === "monto"}
+                        onClick={() => setSort("monto")}
+                    >
+                        Monto
+                    </Sort>
+                    <Sort
+                        isActive={sort === "emisionDate"}
+                        onClick={() => setSort("emisionDate")}
+                    >
+                        Fecha de emision
+                    </Sort>
+                </Columns>
+            )}
             {tab ? (
                 <CobrarForm isActive={create} close={() => setCreate(false)} />
             ) : (

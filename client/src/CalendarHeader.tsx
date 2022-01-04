@@ -11,26 +11,6 @@ const Container = styled.div`
     align-items: center;
 `;
 
-const Years = styled.div`
-    overflow: clip;
-    border-radius: 4px;
-    background: var(--surface-t);
-    box-shadow: var(--shadow);
-    display: grid;
-    grid-auto-flow: column;
-
-    button {
-        border-radius: 0;
-        font: 500 0.9rem/1.5rem var(--font-family-alt);
-    }
-
-    button:nth-child(2) {
-        pointer-events: none;
-        background: var(--primary-variant);
-        border-bottom: 2px solid var(--primary);
-    }
-`;
-
 type Props = {
     readonly isCurrent?: boolean;
     readonly isActive?: boolean;
@@ -41,7 +21,7 @@ const Box = styled.div<Props>`
     padding: 0 1.5rem 0 0.5rem;
     min-height: 3rem;
     display: grid;
-    grid-template-columns: 1fr 10rem;
+    grid-template-columns: auto 1fr;
     align-items: center;
     text-transform: capitalize;
 
@@ -52,6 +32,27 @@ const Box = styled.div<Props>`
                 color: var(--secondary);
             }
         `};
+`;
+
+const Years = styled.div`
+    overflow: clip;
+    border-radius: 4px;
+    background: var(--surface-t);
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-auto-flow: column;
+
+    button {
+        padding: 0.5rem 1.25rem;
+        border-radius: 0;
+        font: 500 0.9rem/1.5rem var(--font-family-alt);
+    }
+
+    button:nth-child(2) {
+        padding: 0.5rem 1.5rem;
+        pointer-events: none;
+        background: var(--primary-variant);
+    }
 `;
 
 const Details = styled.div`
@@ -84,7 +85,7 @@ type ComponentProps = {
     setYear: (year: number) => void;
 };
 
-function App({ year, setYear }: ComponentProps) {
+function CalendarHeader({ year, setYear }: ComponentProps) {
     const { pagos, cobros } = useTotal({
         gte: `${year}-01-01`,
         lte: `${year}-12-31`,
@@ -94,13 +95,9 @@ function App({ year, setYear }: ComponentProps) {
         <Container>
             <Box>
                 <Years>
-                    <button onClick={() => setYear(year - 1)}>
-                        {year - 1}
-                    </button>
+                    <button onClick={() => setYear(year - 1)}>{"<"}</button>
                     <button>{year}</button>
-                    <button onClick={() => setYear(year + 1)}>
-                        {year + 1}
-                    </button>
+                    <button onClick={() => setYear(year + 1)}>{">"}</button>
                 </Years>
                 <Currency number={cobros - pagos} integer />
             </Box>
@@ -118,4 +115,4 @@ function App({ year, setYear }: ComponentProps) {
     );
 }
 
-export default App;
+export default CalendarHeader;

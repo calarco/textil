@@ -24,39 +24,62 @@ const Box = styled.ul`
     }
 `;
 
-const Details = styled.div`
-    grid-column-end: span 4;
-    padding: 0.75rem 1rem;
-    border-top: var(--border-variant);
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    gap: 2rem;
-
-    label {
-        position: relative;
-        display: grid;
-        grid-template-columns: auto auto;
-        gap: 1rem;
-        justify-content: center;
-
-        &:not(:first-child)::after {
-            content: "";
-            position: absolute;
-            top: calc(50% - 1rem);
-            left: -1rem;
-            height: 2rem;
-            border-left: 1px solid var(--primary-variant);
-        }
-    }
-`;
-
-const Buttons = transition.div.attrs({
+const Details = transition.div.attrs({
     unmountOnExit: true,
     timeout: {
         enter: 200,
         exit: 150,
     },
 })`
+    grid-column-end: span 4;
+    overflow: clip;
+    border-top: var(--border-variant);
+
+    > div:first-child {
+        padding: 0.75rem 1rem;
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        gap: 0 2rem;
+
+        > label {
+            position: relative;
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 1rem;
+            justify-content: center;
+
+            &:not(:first-child)::after {
+                content: "";
+                position: absolute;
+                top: calc(50% - 1rem);
+                left: -1rem;
+                height: 2rem;
+                border-left: 1px solid var(--primary-variant);
+            }
+        }
+    }
+
+    &:enter {
+        max-height: 0;
+    }
+
+    &:enter-active {
+        max-height: 6rem;
+        transition: 0.2s ease-out;
+    }
+
+    &:exit {
+        max-height: 6rem;
+    }
+
+    &:exit-active {
+        max-height: 0;
+        transition: 0.15s ease-in;
+    }
+`;
+
+const Buttons = styled.div`
+    grid-column-end: span 3;
     position: relative;
     width: 100%;
     height: 3rem;
@@ -81,24 +104,6 @@ const Buttons = transition.div.attrs({
             height: 2rem;
             border-left: 1px solid var(--primary-variant);
         }
-    }
-
-    &:enter {
-        max-height: 0;
-    }
-
-    &:enter-active {
-        max-height: 3rem;
-        transition: 0.2s ease-out;
-    }
-
-    &:exit {
-        max-height: 3rem;
-    }
-
-    &:exit-active {
-        max-height: 0;
-        transition: 0.15s ease-in;
     }
 `;
 
@@ -152,22 +157,32 @@ function Pago({
                     <Day date={pago.emisionDate} />
                 </li>
             </Box>
+            <Details in={isActive}>
+                <div>
+                    <label>
+                        Numero
+                        <p>{pago.numero}</p>
+                    </label>
+                    <label>
+                        Observaciones
+                        <p>{pago.observaciones || "-"}</p>
+                    </label>
+                    <label>
+                        Estado
+                        <p>{pago.estado}</p>
+                    </label>
+                </div>
+                <Buttons>
+                    <button type="button" onClick={() => setRemove(true)}>
+                        Borrar
+                    </button>
+                    <button type="button" onClick={() => setForm(true)}>
+                        Editar
+                    </button>
+                </Buttons>
+            </Details>
             {isActive && (
                 <>
-                    <Details>
-                        <label>
-                            Numero
-                            <p>{pago.numero}</p>
-                        </label>
-                        <label>
-                            Observaciones
-                            <p>{pago.observaciones || "-"}</p>
-                        </label>
-                        <label>
-                            Estado
-                            <p>{pago.estado}</p>
-                        </label>
-                    </Details>
                     <Remove
                         id={pago.id}
                         service="pagos"
@@ -181,14 +196,6 @@ function Pago({
                     />
                 </>
             )}
-            <Buttons in={isActive}>
-                <button type="button" onClick={() => setRemove(true)}>
-                    Borrar
-                </button>
-                <button type="button" onClick={() => setForm(true)}>
-                    Editar
-                </button>
-            </Buttons>
         </Card>
     );
 }

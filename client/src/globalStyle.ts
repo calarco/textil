@@ -21,12 +21,11 @@ const GlobalStyle = createGlobalStyle`
     }
 
     ::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.038);
-        border: 1px solid rgba(0, 0, 0, 0.038);
+        background: var(--secondary-variant);
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        background: var(--on-background-variant);
+        background: var(--primary-variant);
     }
 
     *,

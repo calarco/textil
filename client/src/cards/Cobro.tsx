@@ -9,56 +9,77 @@ import Remove from "components/Remove";
 import Currency from "components/Currency";
 import Day from "components/Day";
 
-const Box = styled.div`
+const Box = styled.ul`
     display: grid;
-    grid-template-columns: 10rem 1fr 1fr 10rem;
+    grid-template-columns: 10.5rem 1fr 1fr 10.5rem;
     gap: 1.5rem;
     text-align: center;
 
-    > label {
-        display: grid;
-        gap: 0.25rem;
+    > li {
+        padding: 0.75rem 1.75rem;
     }
 
-    > p,
-    pre {
-        padding: 0.75rem 1rem;
+    > li:nth-child(3) {
+        text-align: right;
     }
 `;
 
-const Details = styled.div`
-    grid-column-end: span 4;
-    padding: 0.75rem 1rem;
-    border-top: var(--border-variant);
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    gap: 2rem;
-
-    label {
-        position: relative;
-        display: grid;
-        grid-template-columns: auto auto;
-        gap: 1rem;
-        justify-content: center;
-
-        &:not(:first-child)::after {
-            content: "";
-            position: absolute;
-            top: calc(50% - 1rem);
-            left: -1rem;
-            height: 2rem;
-            border-left: 1px solid var(--primary-variant);
-        }
-    }
-`;
-
-const Buttons = transition.div.attrs({
+const Details = transition.div.attrs({
     unmountOnExit: true,
     timeout: {
         enter: 200,
         exit: 150,
     },
 })`
+    grid-column-end: span 4;
+    overflow: clip;
+    border-top: var(--border-variant);
+
+    > div:first-child {
+        padding: 0.75rem 1rem;
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        gap: 1.5rem 2rem;
+
+        > label {
+            position: relative;
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 1rem;
+            justify-content: center;
+
+            &:not(:first-child)::after {
+                content: "";
+                position: absolute;
+                top: calc(50% - 1rem);
+                left: -1rem;
+                height: 2rem;
+                border-left: 1px solid var(--primary-variant);
+            }
+        }
+    }
+
+    &:enter {
+        max-height: 0;
+    }
+
+    &:enter-active {
+        max-height: 8.5rem;
+        transition: 0.2s ease-out;
+    }
+
+    &:exit {
+        max-height: 8.5rem;
+    }
+
+    &:exit-active {
+        max-height: 0;
+        transition: 0.15s ease-in;
+    }
+`;
+
+const Buttons = styled.div`
+    grid-column-end: span 3;
     position: relative;
     width: 100%;
     height: 3rem;
@@ -84,24 +105,6 @@ const Buttons = transition.div.attrs({
             border-left: 1px solid var(--primary-variant);
         }
     }
-
-    &:enter {
-        max-height: 0;
-    }
-
-    &:enter-active {
-        max-height: 3rem;
-        transition: 0.2s ease-out;
-    }
-
-    &:exit {
-        max-height: 3rem;
-    }
-
-    &:exit-active {
-        max-height: 0;
-        transition: 0.15s ease-in;
-    }
 `;
 
 type ComponentProps = {
@@ -109,7 +112,7 @@ type ComponentProps = {
     isActive: boolean;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
-    onClick?: (e: MouseEvent<HTMLDivElement>) => void;
+    onClick?: (e: MouseEvent<HTMLUListElement>) => void;
     className?: string;
 };
 
@@ -142,39 +145,57 @@ function Cobro({
             className={className}
         >
             <Box onClick={onClick}>
-                <Day date={cobro.depositoDate} />
-                <p>{getCliente(cobro.clienteId)}</p>
-                <Currency number={cobro.monto} />
-                <Day date={cobro.ingresoDate} />
+                <li>
+                    <Day date={cobro.depositoDate} />
+                </li>
+                <li>
+                    <p>{getCliente(cobro.clienteId)}</p>
+                </li>
+                <li>
+                    <Currency number={cobro.monto} />
+                </li>
+                <li>
+                    <Day date={cobro.ingresoDate} />
+                </li>
             </Box>
+            <Details in={isActive}>
+                <div>
+                    <label>
+                        Banco
+                        <p>{getBanco(cobro.bancoId)}</p>
+                    </label>
+                    <label>
+                        Titular
+                        <p>{cobro.titular}</p>
+                    </label>
+                    <label>
+                        CUIT
+                        <p>{cobro.cuit}</p>
+                    </label>
+                    <label>
+                        Numero
+                        <p>{cobro.numero}</p>
+                    </label>
+                    <label>
+                        Observaciones
+                        <p>{cobro.observaciones || "-"}</p>
+                    </label>
+                    <label>
+                        Estado
+                        <p>{cobro.estado}</p>
+                    </label>
+                </div>
+                <Buttons>
+                    <button type="button" onClick={() => setRemove(true)}>
+                        Borrar
+                    </button>
+                    <button type="button" onClick={() => setForm(true)}>
+                        Editar
+                    </button>
+                </Buttons>
+            </Details>
             {isActive && (
                 <>
-                    <Details>
-                        <label>
-                            Banco
-                            <p>{getBanco(cobro.bancoId)}</p>
-                        </label>
-                        <label>
-                            Titular
-                            <p>{cobro.titular}</p>
-                        </label>
-                        <label>
-                            CUIT
-                            <p>{cobro.cuit}</p>
-                        </label>
-                        <label>
-                            Numero
-                            <p>{cobro.numero}</p>
-                        </label>
-                        <label>
-                            Observaciones
-                            <p>{cobro.observaciones || "-"}</p>
-                        </label>
-                        <label>
-                            Estado
-                            <p>{cobro.estado}</p>
-                        </label>
-                    </Details>
                     <Remove
                         id={cobro.id}
                         service="cobros"
@@ -188,14 +209,6 @@ function Cobro({
                     />
                 </>
             )}
-            <Buttons in={isActive}>
-                <button type="button" onClick={() => setRemove(true)}>
-                    Borrar
-                </button>
-                <button type="button" onClick={() => setForm(true)}>
-                    Editar
-                </button>
-            </Buttons>
         </Card>
     );
 }

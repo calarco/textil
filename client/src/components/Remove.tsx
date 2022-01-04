@@ -23,7 +23,7 @@ const Container = transition.div.attrs({
     min-height: 3rem;
     border-radius: 4px;
     overflow: clip;
-    background: var(--overlay);
+    background: var(--secondary-variant);
     backdrop-filter: blur(0.5rem) saturate(0);
     display: grid;
     align-items: center;

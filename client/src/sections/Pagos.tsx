@@ -12,13 +12,14 @@ const Empty = styled.h5`
 
 type ComponentProps = {
     estado: string;
+    sort: string;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
 };
 
-function Pagos({ estado, overlay, setOverlay }: ComponentProps) {
+function Pagos({ estado, sort, overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
-    const { pagos } = usePagos(estado);
+    const { pagos } = usePagos({ estado: estado, sort: sort });
 
     return (
         <>

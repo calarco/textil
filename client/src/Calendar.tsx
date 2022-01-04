@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import Header from "CalendarHeader";
 import SectionComponent from "components/Section";
-import Month from "Month";
+import Month from "cards/Month";
 
 const Section = styled(SectionComponent)`
     overflow: auto;

@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import useTotal from "hooks/useTotal";
 import Card from "components/Card";
 import Currency from "components/Currency";
+import transition from "styled-transition-group";
 
 type Props = {
     readonly isCurrent?: boolean;
@@ -27,8 +28,15 @@ const Box = styled.div<Props>`
         `};
 `;
 
-const Details = styled.div`
+const Details = transition.div.attrs({
+    unmountOnExit: true,
+    timeout: {
+        enter: 200,
+        exit: 150,
+    },
+})`
     padding: 0.75rem 1rem;
+    overflow: clip;
     border-top: var(--border-variant);
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -48,6 +56,24 @@ const Details = styled.div`
             height: 2rem;
             border-left: 1px solid var(--primary-variant);
         }
+    }
+
+    &:enter {
+        max-height: 0;
+    }
+
+    &:enter-active {
+        max-height: 3rem;
+        transition: 0.2s ease-out;
+    }
+
+    &:exit {
+        max-height: 3rem;
+    }
+
+    &:exit-active {
+        max-height: 0;
+        transition: 0.15s ease-in;
     }
 `;
 
@@ -83,18 +109,16 @@ function Month({ year, month, isActive, setActive }: ComponentProps) {
                 </h4>
                 <Currency number={cobros - pagos} integer />
             </Box>
-            {isActive && (
-                <Details>
-                    <label>
-                        Pagos
-                        <Currency number={pagos} integer />
-                    </label>
-                    <label>
-                        Cobros
-                        <Currency number={cobros} integer />
-                    </label>
-                </Details>
-            )}
+            <Details in={isActive}>
+                <label>
+                    Pagos
+                    <Currency number={pagos} integer />
+                </label>
+                <label>
+                    Cobros
+                    <Currency number={cobros} integer />
+                </label>
+            </Details>
         </Card>
     );
 }

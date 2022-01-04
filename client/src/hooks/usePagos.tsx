@@ -1,7 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import feathersClient from "feathersClient";
 
-const usePagos = (estado: string) => {
+type ComponentProps = {
+    estado: string;
+    sort: string;
+};
+
+const usePagos = ({ estado, sort }: ComponentProps) => {
     const [pagos, setPagos] = useState<Pagos>({
         total: 0,
         limit: 0,
@@ -18,7 +23,7 @@ const usePagos = (estado: string) => {
                     $limit: 50,
                     estado: estado,
                     $sort: {
-                        pagoDate: 1,
+                        [sort]: 1,
                     },
                 },
             })
@@ -28,7 +33,7 @@ const usePagos = (estado: string) => {
             .catch((error: FeathersErrorJSON) => {
                 setError(error.message);
             });
-    }, [estado]);
+    }, [estado, sort]);
 
     useEffect(() => {
         loadData();

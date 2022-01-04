@@ -17,6 +17,7 @@ const useTotal = ({ gte, lte }: HookProps) => {
             .find({
                 query: {
                     $limit: 50,
+                    estado: "A pagar" || "Pagado",
                     pagoDate: {
                         $gte: gte,
                         $lte: lte,
@@ -39,6 +40,7 @@ const useTotal = ({ gte, lte }: HookProps) => {
             .find({
                 query: {
                     $limit: 50,
+                    estado: "A depositar" || "depositado",
                     depositoDate: {
                         $gte: gte,
                         $lte: lte,

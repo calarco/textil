@@ -9,7 +9,7 @@ type Props = {
 
 const Container = styled.div<Props>`
     position: relative;
-    min-height: 3rem;
+    border-radius: 4px;
     transition: 0.2s ease-in;
 
     ${(props) =>
@@ -60,7 +60,7 @@ const Container = styled.div<Props>`
         content: "";
         position: absolute;
         left: 0;
-        top: 0;
+        top: calc(-0.75rem / 2);
         right: 0;
         z-index: 0;
         border-top: var(--border-variant);
