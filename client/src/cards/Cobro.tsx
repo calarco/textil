@@ -133,7 +133,7 @@ function Cobro({
     }, [overlay, setForm]);
 
     useEffect(() => {
-        setOverlay(form);
+        form && setOverlay(true);
     }, [form, setOverlay]);
 
     return (

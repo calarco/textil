@@ -1,5 +1,7 @@
 import { MouseEvent, useState, useEffect, FormEvent } from "react";
 import styled, { css } from "styled-components";
+import transition from "styled-transition-group";
+import { SwitchTransition } from "react-transition-group";
 
 import PagarForm from "forms/PagarForm";
 import CobrarForm from "forms/CobrarForm";
@@ -19,7 +21,13 @@ const Container = styled.div`
     gap: 0 0.5rem;
 `;
 
-const Filter = styled.div`
+const Filter = transition.div.attrs({
+    unmountOnExit: true,
+    timeout: {
+        enter: 200,
+        exit: 150,
+    },
+})`
     position: relative;
     padding: 0 0.5rem;
     display: grid;
@@ -32,6 +40,24 @@ const Filter = styled.div`
         right: 0;
         height: 2rem;
         //border-right: var(--border-variant);
+    }
+
+    &:enter {
+        opacity: 0;
+    }
+
+    &:enter-active {
+        opacity: 1;
+        transition: 0.2s ease-out;
+    }
+
+    &:exit {
+        opacity: 1;
+    }
+
+    &:exit-active {
+        opacity: 0;
+        transition: 0.15s ease-in;
     }
 `;
 
@@ -81,13 +107,38 @@ const New = styled.div`
     }
 `;
 
-const Columns = styled.div`
+const Columns = transition.div.attrs({
+    unmountOnExit: true,
+    timeout: {
+        enter: 200,
+        exit: 150,
+    },
+})`
     grid-row-start: 2;
     grid-column-end: span 3;
     height: 2.5rem;
     border-top: var(--border-variant);
     display: grid;
     grid-template-columns: 11.25rem 1fr 1fr 11.25rem;
+    gap: 1px;
+
+    &:enter {
+        opacity: 0;
+    }
+
+    &:enter-active {
+        opacity: 1;
+        transition: 0.2s ease-out;
+    }
+
+    &:exit {
+        opacity: 1;
+    }
+
+    &:exit-active {
+        opacity: 0;
+        transition: 0.15s ease-in;
+    }
 `;
 
 const Sort = styled.label<Props>`
@@ -105,7 +156,7 @@ const Sort = styled.label<Props>`
         content: "";
         position: absolute;
         top: calc(50% - 1rem);
-        left: 0;
+        left: -1px;
         height: 2rem;
         border-left: var(--border-variant);
     }
@@ -122,11 +173,15 @@ const Sort = styled.label<Props>`
         `};
 `;
 
-const Overlay = styled.div<Props>`
+const Overlay = transition.div.attrs({
+    unmountOnExit: true,
+    timeout: {
+        enter: 300,
+        exit: 250,
+    },
+})`
     content-visibility: auto;
     will-change: opacity;
-    visibility: hidden;
-    opacity: 0;
     position: absolute;
     z-index: 1001;
     top: 0;
@@ -136,16 +191,24 @@ const Overlay = styled.div<Props>`
     border-radius: 4px;
     background: var(--overlay);
     backdrop-filter: blur(0.5rem);
-    transition: 0.25s ease-in;
 
-    ${(props) =>
-        props.isActive &&
-        css`
-            visibility: visible;
-            opacity: 1;
-            transform: initial;
-            transition: 0.3s ease-out;
-        `};
+    &:enter {
+        opacity: 0;
+    }
+
+    &:enter-active {
+        opacity: 1;
+        transition: 0.3s ease-out;
+    }
+
+    &:exit {
+        opacity: 1;
+    }
+
+    &:exit-active {
+        opacity: 0;
+        transition: 0.25s ease-in;
+    }
 `;
 
 type ComponentProps = {
@@ -159,7 +222,7 @@ type ComponentProps = {
     setOverlay: (overlay: boolean) => void;
 };
 
-function App({
+function GestionHeader({
     tab,
     onClick,
     estado,
@@ -183,37 +246,39 @@ function App({
     }, [overlay, setCreate]);
 
     useEffect(() => {
-        setOverlay(create);
+        create && setOverlay(true);
     }, [create, setOverlay]);
 
     return (
         <Container>
-            <Filter>
-                {tab ? (
-                    <select
-                        name="estado"
-                        value={estado}
-                        onChange={handleInputChange}
-                    >
-                        <option value="A depositar">A depositar</option>
-                        <option value="Depositado">Depositado</option>
-                        <option value="Anulado">Anulado</option>
-                        <option value="Posdatado">Posdatado</option>
-                        <option value="Endosado">Endosado</option>
-                        <option value="Devuelto">Devuelto</option>
-                        <option value="Falla tecnica">Falla tecnica</option>
-                        <option value="Rechazado">Rechazado</option>
-                    </select>
-                ) : (
-                    <select value={estado} onChange={handleInputChange}>
-                        <option value="A pagar">A pagar</option>
-                        <option value="Pagado">Pagado</option>
-                        <option value="Anulado">Anulado</option>
-                        <option value="Recuperado">Recuperado</option>
-                        <option value="Vencido">Vencido</option>
-                    </select>
-                )}
-            </Filter>
+            <SwitchTransition>
+                <Filter key={tab}>
+                    {tab ? (
+                        <select
+                            name="estado"
+                            value={estado}
+                            onChange={handleInputChange}
+                        >
+                            <option value="A depositar">A depositar</option>
+                            <option value="Depositado">Depositado</option>
+                            <option value="Anulado">Anulado</option>
+                            <option value="Posdatado">Posdatado</option>
+                            <option value="Endosado">Endosado</option>
+                            <option value="Devuelto">Devuelto</option>
+                            <option value="Falla tecnica">Falla tecnica</option>
+                            <option value="Rechazado">Rechazado</option>
+                        </select>
+                    ) : (
+                        <select value={estado} onChange={handleInputChange}>
+                            <option value="A pagar">A pagar</option>
+                            <option value="Pagado">Pagado</option>
+                            <option value="Anulado">Anulado</option>
+                            <option value="Recuperado">Recuperado</option>
+                            <option value="Vencido">Vencido</option>
+                        </select>
+                    )}
+                </Filter>
+            </SwitchTransition>
             <Tabs>
                 <Tab isActive={!tab} onClick={onClick}>
                     Pagos
@@ -225,69 +290,73 @@ function App({
             <New>
                 <button onClick={() => setCreate(true)}>Nuevo</button>
             </New>
-            {tab ? (
-                <Columns>
-                    <Sort
-                        isActive={sort === "depositoDate"}
-                        onClick={() => setSort("depositoDate")}
-                    >
-                        Fecha de deposito
-                    </Sort>
-                    <Sort
-                        isActive={sort === "cliente"}
-                        onClick={() => setSort("cliente")}
-                    >
-                        Cliente
-                    </Sort>
-                    <Sort
-                        isActive={sort === "monto"}
-                        onClick={() => setSort("monto")}
-                    >
-                        Monto
-                    </Sort>
-                    <Sort
-                        isActive={sort === "ingresoDate"}
-                        onClick={() => setSort("ingresoDate")}
-                    >
-                        Fecha de ingreso
-                    </Sort>
+            <SwitchTransition>
+                <Columns key={tab}>
+                    {tab ? (
+                        <>
+                            <Sort
+                                isActive={sort === "depositoDate"}
+                                onClick={() => setSort("depositoDate")}
+                            >
+                                Fecha de deposito
+                            </Sort>
+                            <Sort
+                                isActive={sort === "clienteId"}
+                                onClick={() => setSort("clienteId")}
+                            >
+                                Cliente
+                            </Sort>
+                            <Sort
+                                isActive={sort === "monto"}
+                                onClick={() => setSort("monto")}
+                            >
+                                Monto
+                            </Sort>
+                            <Sort
+                                isActive={sort === "ingresoDate"}
+                                onClick={() => setSort("ingresoDate")}
+                            >
+                                Fecha de ingreso
+                            </Sort>
+                        </>
+                    ) : (
+                        <>
+                            <Sort
+                                isActive={sort === "pagoDate"}
+                                onClick={() => setSort("pagoDate")}
+                            >
+                                Fecha de pago
+                            </Sort>
+                            <Sort
+                                isActive={sort === "proveedoreId"}
+                                onClick={() => setSort("proveedoreId")}
+                            >
+                                Proveedor
+                            </Sort>
+                            <Sort
+                                isActive={sort === "monto"}
+                                onClick={() => setSort("monto")}
+                            >
+                                Monto
+                            </Sort>
+                            <Sort
+                                isActive={sort === "emisionDate"}
+                                onClick={() => setSort("emisionDate")}
+                            >
+                                Fecha de emision
+                            </Sort>
+                        </>
+                    )}
                 </Columns>
-            ) : (
-                <Columns>
-                    <Sort
-                        isActive={sort === "pagoDate"}
-                        onClick={() => setSort("pagoDate")}
-                    >
-                        Fecha de pago
-                    </Sort>
-                    <Sort
-                        isActive={sort === "proveedor"}
-                        onClick={() => setSort("proveedor")}
-                    >
-                        Proveedor
-                    </Sort>
-                    <Sort
-                        isActive={sort === "monto"}
-                        onClick={() => setSort("monto")}
-                    >
-                        Monto
-                    </Sort>
-                    <Sort
-                        isActive={sort === "emisionDate"}
-                        onClick={() => setSort("emisionDate")}
-                    >
-                        Fecha de emision
-                    </Sort>
-                </Columns>
-            )}
+            </SwitchTransition>
             {tab ? (
-                <CobrarForm isActive={create} close={() => setCreate(false)} />
+                <CobrarForm isActive={create} close={() => setOverlay(false)} />
             ) : (
-                <PagarForm isActive={create} close={() => setCreate(false)} />
+                <PagarForm isActive={create} close={() => setOverlay(false)} />
             )}
-            <Overlay isActive={overlay} onClick={() => setOverlay(false)} />
+            <Overlay in={overlay} onClick={() => setOverlay(false)} />
         </Container>
     );
 }
 
-export default App;
+export default GestionHeader;

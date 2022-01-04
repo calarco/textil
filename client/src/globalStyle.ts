@@ -459,8 +459,9 @@ const GlobalStyle = createGlobalStyle`
         }
         
         &:focus {
+            opacity: 0.8;
             outline: none;
-            background: var(--primary-variant);
+            background: var(--secondary-variant);
         }
 
         &:disabled {

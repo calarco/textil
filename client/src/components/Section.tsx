@@ -1,5 +1,6 @@
 import { MouseEvent, ReactNode } from "react";
 import styled, { css } from "styled-components";
+import transition from "styled-transition-group";
 
 type Props = {
     overlay?: boolean;
@@ -29,11 +30,15 @@ const Container = styled.section<Props>`
         `};
 `;
 
-const Overlay = styled.div<Props>`
+const Overlay = transition.div.attrs({
+    unmountOnExit: true,
+    timeout: {
+        enter: 300,
+        exit: 250,
+    },
+})`
     content-visibility: auto;
     will-change: opacity;
-    visibility: hidden;
-    opacity: 0;
     position: absolute;
     z-index: 1001;
     top: 0;
@@ -43,17 +48,25 @@ const Overlay = styled.div<Props>`
     border-radius: 4px;
     background: var(--overlay);
     backdrop-filter: blur(0.5rem);
-    transition: 0.25s ease-in;
 
-    ${(props) =>
-        props.overlay &&
-        css`
-            visibility: visible;
-            height: 1000%;
-            opacity: 1;
-            transform: initial;
-            transition: 0.3s ease-out;
-        `};
+    &:enter {
+        opacity: 0;
+    }
+
+    &:enter-active {
+        opacity: 1;
+        height: 1000%;
+        transition: 0.3s ease-out;
+    }
+
+    &:exit {
+        opacity: 1;
+    }
+
+    &:exit-active {
+        opacity: 0;
+        transition: 0.25s ease-in;
+    }
 `;
 
 type ComponentProps = {
@@ -72,7 +85,7 @@ const Section = function ({
     return (
         <Container overlay={overlay} className={className}>
             {children}
-            <Overlay overlay={overlay} onClick={cancel} />
+            <Overlay in={overlay} onClick={cancel} />
         </Container>
     );
 };

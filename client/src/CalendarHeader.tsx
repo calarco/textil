@@ -1,4 +1,6 @@
 import styled, { css } from "styled-components";
+import transition from "styled-transition-group";
+import { SwitchTransition } from "react-transition-group";
 
 import useTotal from "hooks/useTotal";
 import Currency from "components/Currency";
@@ -42,16 +44,46 @@ const Years = styled.div`
     display: grid;
     grid-auto-flow: column;
 
-    button {
+    > button {
         padding: 0.5rem 1.25rem;
         border-radius: 0;
         font: 500 0.9rem/1.5rem var(--font-family-alt);
     }
 
-    button:nth-child(2) {
-        padding: 0.5rem 1.5rem;
-        pointer-events: none;
+    > div {
         background: var(--primary-variant);
+    }
+`;
+
+const Year = transition.div.attrs({
+    unmountOnExit: true,
+    timeout: {
+        enter: 300,
+        exit: 150,
+    },
+})`
+    padding: 0.5rem 1.5rem;
+    color: var(--primary);
+    font: 500 0.9rem/1.5rem var(--font-family-alt);
+    
+    &:enter {
+        opacity: 0;
+        transform: translateY(-1rem);
+    }
+
+    &:enter-active {
+        opacity: 1;
+        transform: initial;
+        transition: 0.3s ease-out;
+    }
+
+    &:exit {
+        opacity: 1;
+    }
+
+    &:exit-active {
+        opacity: 0;
+        transition: 0.15s ease-in;
     }
 `;
 
@@ -96,7 +128,11 @@ function CalendarHeader({ year, setYear }: ComponentProps) {
             <Box>
                 <Years>
                     <button onClick={() => setYear(year - 1)}>{"<"}</button>
-                    <button>{year}</button>
+                    <div>
+                        <SwitchTransition>
+                            <Year key={year}>{year}</Year>
+                        </SwitchTransition>
+                    </div>
                     <button onClick={() => setYear(year + 1)}>{">"}</button>
                 </Years>
                 <Currency number={cobros - pagos} integer />

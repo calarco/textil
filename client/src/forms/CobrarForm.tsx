@@ -3,6 +3,7 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import MaskedInput from "react-text-mask";
 import feathersClient from "feathersClient";
 import styled from "styled-components";
+import transition from "styled-transition-group";
 
 import { useCheques } from "hooks/chequesContext";
 import FormComponent from "components/Form";
@@ -12,6 +13,38 @@ import Select from "components/Select";
 
 const Form = styled(FormComponent)`
     grid-template-columns: 2fr 3fr 2fr [end];
+`;
+
+const Expand = transition.div.attrs({
+    unmountOnExit: true,
+    timeout: {
+        enter: 300,
+        exit: 150,
+    },
+})`
+    grid-column-end: span 3;
+    overflow: clip;
+    display: grid;
+    gap: inherit;
+    grid-template-columns: inherit;
+    
+    &:enter {
+        max-height: 0;
+    }
+
+    &:enter-active {
+        max-height: 5rem;
+        transition: 0.3s ease-out;
+    }
+
+    &:exit {
+        max-height: 5rem;
+    }
+
+    &:exit-active {
+        max-height: 0;
+        transition: 0.15s ease-in;
+    }
 `;
 
 type ComponentProps = {
@@ -48,7 +81,7 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             observaciones: data?.observaciones || "",
             estado: data?.estado || "A depositar",
             salidaDate: data?.salidaDate,
-            proveedoreId: data?.proveedoreId || 0,
+            proveedoreId: data?.proveedoreId,
         },
     });
     const { clientes, proveedores, bancos } = useCheques();
@@ -120,33 +153,37 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             <Label title="Monto" error={errors.monto?.message}>
                 <CurrencyInput control={control} />
             </Label>
-            {watch("estado") === "Endosado" && (
-                <>
-                    <Label
-                        title="Fecha de salida"
-                        error={errors.salidaDate?.message}
-                    >
-                        <input
-                            type="date"
-                            autoComplete="off"
-                            {...register("salidaDate", {
-                                required: "Ingrese la fecha de salida",
-                            })}
-                        />
-                    </Label>
-                    <Select
-                        nameId="proveedoreId"
-                        name="proveedor"
-                        nameService="proveedores"
-                        list={proveedores}
-                        register={register}
-                        watch={watch}
-                        setValue={setValue}
-                        length={2}
-                        error={errors.proveedoreId?.message}
+            <Expand
+                in={
+                    watch("estado") === "Endosado" ||
+                    watch("estado") === "Posdatado"
+                }
+            >
+                <Label
+                    title="Fecha de salida"
+                    error={errors.salidaDate?.message}
+                >
+                    <input
+                        type="date"
+                        autoComplete="off"
+                        {...register("salidaDate", {
+                            required: "Ingrese la fecha de salida",
+                        })}
                     />
-                </>
-            )}
+                </Label>
+                <Select
+                    nameId="proveedoreId"
+                    name="proveedor"
+                    nameService="proveedores"
+                    list={proveedores}
+                    register={register}
+                    watch={watch}
+                    setValue={setValue}
+                    length={2}
+                    error={errors.proveedoreId?.message}
+                    disabled={watch("estado") === "Posdatado"}
+                />
+            </Expand>
             <Label
                 title="Fecha de deposito"
                 error={errors.depositoDate?.message}

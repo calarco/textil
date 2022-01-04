@@ -133,7 +133,7 @@ function Pago({
     }, [overlay, setForm]);
 
     useEffect(() => {
-        setOverlay(form);
+        form && setOverlay(true);
     }, [form, setOverlay]);
 
     return (
@@ -192,7 +192,7 @@ function Pago({
                     <PagarForm
                         data={pago}
                         isActive={isActive && form ? true : false}
-                        close={() => setForm(false)}
+                        close={() => setOverlay(false)}
                     />
                 </>
             )}

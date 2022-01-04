@@ -69,6 +69,7 @@ type ComponentProps = {
     setValue: UseFormSetValue<Inputs>;
     length?: number;
     error?: string;
+    disabled?: boolean;
     className?: string;
 };
 
@@ -82,6 +83,7 @@ const Select = function ({
     setValue,
     length,
     error,
+    disabled,
     className,
 }: ComponentProps) {
     const nodeRef = useRef(null);
@@ -137,6 +139,7 @@ const Select = function ({
                 isSelected={selected !== "" ? true : false}
                 placeholder={selected || "-"}
                 autoComplete="off"
+                disabled={disabled}
                 {...register(name)}
             />
             <datalist id={name}>
