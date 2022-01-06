@@ -1,4 +1,4 @@
-import { MouseEvent, useState, useEffect } from "react";
+import { MouseEvent, useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import transition from "styled-transition-group";
 
@@ -54,7 +54,7 @@ const Details = transition.div.attrs({
                 top: calc(50% - 1rem);
                 left: -1rem;
                 height: 2rem;
-                border-left: 1px solid var(--primary-variant);
+                border-left: var(--border-variant);
             }
         }
     }
@@ -84,7 +84,7 @@ const Buttons = styled.div`
     width: 100%;
     height: 3rem;
     overflow: clip;
-    border-top: 1px solid var(--primary-variant);
+    border-top: var(--border-variant);
     display: flex;
     gap: 1px;
 
@@ -102,7 +102,7 @@ const Buttons = styled.div`
             top: calc(50% - 1rem);
             left: -1px;
             height: 2rem;
-            border-left: 1px solid var(--primary-variant);
+            border-left: var(--border-variant);
         }
     }
 `;
@@ -124,6 +124,7 @@ function Pago({
     onClick,
     className,
 }: ComponentProps) {
+    const nodeRef = useRef(null);
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
     const { getProveedor } = useCheques();
@@ -157,7 +158,7 @@ function Pago({
                     <Day date={pago.emisionDate} />
                 </li>
             </Box>
-            <Details in={isActive}>
+            <Details nodeRef={nodeRef} ref={nodeRef} in={isActive}>
                 <div>
                     <label>
                         Numero

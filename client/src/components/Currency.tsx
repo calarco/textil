@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
@@ -43,11 +44,12 @@ type ComponentProps = {
 };
 
 const Currency = function ({ number, integer }: ComponentProps) {
+    const nodeRef = useRef(null);
     const numbers = number.toString().split(".");
 
     return (
         <SwitchTransition>
-            <Container key={numbers}>
+            <Container nodeRef={nodeRef} ref={nodeRef} key={number}>
                 $
                 <span>
                     {numbers[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".")}

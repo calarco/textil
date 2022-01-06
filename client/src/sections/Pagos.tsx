@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import usePagos from "hooks/usePagos";
@@ -20,6 +20,10 @@ type ComponentProps = {
 function Pagos({ estado, sort, overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
     const { pagos } = usePagos({ estado: estado, sort: sort });
+
+    useEffect(() => {
+        setOverlay(false);
+    }, [pagos, setOverlay]);
 
     return (
         <>

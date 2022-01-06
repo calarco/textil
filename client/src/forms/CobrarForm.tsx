@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect } from "react";
+import { MouseEvent, useRef, useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import MaskedInput from "react-text-mask";
 import feathersClient from "feathersClient";
@@ -54,6 +54,7 @@ type ComponentProps = {
 };
 
 const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
+    const nodeRef = useRef(null);
     const {
         register,
         handleSubmit,
@@ -154,6 +155,8 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                 <CurrencyInput control={control} />
             </Label>
             <Expand
+                nodeRef={nodeRef}
+                ref={nodeRef}
                 in={
                     watch("estado") === "Endosado" ||
                     watch("estado") === "Posdatado"
@@ -167,7 +170,11 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                         type="date"
                         autoComplete="off"
                         {...register("salidaDate", {
-                            required: "Ingrese la fecha de salida",
+                            required:
+                                watch("estado") === "Endosado" ||
+                                watch("estado") === "Posdatado"
+                                    ? "Ingrese la fecha de salida"
+                                    : undefined,
                         })}
                     />
                 </Label>

@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import styled, { css } from "styled-components";
 
 import useTotal from "hooks/useTotal";
@@ -85,6 +86,7 @@ type ComponentProps = {
 };
 
 function Month({ year, month, isActive, setActive }: ComponentProps) {
+    const nodeRef = useRef(null);
     const { pagos, cobros } = useTotal({
         gte: `${year}-${(month + 1).toString().padStart(2, "0")}-01`,
         lte: `${year}-${(month + 1).toString().padStart(2, "0")}-${new Date(
@@ -109,7 +111,7 @@ function Month({ year, month, isActive, setActive }: ComponentProps) {
                 </h4>
                 <Currency number={cobros - pagos} integer />
             </Box>
-            <Details in={isActive}>
+            <Details nodeRef={nodeRef} ref={nodeRef} in={isActive}>
                 <label>
                     Pagos
                     <Currency number={pagos} integer />

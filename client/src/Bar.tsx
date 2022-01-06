@@ -34,12 +34,21 @@ type ComponentProps = {
     setUser: (user: any) => void;
     darkTheme: string;
     setDarkTheme: (darkTheme: string) => void;
+    setRoute: (route: string) => void;
 };
 
-const Bar = function ({ setUser, darkTheme, setDarkTheme }: ComponentProps) {
+const Bar = function ({
+    setUser,
+    darkTheme,
+    setDarkTheme,
+    setRoute,
+}: ComponentProps) {
     return (
         <Container>
-            <label>© Calarco WEB</label>
+            <div>
+                <button onClick={() => setRoute("cheques")}>Cheques</button>
+                <button onClick={() => setRoute("cuentas")}>Cuentas</button>
+            </div>
             {darkTheme ? (
                 <button
                     type="button"

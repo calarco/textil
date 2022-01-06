@@ -1,4 +1,4 @@
-import { MouseEvent, useState, useEffect, FormEvent } from "react";
+import { MouseEvent, useState, useEffect, FormEvent, useRef } from "react";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
@@ -232,6 +232,7 @@ function GestionHeader({
     overlay,
     setOverlay,
 }: ComponentProps) {
+    const nodeRef = useRef(null);
     const [create, setCreate] = useState(false);
 
     const handleInputChange = (
@@ -252,7 +253,7 @@ function GestionHeader({
     return (
         <Container>
             <SwitchTransition>
-                <Filter key={tab}>
+                <Filter nodeRef={nodeRef} ref={nodeRef} key={tab}>
                     {tab ? (
                         <select
                             name="estado"
@@ -291,7 +292,7 @@ function GestionHeader({
                 <button onClick={() => setCreate(true)}>Nuevo</button>
             </New>
             <SwitchTransition>
-                <Columns key={tab}>
+                <Columns nodeRef={nodeRef} ref={nodeRef} key={tab}>
                     {tab ? (
                         <>
                             <Sort
@@ -354,7 +355,12 @@ function GestionHeader({
             ) : (
                 <PagarForm isActive={create} close={() => setOverlay(false)} />
             )}
-            <Overlay in={overlay} onClick={() => setOverlay(false)} />
+            <Overlay
+                nodeRef={nodeRef}
+                ref={nodeRef}
+                in={overlay}
+                onClick={() => setOverlay(false)}
+            />
         </Container>
     );
 }

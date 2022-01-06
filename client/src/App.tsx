@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import feathersClient from "feathersClient";
-import styled, { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
@@ -8,8 +8,8 @@ import { themeDark, themeLight } from "themes";
 import GlobalStyle from "globalStyle";
 import Login from "Login/Login";
 import Bar from "Bar";
-import Calendar from "Calendar";
-import Gestion from "Gestion";
+import Cheques from "Cheques/Cheques";
+import Cuentas from "Cuentas";
 
 const Container = transition.main.attrs({
     unmountOnExit: true,
@@ -25,7 +25,7 @@ const Container = transition.main.attrs({
     overflow: clip;
     display: grid;
     justify-content: center;
-    grid-template-rows: 1fr 1.75rem;
+    grid-template-rows: 1.75rem 1fr;
 
     &:enter {
         opacity: 0;
@@ -49,32 +49,13 @@ const Container = transition.main.attrs({
     }
 `;
 
-const Panels = styled.div`
-    width: 100vw;
-    max-width: 95rem;
-    height: 100%;
-    padding: 1.5rem 2rem;
-    display: grid;
-    gap: 2rem;
-    grid-template-columns: 2fr 1fr;
-`;
-
-const Panel = styled.div`
-    position: relative;
-    height: calc(100vh - 4.75rem);
-    border-radius: 4px;
-    background: var(--surface-variant);
-    outline: var(--border-variant);
-    box-shadow: var(--shadow-variant);
-    display: grid;
-    grid-template-rows: auto 1fr;
-`;
-
 function App() {
+    const nodeRef = useRef(null);
     const [user, setUser] = useState(null);
     const [darkTheme, setDarkTheme] = useState(
         localStorage.getItem("darkTheme") || ""
     );
+    const [route, setRoute] = useState("cheques");
 
     useEffect(() => {
         feathersClient
@@ -96,22 +77,16 @@ function App() {
                 <GlobalStyle />
             </ThemeProvider>
             <SwitchTransition>
-                <Container key={user ? "0" : "1"}>
+                <Container nodeRef={nodeRef} ref={nodeRef} key={user}>
                     {user ? (
                         <>
-                            <Panels>
-                                <Panel>
-                                    <Gestion />
-                                </Panel>
-                                <Panel>
-                                    <Calendar />
-                                </Panel>
-                            </Panels>
                             <Bar
                                 setUser={setUser}
                                 darkTheme={darkTheme}
                                 setDarkTheme={setDarkTheme}
+                                setRoute={setRoute}
                             />
+                            {route === "cheques" ? <Cheques /> : <Cuentas />}
                         </>
                     ) : (
                         <Login setUser={setUser} />

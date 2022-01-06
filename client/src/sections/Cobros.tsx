@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import useCobros from "hooks/useCobros";
@@ -20,6 +20,10 @@ type ComponentProps = {
 function Cobros({ estado, sort, overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
     const { cobros } = useCobros({ estado: estado, sort: sort });
+
+    useEffect(() => {
+        setOverlay(false);
+    }, [cobros, setOverlay]);
 
     return (
         <>

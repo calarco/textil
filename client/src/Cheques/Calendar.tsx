@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import Header from "CalendarHeader";
+import Header from "./CalendarHeader";
 import SectionComponent from "components/Section";
 import Month from "cards/Month";
 

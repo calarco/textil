@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
@@ -36,7 +37,7 @@ const Box = styled.div<Props>`
         `};
 `;
 
-const Years = styled.div`
+const Selector = styled.div`
     overflow: clip;
     border-radius: 4px;
     background: var(--surface-t);
@@ -118,6 +119,7 @@ type ComponentProps = {
 };
 
 function CalendarHeader({ year, setYear }: ComponentProps) {
+    const nodeRef = useRef(null);
     const { pagos, cobros } = useTotal({
         gte: `${year}-01-01`,
         lte: `${year}-12-31`,
@@ -126,15 +128,17 @@ function CalendarHeader({ year, setYear }: ComponentProps) {
     return (
         <Container>
             <Box>
-                <Years>
+                <Selector>
                     <button onClick={() => setYear(year - 1)}>{"<"}</button>
                     <div>
                         <SwitchTransition>
-                            <Year key={year}>{year}</Year>
+                            <Year nodeRef={nodeRef} ref={nodeRef} key={year}>
+                                {year}
+                            </Year>
                         </SwitchTransition>
                     </div>
                     <button onClick={() => setYear(year + 1)}>{">"}</button>
-                </Years>
+                </Selector>
                 <Currency number={cobros - pagos} integer />
             </Box>
             <Details>
