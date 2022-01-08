@@ -3,6 +3,8 @@ import feathersClient from "feathersClient";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 
+import ButtonsComponent from "components/Buttons";
+
 type Props = {
     inline?: boolean;
 };
@@ -69,13 +71,7 @@ const Container = transition.div.attrs({
     }
 `;
 
-const Buttons = styled.div<Props>`
-    position: relative;
-    width: 100%;
-    height: 3rem;
-    overflow: clip;
-    border-top: 1px solid var(--primary-variant);
-    display: flex;
+const Buttons = styled(ButtonsComponent)<Props>`
     transition: 0.25s ease-out;
 
     ${(props) =>
@@ -93,22 +89,6 @@ const Buttons = styled.div<Props>`
                 border-left: 1px solid var(--primary-variant);
             }
         `};
-
-    button {
-        width: 100%;
-        padding: 0 1.5rem;
-        border-radius: 0px;
-        background: none;
-
-        &:not(:first-child)::after {
-            content: "";
-            position: absolute;
-            top: calc(50% - 1rem);
-            left: 0;
-            height: 2rem;
-            border-left: 1px solid var(--primary-variant);
-        }
-    }
 `;
 
 type ComponentProps = {
@@ -129,6 +109,7 @@ const Remove = function ({
     className,
 }: ComponentProps) {
     const nodeRef = useRef(null);
+
     const handleDelete = () => {
         feathersClient
             .service(service)

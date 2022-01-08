@@ -1,12 +1,12 @@
-import { MouseEvent, useRef, useEffect } from "react";
+import { MouseEvent, useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import MaskedInput from "react-text-mask";
 import feathersClient from "feathersClient";
 import styled from "styled-components";
-import transition from "styled-transition-group";
 
 import { useCheques } from "hooks/chequesContext";
 import FormComponent from "components/Form";
+import ExpandComponent from "components/Expand";
 import Label from "components/Label";
 import CurrencyInput from "components/CurrencyInput";
 import Select from "components/Select";
@@ -15,36 +15,10 @@ const Form = styled(FormComponent)`
     grid-template-columns: 2fr 3fr 2fr [end];
 `;
 
-const Expand = transition.div.attrs({
-    unmountOnExit: true,
-    timeout: {
-        enter: 300,
-        exit: 150,
-    },
-})`
+const Expand = styled(ExpandComponent)`
     grid-column-end: span 3;
-    overflow: clip;
-    display: grid;
     gap: inherit;
     grid-template-columns: inherit;
-    
-    &:enter {
-        max-height: 0;
-    }
-
-    &:enter-active {
-        max-height: 5rem;
-        transition: 0.3s ease-out;
-    }
-
-    &:exit {
-        max-height: 5rem;
-    }
-
-    &:exit-active {
-        max-height: 0;
-        transition: 0.15s ease-in;
-    }
 `;
 
 type ComponentProps = {
@@ -54,7 +28,6 @@ type ComponentProps = {
 };
 
 const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
-    const nodeRef = useRef(null);
     const {
         register,
         handleSubmit,
@@ -155,12 +128,11 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                 <CurrencyInput control={control} />
             </Label>
             <Expand
-                nodeRef={nodeRef}
-                ref={nodeRef}
-                in={
+                isActive={
                     watch("estado") === "Endosado" ||
                     watch("estado") === "Posdatado"
                 }
+                height={5}
             >
                 <Label
                     title="Fecha de salida"

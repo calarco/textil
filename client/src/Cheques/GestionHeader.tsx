@@ -6,13 +6,9 @@ import { SwitchTransition } from "react-transition-group";
 import PagarForm from "forms/PagarForm";
 import CobrarForm from "forms/CobrarForm";
 
-type Props = {
-    readonly isActive?: boolean;
-};
-
 const Container = styled.div`
     position: relative;
-    height: 6rem;
+    height: 6.25rem;
     display: grid;
     grid-template-columns: 11.25rem 1fr 11.25rem;
     grid-template-rows: 1fr auto;
@@ -70,6 +66,10 @@ const Tabs = styled.div`
     grid-auto-flow: column;
 `;
 
+type Props = {
+    readonly isActive?: boolean;
+};
+
 const Tab = styled.button<Props>`
     border-radius: 0;
 
@@ -116,7 +116,6 @@ const Columns = transition.div.attrs({
 })`
     grid-row-start: 2;
     grid-column-end: span 3;
-    height: 2.5rem;
     border-top: var(--border-variant);
     display: grid;
     grid-template-columns: 11.25rem 1fr 1fr 11.25rem;
@@ -143,7 +142,7 @@ const Columns = transition.div.attrs({
 
 const Sort = styled.label<Props>`
     position: relative;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
     text-align: center;
     transition: 0.15s ease-in;
 

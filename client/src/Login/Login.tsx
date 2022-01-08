@@ -26,6 +26,7 @@ export const Spinner = styled.div`
 `;
 
 const Container = styled.div`
+    grid-row-end: span 2;
     height: 100%;
     display: grid;
     justify-items: center;

@@ -4,11 +4,12 @@ import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
 import useTotal from "hooks/useTotal";
+import Details from "components/Details";
 import Currency from "components/Currency";
 
 const Container = styled.div`
     width: 100%;
-    height: 6rem;
+    height: 6.25rem;
     display: grid;
     grid-template-rows: 1fr auto;
     align-items: center;
@@ -88,31 +89,6 @@ const Year = transition.div.attrs({
     }
 `;
 
-const Details = styled.div`
-    padding: 0.5rem 1rem;
-    height: 2.5rem;
-    border-top: var(--border-variant);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-
-    label {
-        position: relative;
-        display: grid;
-        grid-auto-flow: column;
-        gap: 1rem;
-
-        &:not(:first-child)::after {
-            content: "";
-            position: absolute;
-            top: calc(50% - 1rem);
-            left: -1rem;
-            height: 2rem;
-            border-left: var(--border-variant);
-        }
-    }
-`;
-
 type ComponentProps = {
     year: number;
     setYear: (year: number) => void;
@@ -141,7 +117,7 @@ function CalendarHeader({ year, setYear }: ComponentProps) {
                 </Selector>
                 <Currency number={cobros - pagos} integer />
             </Box>
-            <Details>
+            <Details fixed>
                 <label>
                     Pagos
                     <Currency number={pagos} integer />

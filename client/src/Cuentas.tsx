@@ -1,3 +1,5 @@
+import Card from "components/Card";
+import Section from "components/Section";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -7,7 +9,7 @@ const Container = styled.div`
     padding: 1.5rem 2rem;
     display: grid;
     gap: 2rem;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
 `;
 
 const Panel = styled.div`
@@ -24,8 +26,22 @@ const Panel = styled.div`
 function Cheques() {
     return (
         <Container>
-            <Panel>aoeuaoeu</Panel>
-            <Panel>oaeuoa</Panel>
+            <Panel>
+                Proveedores
+                <Section>
+                    <Card>
+                        Veira <p>saldo</p>
+                    </Card>
+                </Section>
+            </Panel>
+            <Panel>
+                Clientes
+                <Section>
+                    <Card>
+                        Veira <p>saldo</p>
+                    </Card>
+                </Section>
+            </Panel>
         </Container>
     );
 }

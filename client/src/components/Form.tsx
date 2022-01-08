@@ -2,6 +2,8 @@ import { MouseEvent, FormEvent, ReactNode, useRef } from "react";
 import styled from "styled-components";
 import transition from "styled-transition-group";
 
+import ButtonsComponent from "components/Buttons";
+
 const Container = transition.form.attrs({
     unmountOnExit: true,
     timeout: {
@@ -47,34 +49,8 @@ const Container = transition.form.attrs({
     }
 `;
 
-const Buttons = styled.div`
-    grid-column-start: 1;
-    grid-column-end: span end;
-    width: 100%;
-    height: 3rem;
-    overflow: clip;
+const Buttons = styled(ButtonsComponent)`
     background: var(--surface);
-    display: flex;
-    gap: 1px;
-    transition: 0.25s ease-out;
-
-    button {
-        width: 100%;
-        height: 3rem;
-        margin: 0;
-        padding: 0 1.5rem;
-        border-radius: 0px;
-        background: none;
-
-        &:not(:first-child)::after {
-            content: "";
-            position: absolute;
-            top: calc(50% - 1rem);
-            left: -1px;
-            height: 2rem;
-            border-left: 1px solid var(--primary-variant);
-        }
-    }
 `;
 
 type ComponentProps = {

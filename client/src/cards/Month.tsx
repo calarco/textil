@@ -1,10 +1,10 @@
-import { useRef } from "react";
 import styled, { css } from "styled-components";
 
 import useTotal from "hooks/useTotal";
 import Card from "components/Card";
+import Expand from "components/Expand";
+import Details from "components/Details";
 import Currency from "components/Currency";
-import transition from "styled-transition-group";
 
 type Props = {
     readonly isCurrent?: boolean;
@@ -29,55 +29,6 @@ const Box = styled.div<Props>`
         `};
 `;
 
-const Details = transition.div.attrs({
-    unmountOnExit: true,
-    timeout: {
-        enter: 200,
-        exit: 150,
-    },
-})`
-    padding: 0.75rem 1rem;
-    overflow: clip;
-    border-top: var(--border-variant);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-
-    label {
-        position: relative;
-        display: grid;
-        grid-auto-flow: column;
-        gap: 1rem;
-
-        &:not(:first-child)::after {
-            content: "";
-            position: absolute;
-            top: calc(50% - 1rem);
-            left: -1rem;
-            height: 2rem;
-            border-left: 1px solid var(--primary-variant);
-        }
-    }
-
-    &:enter {
-        max-height: 0;
-    }
-
-    &:enter-active {
-        max-height: 3rem;
-        transition: 0.2s ease-out;
-    }
-
-    &:exit {
-        max-height: 3rem;
-    }
-
-    &:exit-active {
-        max-height: 0;
-        transition: 0.15s ease-in;
-    }
-`;
-
 type ComponentProps = {
     year: number;
     month: number;
@@ -86,7 +37,6 @@ type ComponentProps = {
 };
 
 function Month({ year, month, isActive, setActive }: ComponentProps) {
-    const nodeRef = useRef(null);
     const { pagos, cobros } = useTotal({
         gte: `${year}-${(month + 1).toString().padStart(2, "0")}-01`,
         lte: `${year}-${(month + 1).toString().padStart(2, "0")}-${new Date(
@@ -111,16 +61,18 @@ function Month({ year, month, isActive, setActive }: ComponentProps) {
                 </h4>
                 <Currency number={cobros - pagos} integer />
             </Box>
-            <Details nodeRef={nodeRef} ref={nodeRef} in={isActive}>
-                <label>
-                    Pagos
-                    <Currency number={pagos} integer />
-                </label>
-                <label>
-                    Cobros
-                    <Currency number={cobros} integer />
-                </label>
-            </Details>
+            <Expand isActive={isActive} height={3}>
+                <Details fixed>
+                    <label>
+                        Pagos
+                        <Currency number={pagos} integer />
+                    </label>
+                    <label>
+                        Cobros
+                        <Currency number={cobros} integer />
+                    </label>
+                </Details>
+            </Expand>
         </Card>
     );
 }
