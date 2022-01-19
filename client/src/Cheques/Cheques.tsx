@@ -13,26 +13,11 @@ const Container = styled.div`
     grid-template-columns: 2fr 1fr;
 `;
 
-const Panel = styled.div`
-    position: relative;
-    height: calc(100vh - 4.75rem);
-    border-radius: 4px;
-    background: var(--surface-variant);
-    outline: var(--border-variant);
-    box-shadow: var(--shadow-variant);
-    display: grid;
-    grid-template-rows: auto 1fr;
-`;
-
 function Cheques() {
     return (
         <Container>
-            <Panel>
-                <Gestion />
-            </Panel>
-            <Panel>
-                <Calendar />
-            </Panel>
+            <Gestion />
+            <Calendar />
         </Container>
     );
 }

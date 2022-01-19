@@ -1,25 +1,20 @@
 import { MouseEvent, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import feathersClient from "feathersClient";
-import styled from "styled-components";
 
 import { useCheques } from "hooks/chequesContext";
-import FormComponent from "components/Form";
+import Form from "components/Form";
 import Label from "components/Label";
 import CurrencyInput from "components/CurrencyInput";
 import Select from "components/Select";
 
-const Form = styled(FormComponent)`
-    grid-template-columns: 2fr 3fr 2fr [end];
-`;
-
 type ComponentProps = {
-    data?: Pago;
-    isActive: boolean;
-    close: (e: MouseEvent<HTMLButtonElement>) => void;
+    pago?: Pago;
+    isActive?: boolean;
+    close?: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-const PagarForm = function ({ data, isActive, close }: ComponentProps) {
+const PagoForm = function ({ pago, isActive, close }: ComponentProps) {
     const {
         register,
         handleSubmit,
@@ -30,35 +25,35 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
         formState: { errors },
     } = useForm<Inputs>({
         defaultValues: {
-            proveedor: "",
-            pagoDate: data?.pagoDate,
-            monto: data?.monto
-                ? `$${data.monto.toString().replace(/\./g, ",")}`
+            destinatario: "",
+            pagoDate: pago?.pagoDate,
+            monto: pago?.monto
+                ? `$${pago.monto.toString().replace(/\./g, ",")}`
                 : "",
-            proveedoreId: data?.proveedoreId || 0,
+            destinatarioId: pago?.destinatarioId || 0,
             emisionDate:
-                data?.emisionDate || new Date().toISOString().substring(0, 10),
-            numero: data?.numero || "",
-            observaciones: data?.observaciones || "",
-            estado: data?.estado || "A pagar",
+                pago?.emisionDate || new Date().toISOString().substring(0, 10),
+            numero: pago?.numero || "",
+            observaciones: pago?.observaciones || "",
+            estado: pago?.estado || "A pagar",
         },
     });
-    const { proveedores } = useCheques();
+    const { destinatarios } = useCheques();
 
     const onSubmit: SubmitHandler<Inputs> = (inputs) => {
         const payload = {
             pagoDate: inputs.pagoDate,
             monto: inputs.monto.slice(1).replace(/\./g, "").replace(/,/g, "."),
-            proveedoreId: inputs.proveedoreId,
+            destinatarioId: inputs.destinatarioId,
             emisionDate: inputs.emisionDate,
             numero: inputs.numero,
             observaciones: inputs.observaciones,
             estado: inputs.estado,
         };
-        data
+        pago
             ? feathersClient
                   .service("pagos")
-                  .patch(data.id, payload)
+                  .patch(pago.id, payload)
                   .then(() => {})
                   .catch((error: FeathersErrorJSON) => {
                       console.error(error.message);
@@ -74,15 +69,16 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
 
     useEffect(() => {
         reset();
-    }, [isActive, data, reset]);
+    }, [isActive, pago, reset]);
 
     return (
         <Form
             isActive={isActive}
             close={close}
             onSubmit={handleSubmit(onSubmit)}
+            length={7}
         >
-            <Label title="Estado">
+            <Label title="Estado" length={2}>
                 <select {...register("estado")}>
                     <option value="A pagar">A pagar</option>
                     <option value="Pagado">Pagado</option>
@@ -92,19 +88,24 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                 </select>
             </Label>
             <Select
-                nameId="proveedoreId"
-                name="proveedor"
-                nameService="proveedores"
-                list={proveedores}
+                nameId="destinatarioId"
+                name="destinatario"
+                nameService="destinatarios"
+                list={destinatarios}
                 register={register}
                 watch={watch}
                 setValue={setValue}
-                error={errors.proveedoreId?.message}
+                error={errors.destinatarioId?.message}
+                length={3}
             />
-            <Label title="Monto" error={errors.monto?.message}>
-                <CurrencyInput control={control} />
+            <Label title="Monto" error={errors.monto?.message} length={2}>
+                <CurrencyInput name="monto" control={control} />
             </Label>
-            <Label title="Fecha de pago" error={errors.pagoDate?.message}>
+            <Label
+                title="Fecha de pago"
+                error={errors.pagoDate?.message}
+                length={2}
+            >
                 <input
                     type="date"
                     placeholder="-"
@@ -114,7 +115,11 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                     })}
                 />
             </Label>
-            <Label title="Numero de cheque" error={errors.numero?.message}>
+            <Label
+                title="Numero de cheque"
+                error={errors.numero?.message}
+                length={3}
+            >
                 <input
                     type="text"
                     placeholder="-"
@@ -124,7 +129,11 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                     })}
                 />
             </Label>
-            <Label title="Fecha de emision" error={errors.emisionDate?.message}>
+            <Label
+                title="Fecha de emision"
+                error={errors.emisionDate?.message}
+                length={2}
+            >
                 <input
                     type="date"
                     placeholder="-"
@@ -134,7 +143,7 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
                     })}
                 />
             </Label>
-            <Label title="Observaciones" length={3}>
+            <Label title="Observaciones" length={7}>
                 <input
                     type="text"
                     placeholder="-"
@@ -146,4 +155,4 @@ const PagarForm = function ({ data, isActive, close }: ComponentProps) {
     );
 };
 
-export default PagarForm;
+export default PagoForm;

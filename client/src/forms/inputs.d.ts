@@ -1,13 +1,20 @@
 type Inputs = {
+    nombre: string;
+    descripcion: string;
+    comprobante: string;
+    fecha?: string;
+    debe: string;
+    haber: string;
+    clienteId?: number;
+    proveedoreId?: number;
     pagoDate?: string;
     depositoDate?: string;
     monto: string;
-    proveedoreId?: number;
-    proveedor?: string;
-    clienteId?: number;
-    cliente?: string;
+    destinatarioId?: number;
+    destinatario?: string;
+    libradoreId?: number;
+    librador?: string;
     emisionDate?: string;
-    ingresoDate?: string;
     salidaDate?: string;
     bancoId?: number;
     banco?: string;

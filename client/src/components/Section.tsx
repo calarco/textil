@@ -2,6 +2,8 @@ import { MouseEvent, ReactNode, useRef } from "react";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
+import Overlay from "components/Overlay";
+
 const Container = transition.section.attrs({
     unmountOnExit: true,
     timeout: {
@@ -15,15 +17,10 @@ const Container = transition.section.attrs({
     height: 100%;
     min-height: 25rem;
     max-height: 100%;
-    padding: 0.75rem;
     border-radius: 4px;
     background: var(--surface);
     box-shadow: var(--shadow);
     overflow-y: overlay;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    transition: 0.3s ease-out;
 
     &:enter {
         opacity: 0;
@@ -46,45 +43,6 @@ const Container = transition.section.attrs({
     }
 `;
 
-const Overlay = transition.div.attrs({
-    unmountOnExit: true,
-    timeout: {
-        enter: 300,
-        exit: 250,
-    },
-})`
-    content-visibility: auto;
-    will-change: opacity;
-    position: absolute;
-    z-index: 1001;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 100%;
-    border-radius: 4px;
-    background: var(--overlay);
-    backdrop-filter: blur(0.5rem);
-
-    &:enter {
-        opacity: 0;
-    }
-
-    &:enter-active {
-        opacity: 1;
-        height: 1000%;
-        transition: 0.3s ease-out;
-    }
-
-    &:exit {
-        opacity: 1;
-    }
-
-    &:exit-active {
-        opacity: 0;
-        transition: 0.25s ease-in;
-    }
-`;
-
 type ComponentProps = {
     switchOn?: string;
     overlay?: boolean;
@@ -93,7 +51,7 @@ type ComponentProps = {
     className?: string;
 };
 
-const Section = function ({
+function Section({
     switchOn,
     overlay,
     cancel,
@@ -108,19 +66,13 @@ const Section = function ({
                 nodeRef={nodeRef}
                 ref={nodeRef}
                 key={switchOn || 0}
-                overlay={overlay}
                 className={className}
             >
                 {children}
-                <Overlay
-                    nodeRef={nodeRef}
-                    ref={nodeRef}
-                    in={overlay}
-                    onClick={cancel}
-                />
+                <Overlay overlay={overlay} cancel={cancel} long />
             </Container>
         </SwitchTransition>
     );
-};
+}
 
 export default Section;

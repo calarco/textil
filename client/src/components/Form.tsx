@@ -1,5 +1,5 @@
 import { MouseEvent, FormEvent, ReactNode, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 
 import ButtonsComponent from "components/Buttons";
@@ -11,8 +11,8 @@ const Container = transition.form.attrs({
         exit: 150,
     },
 })`
-    will-change: opacity;
     content-visibility: auto;
+    will-change: opacity;
     position: absolute;
     z-index: 1500;
     top: 0;
@@ -24,6 +24,7 @@ const Container = transition.form.attrs({
     background: var(--primary);
     box-shadow: var(--shadow);
     display: grid;
+    grid-auto-columns: 1fr;
     gap: 1px;
     align-items: start;
 
@@ -49,14 +50,26 @@ const Container = transition.form.attrs({
     }
 `;
 
-const Buttons = styled(ButtonsComponent)`
+type Props = {
+    length?: number;
+    error?: boolean;
+};
+
+const Buttons = styled(ButtonsComponent)<Props>`
     background: var(--surface);
+
+    ${(props) =>
+        props.length &&
+        css`
+            grid-column-end: span ${props.length};
+        `};
 `;
 
 type ComponentProps = {
-    isActive: boolean;
-    close: (e: MouseEvent<HTMLButtonElement>) => void;
+    isActive?: boolean;
+    close?: (e: MouseEvent<HTMLButtonElement>) => void;
     onSubmit: (e: FormEvent) => void;
+    length?: number;
     children: ReactNode;
     className?: string;
     noButtons?: boolean;
@@ -66,6 +79,7 @@ const Form = function ({
     isActive,
     close,
     onSubmit,
+    length,
     children,
     className,
     noButtons,
@@ -82,7 +96,7 @@ const Form = function ({
         >
             {children}
             {!noButtons && (
-                <Buttons>
+                <Buttons length={length}>
                     <button type="button" onClick={close}>
                         Cancelar
                     </button>

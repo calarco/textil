@@ -15,6 +15,7 @@ const Container = transition.div.attrs({
     overflow: clip;
     display: grid;
     grid-auto-flow: column;
+    grid-auto-columns: 1fr;
 
     &:enter {
         max-height: 0;

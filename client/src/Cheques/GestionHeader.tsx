@@ -3,8 +3,9 @@ import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
-import PagarForm from "forms/PagarForm";
-import CobrarForm from "forms/CobrarForm";
+import PagoForm from "forms/PagoForm";
+import CobroForm from "forms/CobroForm";
+import Overlay from "components/Overlay";
 
 const Container = styled.div`
     position: relative;
@@ -104,6 +105,12 @@ const New = styled.div`
 
     button {
         color: var(--secondary);
+        background: var(--secondary-variant);
+        box-shadow: var(--shadow-variant);
+
+        &:hover {
+            background: var(--primary-variant);
+        }
     }
 `;
 
@@ -118,7 +125,7 @@ const Columns = transition.div.attrs({
     grid-column-end: span 3;
     border-top: var(--border-variant);
     display: grid;
-    grid-template-columns: 11.25rem 1fr 1fr 11.25rem;
+    grid-template-columns: 11.25rem 3fr 2fr 11.25rem;
     gap: 1px;
 
     &:enter {
@@ -170,44 +177,6 @@ const Sort = styled.label<Props>`
                 background: var(--primary-variant);
             }
         `};
-`;
-
-const Overlay = transition.div.attrs({
-    unmountOnExit: true,
-    timeout: {
-        enter: 300,
-        exit: 250,
-    },
-})`
-    content-visibility: auto;
-    will-change: opacity;
-    position: absolute;
-    z-index: 1001;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 100%;
-    border-radius: 4px;
-    background: var(--overlay);
-    backdrop-filter: blur(0.5rem);
-
-    &:enter {
-        opacity: 0;
-    }
-
-    &:enter-active {
-        opacity: 1;
-        transition: 0.3s ease-out;
-    }
-
-    &:exit {
-        opacity: 1;
-    }
-
-    &:exit-active {
-        opacity: 0;
-        transition: 0.25s ease-in;
-    }
 `;
 
 type ComponentProps = {
@@ -301,10 +270,10 @@ function GestionHeader({
                                 Fecha de deposito
                             </Sort>
                             <Sort
-                                isActive={sort === "clienteId"}
-                                onClick={() => setSort("clienteId")}
+                                isActive={sort === "libradoreId"}
+                                onClick={() => setSort("libradoreId")}
                             >
-                                Cliente
+                                Librador
                             </Sort>
                             <Sort
                                 isActive={sort === "monto"}
@@ -313,10 +282,10 @@ function GestionHeader({
                                 Monto
                             </Sort>
                             <Sort
-                                isActive={sort === "ingresoDate"}
-                                onClick={() => setSort("ingresoDate")}
+                                isActive={sort === "emisionDate"}
+                                onClick={() => setSort("emisionDate")}
                             >
-                                Fecha de ingreso
+                                Fecha de emision
                             </Sort>
                         </>
                     ) : (
@@ -328,10 +297,10 @@ function GestionHeader({
                                 Fecha de pago
                             </Sort>
                             <Sort
-                                isActive={sort === "proveedoreId"}
-                                onClick={() => setSort("proveedoreId")}
+                                isActive={sort === "destinatarioId"}
+                                onClick={() => setSort("destinatarioId")}
                             >
-                                Proveedor
+                                Destinatario
                             </Sort>
                             <Sort
                                 isActive={sort === "monto"}
@@ -350,16 +319,11 @@ function GestionHeader({
                 </Columns>
             </SwitchTransition>
             {tab ? (
-                <CobrarForm isActive={create} close={() => setOverlay(false)} />
+                <CobroForm isActive={create} close={() => setOverlay(false)} />
             ) : (
-                <PagarForm isActive={create} close={() => setOverlay(false)} />
+                <PagoForm isActive={create} close={() => setOverlay(false)} />
             )}
-            <Overlay
-                nodeRef={nodeRef}
-                ref={nodeRef}
-                in={overlay}
-                onClick={() => setOverlay(false)}
-            />
+            <Overlay overlay={overlay} cancel={() => setOverlay(false)} />
         </Container>
     );
 }

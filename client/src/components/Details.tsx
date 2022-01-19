@@ -9,8 +9,8 @@ const Container = styled.div<Props>`
     border-top: var(--border-variant);
     display: grid;
     gap: 1px;
-    grid-auto-flow: column;
     grid-auto-columns: 1fr;
+    grid-auto-flow: column;
 
     label {
         position: relative;

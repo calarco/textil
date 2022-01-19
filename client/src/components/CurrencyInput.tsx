@@ -3,10 +3,12 @@ import MaskedInput from "react-text-mask";
 import createNumberMask from "text-mask-addons/dist/createNumberMask";
 
 type ComponentProps = {
+    name: "monto" | "debe" | "haber";
     control: Control<Inputs>;
+    required?: boolean;
 };
 
-const CurrencyInput = ({ control }: ComponentProps) => {
+const CurrencyInput = ({ name, control, required }: ComponentProps) => {
     const currencyMask = createNumberMask({
         prefix: "$",
         suffix: "",
@@ -22,9 +24,9 @@ const CurrencyInput = ({ control }: ComponentProps) => {
 
     return (
         <Controller
-            name={"monto"}
+            name={name}
             control={control}
-            rules={{ required: "Ingrese el monto" }}
+            rules={required ? { required: `Ingrese ${name}` } : undefined}
             render={({ field }) => (
                 <MaskedInput
                     mask={currencyMask}

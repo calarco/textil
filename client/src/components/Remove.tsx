@@ -16,6 +16,7 @@ const Container = transition.div.attrs({
         exit: 150,
     },
 })<Props>`
+    will-change: opacity;
     position: absolute;
     z-index: 1001;
     top: 0;

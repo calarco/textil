@@ -27,8 +27,8 @@ const usePagos = ({ estado, sort }: ComponentProps) => {
                     },
                 },
             })
-            .then((data: Pagos) => {
-                setPagos(data);
+            .then((response: Pagos) => {
+                setPagos(response);
             })
             .catch((error: FeathersErrorJSON) => {
                 setError(error.message);

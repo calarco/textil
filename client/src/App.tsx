@@ -9,7 +9,7 @@ import GlobalStyle from "globalStyle";
 import Login from "Login/Login";
 import Bar from "Bar";
 import Cheques from "Cheques/Cheques";
-import Cuentas from "Cuentas";
+import Saldos from "Saldos/Saldos";
 
 const Container = transition.main.attrs({
     unmountOnExit: true,
@@ -86,7 +86,7 @@ function App() {
                                 setDarkTheme={setDarkTheme}
                                 setRoute={setRoute}
                             />
-                            {route === "cheques" ? <Cheques /> : <Cuentas />}
+                            {route === "cheques" ? <Cheques /> : <Saldos />}
                         </>
                     ) : (
                         <Login setUser={setUser} />

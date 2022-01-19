@@ -27,8 +27,8 @@ const useCobros = ({ estado, sort }: ComponentProps) => {
                     },
                 },
             })
-            .then((data: Cobros) => {
-                setCobros(data);
+            .then((response: Cobros) => {
+                setCobros(response);
             })
             .catch((error: FeathersErrorJSON) => {
                 setError(error.message);

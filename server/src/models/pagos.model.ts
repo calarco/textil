@@ -56,7 +56,7 @@ export default function (app: Application): typeof Model {
     (pagos as any).associate = function (models: any): void {
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
-        pagos.belongsTo(models.proveedores);
+        pagos.belongsTo(models.destinatarios);
     };
 
     return pagos;

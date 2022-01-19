@@ -334,8 +334,8 @@ const GlobalStyle = createGlobalStyle`
         resize: none;
     }
 
-    input[name="proveedor"],
-    input[name="cliente"],
+    input[name="destinatario"],
+    input[name="librador"],
     input[name="banco"],
     input[type="date"],
     select {
@@ -386,8 +386,8 @@ const GlobalStyle = createGlobalStyle`
         color: var(--on-background);
     }
 
-    input[name="proveedor"]:focus:hover,
-    input[name="cliente"]:focus:hover,
+    input[name="destinatario"]:focus:hover,
+    input[name="librador"]:focus:hover,
     input[name="banco"]:focus:hover {
         cursor: text;
     }
@@ -411,8 +411,8 @@ const GlobalStyle = createGlobalStyle`
     input[type="time"]:disabled,
     input[type="password"]:disabled,
     textarea:disabled,
-    input[name="proveedor"]:disabled,
-    input[name="cliente"]:disabled,
+    input[name="destinatario"]:disabled,
+    input[name="librador"]:disabled,
     input[name="banco"]:disabled,
     select:disabled {
         pointer-events: none;

@@ -9,6 +9,7 @@ const Container = transition.pre.attrs({
         exit: 150,
     },
 })`
+    will-change: opacity;
     text-align: right;
     font: var(--label-alt);
     color: var(--on-background-variant);

@@ -9,26 +9,26 @@ import ButtonsComponent from "components/Buttons";
 import Currency from "components/Currency";
 import Day from "components/Day";
 import Remove from "components/Remove";
-import CobrarForm from "forms/CobrarForm";
+import CobroForm from "forms/CobroForm";
 
 const Box = styled.ul`
+    height: 3rem;
     display: grid;
-    grid-template-columns: 10.5rem 1fr 1fr 10.5rem [end];
+    grid-template-columns: 10.5rem 3fr 2fr 10.5rem [end];
     gap: 1.5rem;
+    align-items: center;
     text-align: center;
-
-    > li {
-        padding: 0.75rem 1.75rem;
-    }
 
     > li:nth-child(3) {
         text-align: right;
+        padding: 0 1.75rem;
     }
 `;
 
 const Details = styled(DetailsComponent)`
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: auto auto;
+    grid-auto-flow: row;
 `;
 
 const Buttons = styled(ButtonsComponent)`
@@ -54,7 +54,7 @@ function Cobro({
 }: ComponentProps) {
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
-    const { getCliente, getBanco } = useCheques();
+    const { getLibrador, getBanco } = useCheques();
 
     useEffect(() => {
         !overlay && setForm(false);
@@ -66,7 +66,6 @@ function Cobro({
 
     return (
         <Card
-            key={cobro.id}
             isActive={isActive}
             isRemove={remove}
             isForm={form}
@@ -77,13 +76,13 @@ function Cobro({
                     <Day date={cobro.depositoDate} />
                 </li>
                 <li>
-                    <p>{getCliente(cobro.clienteId)}</p>
+                    <p>{getLibrador(cobro.libradoreId)}</p>
                 </li>
                 <li>
                     <Currency number={cobro.monto} />
                 </li>
                 <li>
-                    <Day date={cobro.ingresoDate} />
+                    <Day date={cobro.emisionDate} />
                 </li>
             </Box>
             <Expand isActive={isActive} height={8.5}>
@@ -130,8 +129,8 @@ function Cobro({
                         isActive={isActive && remove}
                         exit={() => setRemove(false)}
                     />
-                    <CobrarForm
-                        data={cobro}
+                    <CobroForm
+                        cobro={cobro}
                         isActive={form}
                         close={() => setOverlay(false)}
                     />

@@ -31,6 +31,7 @@ const Button = transition.button.attrs({
         exit: 150,
     },
 })`
+    will-change: opacity;
     position: absolute;
     bottom: calc(0.75rem + 1px);
     right: 1rem;
@@ -60,10 +61,10 @@ const Button = transition.button.attrs({
 `;
 
 type ComponentProps = {
-    nameId: "proveedoreId" | "clienteId" | "bancoId";
-    name: "proveedor" | "cliente" | "banco";
-    nameService: "proveedores" | "clientes" | "bancos";
-    list: Proveedores | Clientes | Bancos;
+    nameId: "destinatarioId" | "libradoreId" | "bancoId";
+    name: "destinatario" | "librador" | "banco";
+    nameService: "destinatarios" | "libradores" | "bancos";
+    list: Genericos;
     register: UseFormRegister<Inputs>;
     watch: UseFormWatch<Inputs>;
     setValue: UseFormSetValue<Inputs>;

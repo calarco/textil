@@ -62,6 +62,7 @@ const Span = transition.span.attrs({
         exit: 150,
     },
 })`
+    will-change: opacity;
     font: inherit;
     color: inherit;
     margin: 0;

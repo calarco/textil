@@ -25,8 +25,8 @@ const useTotal = ({ gte, lte }: HookProps) => {
                     $total: true,
                 },
             })
-            .then((result: Total) => {
-                setPagos(result.data[0].total);
+            .then((response: Total) => {
+                setPagos(response.data[0].total);
             })
             .catch((error: FeathersErrorJSON) => {
                 setPagos(0);
@@ -48,8 +48,8 @@ const useTotal = ({ gte, lte }: HookProps) => {
                     $total: true,
                 },
             })
-            .then((result: Total) => {
-                setCobros(result.data[0].total);
+            .then((response: Total) => {
+                setCobros(response.data[0].total);
             })
             .catch((error: FeathersErrorJSON) => {
                 setCobros(0);

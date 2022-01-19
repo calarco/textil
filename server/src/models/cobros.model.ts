@@ -17,7 +17,7 @@ export default function (app: Application): typeof Model {
                 type: DataTypes.DECIMAL(10, 2),
                 allowNull: false,
             },
-            ingresoDate: {
+            emisionDate: {
                 type: DataTypes.DATEONLY,
                 allowNull: false,
             },
@@ -73,9 +73,9 @@ export default function (app: Application): typeof Model {
     (cobros as any).associate = function (models: any): void {
         // Define associations here
         // See http://docs.sequelizejs.com/en/latest/docs/associations/
-        cobros.belongsTo(models.clientes);
+        cobros.belongsTo(models.libradores);
         cobros.belongsTo(models.bancos);
-        cobros.belongsTo(models.proveedores);
+        cobros.belongsTo(models.destinatarios);
     };
 
     return cobros;

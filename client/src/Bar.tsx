@@ -47,7 +47,7 @@ const Bar = function ({
         <Container>
             <div>
                 <button onClick={() => setRoute("cheques")}>Cheques</button>
-                <button onClick={() => setRoute("cuentas")}>Cuentas</button>
+                <button onClick={() => setRoute("saldos")}>Saldos</button>
             </div>
             {darkTheme ? (
                 <button

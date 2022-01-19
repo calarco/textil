@@ -5,40 +5,12 @@ type Pagos = {
     data: Pago[];
 };
 
-type Cobros = {
-    total: number;
-    limit: number;
-    skip: number;
-    data: Cobro[];
-};
-
-type Proveedores = {
-    total: number;
-    limit: number;
-    skip: number;
-    data: Proveedor[];
-};
-
-type Clientes = {
-    total: number;
-    limit: number;
-    skip: number;
-    data: Cliente[];
-};
-
-type Bancos = {
-    total: number;
-    limit: number;
-    skip: number;
-    data: Banco[];
-};
-
 type Pago = {
     id: number;
+    emisionDate: string;
     pagoDate: string;
     monto: number;
-    proveedoreId: number;
-    emisionDate: string;
+    destinatarioId: number;
     numero: string;
     observaciones: string;
     estado: string;
@@ -46,20 +18,41 @@ type Pago = {
     updatedAt: string;
 };
 
+type Cobros = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Cobro[];
+};
+
 type Cobro = {
     id: number;
-    ingresoDate: string;
-    monto: number;
-    clienteId: number;
+    emisionDate: string;
     depositoDate: string;
-    bancoId: number;
+    monto: number;
+    libradoreId: number;
     numero: string;
+    bancoId: number;
     titular?: string;
     cuit?: string;
     observaciones: string;
     estado: string;
     salidaDate?: string;
-    proveedoreId?: number;
+    destinatarioId?: number;
+    createdAt: string;
+    updatedAt: string;
+};
+
+type Genericos = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Generico[];
+};
+
+type Generico = {
+    id: number;
+    nombre: string;
     createdAt: string;
     updatedAt: string;
 };
@@ -71,23 +64,60 @@ type Total = {
     data: [{ total: number }];
 };
 
-type Proveedor = {
+type Saldo = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: [{ debe: number; haber: number }];
+};
+
+type Cuentas = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Cuenta[];
+};
+
+type Cuenta = {
     id: number;
     nombre: string;
+    descripcion: string;
     createdAt: string;
     updatedAt: string;
 };
 
-type Cliente = {
+type Compras = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Compra[];
+};
+
+type Compra = {
     id: number;
-    nombre: string;
+    fecha: string;
+    debe: number;
+    haber: number;
+    comprobante: string;
+    proveedoreId: number;
     createdAt: string;
     updatedAt: string;
 };
 
-type Banco = {
+type Ventas = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Venta[];
+};
+
+type Venta = {
     id: number;
-    nombre: string;
+    fecha: string;
+    debe: number;
+    haber: number;
+    comprobante: string;
+    clienteId: number;
     createdAt: string;
     updatedAt: string;
 };

@@ -9,20 +9,19 @@ import ButtonsComponent from "components/Buttons";
 import Currency from "components/Currency";
 import Day from "components/Day";
 import Remove from "components/Remove";
-import PagarForm from "forms/PagarForm";
+import PagoForm from "forms/PagoForm";
 
 const Box = styled.ul`
+    height: 3rem;
     display: grid;
-    grid-template-columns: 10.5rem 1fr 1fr 10.5rem [end];
+    grid-template-columns: 10.5rem 3fr 2fr 10.5rem [end];
     gap: 1.5rem;
+    align-items: center;
     text-align: center;
-
-    > li {
-        padding: 0.75rem 1.75rem;
-    }
 
     > li:nth-child(3) {
         text-align: right;
+        padding: 0 0.75rem;
     }
 `;
 
@@ -53,7 +52,7 @@ function Pago({
 }: ComponentProps) {
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
-    const { getProveedor } = useCheques();
+    const { getDestinatario } = useCheques();
 
     useEffect(() => {
         !overlay && setForm(false);
@@ -75,7 +74,7 @@ function Pago({
                     <Day date={pago.pagoDate} />
                 </li>
                 <li>
-                    <p>{getProveedor(pago.proveedoreId)}</p>
+                    <p>{getDestinatario(pago.destinatarioId)}</p>
                 </li>
                 <li>
                     <Currency number={pago.monto} />
@@ -116,8 +115,8 @@ function Pago({
                         isActive={isActive && remove}
                         exit={() => setRemove(false)}
                     />
-                    <PagarForm
-                        data={pago}
+                    <PagoForm
+                        pago={pago}
                         isActive={isActive && form ? true : false}
                         close={() => setOverlay(false)}
                     />

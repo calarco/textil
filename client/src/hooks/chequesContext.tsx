@@ -8,25 +8,25 @@ import {
 import feathersClient from "feathersClient";
 
 type ContextType = {
-    getProveedor: (proveedorId: number) => string;
-    getCliente: (clienteId: number) => string;
+    getDestinatario: (destinatarioId: number) => string;
+    getLibrador: (libradoreId: number) => string;
     getBanco: (bancoId: number) => string;
-    proveedores: Proveedores;
-    clientes: Clientes;
-    bancos: Bancos;
+    destinatarios: Genericos;
+    libradores: Genericos;
+    bancos: Genericos;
 };
 
 const ChequesContext = createContext<ContextType>({
-    getProveedor: () => "",
-    getCliente: () => "",
+    getDestinatario: () => "",
+    getLibrador: () => "",
     getBanco: () => "",
-    proveedores: {
+    destinatarios: {
         total: 0,
         limit: 0,
         skip: 0,
         data: [],
     },
-    clientes: {
+    libradores: {
         total: 0,
         limit: 0,
         skip: 0,
@@ -45,19 +45,19 @@ type ComponentProps = {
 };
 
 function ChequesProvider({ children }: ComponentProps) {
-    const [proveedores, setProveedores] = useState<Proveedores>({
+    const [destinatarios, setDestinatarios] = useState<Genericos>({
         total: 0,
         limit: 0,
         skip: 0,
         data: [],
     });
-    const [clientes, setClientes] = useState<Clientes>({
+    const [libradores, setLibradores] = useState<Genericos>({
         total: 0,
         limit: 0,
         skip: 0,
         data: [],
     });
-    const [bancos, setBancos] = useState<Bancos>({
+    const [bancos, setBancos] = useState<Genericos>({
         total: 0,
         limit: 0,
         skip: 0,
@@ -66,7 +66,7 @@ function ChequesProvider({ children }: ComponentProps) {
 
     function loadData() {
         feathersClient
-            .service("proveedores")
+            .service("destinatarios")
             .find({
                 query: {
                     $limit: 100,
@@ -75,14 +75,14 @@ function ChequesProvider({ children }: ComponentProps) {
                     },
                 },
             })
-            .then((found: Proveedores) => {
-                found.data[0] && setProveedores(found);
+            .then((response: Genericos) => {
+                response.data[0] && setDestinatarios(response);
             })
             .catch((error: FeathersErrorJSON) => {
                 console.error(error);
             });
         feathersClient
-            .service("clientes")
+            .service("libradores")
             .find({
                 query: {
                     $limit: 200,
@@ -91,8 +91,8 @@ function ChequesProvider({ children }: ComponentProps) {
                     },
                 },
             })
-            .then((found: Clientes) => {
-                found.data[0] && setClientes(found);
+            .then((response: Genericos) => {
+                response.data[0] && setLibradores(response);
             })
             .catch((error: FeathersErrorJSON) => {
                 console.error(error);
@@ -107,26 +107,26 @@ function ChequesProvider({ children }: ComponentProps) {
                     },
                 },
             })
-            .then((found: Bancos) => {
-                found.data[0] && setBancos(found);
+            .then((response: Genericos) => {
+                response.data[0] && setBancos(response);
             })
             .catch((error: FeathersErrorJSON) => {
                 console.error(error);
             });
     }
 
-    const getProveedor = (proveedorId: number) => {
+    const getDestinatario = (destinatarioId: number) => {
         try {
-            return proveedores.data.find(({ id }) => id === proveedorId)!
+            return destinatarios.data.find(({ id }) => id === destinatarioId)!
                 .nombre;
         } catch {
             return "error";
         }
     };
 
-    const getCliente = (clienteId: number) => {
+    const getLibrador = (libradoreId: number) => {
         try {
-            return clientes.data.find(({ id }) => id === clienteId)!.nombre;
+            return libradores.data.find(({ id }) => id === libradoreId)!.nombre;
         } catch {
             return "error";
         }
@@ -142,19 +142,19 @@ function ChequesProvider({ children }: ComponentProps) {
 
     useEffect(() => {
         loadData();
-        feathersClient.service("proveedores").on("created", () => loadData());
-        feathersClient.service("clientes").on("created", () => loadData());
+        feathersClient.service("destinatarios").on("created", () => loadData());
+        feathersClient.service("libradores").on("created", () => loadData());
         feathersClient.service("bancos").on("created", () => loadData());
     }, []);
 
     return (
         <ChequesContext.Provider
             value={{
-                getProveedor: getProveedor,
-                getCliente: getCliente,
+                getDestinatario: getDestinatario,
+                getLibrador: getLibrador,
                 getBanco: getBanco,
-                proveedores: proveedores,
-                clientes: clientes,
+                destinatarios: destinatarios,
+                libradores: libradores,
                 bancos: bancos,
             }}
         >

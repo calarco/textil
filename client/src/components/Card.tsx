@@ -31,7 +31,7 @@ const Container = styled.div<Props>`
             bottom: 0;
             z-index: 1000;
             background: var(--primary-variant);
-            backdrop-filter: blur(0.4rem);
+            backdrop-filter: blur(0.7rem);
             box-shadow: var(--shadow-variant);
             transition: 0.3s ease-out;
 

@@ -5,29 +5,25 @@ import feathersClient from "feathersClient";
 import styled from "styled-components";
 
 import { useCheques } from "hooks/chequesContext";
-import FormComponent from "components/Form";
+import Form from "components/Form";
 import ExpandComponent from "components/Expand";
 import Label from "components/Label";
 import CurrencyInput from "components/CurrencyInput";
 import Select from "components/Select";
 
-const Form = styled(FormComponent)`
-    grid-template-columns: 2fr 3fr 2fr [end];
-`;
-
 const Expand = styled(ExpandComponent)`
-    grid-column-end: span 3;
+    grid-column-end: span 7;
     gap: inherit;
     grid-template-columns: inherit;
 `;
 
 type ComponentProps = {
-    data?: Cobro;
+    cobro?: Cobro;
     isActive: boolean;
     close: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
+const CobroForm = function ({ cobro, isActive, close }: ComponentProps) {
     const {
         register,
         handleSubmit,
@@ -38,34 +34,34 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
         formState: { errors },
     } = useForm<Inputs>({
         defaultValues: {
-            cliente: "",
+            librador: "",
             banco: "",
-            proveedor: "",
-            depositoDate: data?.depositoDate,
-            monto: data?.monto
-                ? `$${data.monto.toString().replace(/\./g, ",")}`
+            destinatario: "",
+            depositoDate: cobro?.depositoDate,
+            monto: cobro?.monto
+                ? `$${cobro.monto.toString().replace(/\./g, ",")}`
                 : "",
-            clienteId: data?.clienteId || 0,
-            ingresoDate:
-                data?.ingresoDate || new Date().toISOString().substring(0, 10),
-            bancoId: data?.bancoId || 0,
-            numero: data?.numero || "",
-            titular: data?.titular || "",
-            cuit: data?.cuit || "",
-            observaciones: data?.observaciones || "",
-            estado: data?.estado || "A depositar",
-            salidaDate: data?.salidaDate,
-            proveedoreId: data?.proveedoreId,
+            libradoreId: cobro?.libradoreId || 0,
+            emisionDate:
+                cobro?.emisionDate || new Date().toISOString().substring(0, 10),
+            bancoId: cobro?.bancoId || 0,
+            numero: cobro?.numero || "",
+            titular: cobro?.titular || "",
+            cuit: cobro?.cuit || "",
+            observaciones: cobro?.observaciones || "",
+            estado: cobro?.estado || "A depositar",
+            salidaDate: cobro?.salidaDate,
+            destinatarioId: cobro?.destinatarioId,
         },
     });
-    const { clientes, proveedores, bancos } = useCheques();
+    const { libradores, destinatarios, bancos } = useCheques();
 
     const onSubmit: SubmitHandler<Inputs> = (inputs) => {
         const payload = {
             depositoDate: inputs.depositoDate,
             monto: inputs.monto.slice(1).replace(/\./g, "").replace(/,/g, "."),
-            clienteId: inputs.clienteId,
-            ingresoDate: inputs.ingresoDate,
+            libradoreId: inputs.libradoreId,
+            emisionDate: inputs.emisionDate,
             bancoId: inputs.bancoId,
             numero: inputs.numero,
             titular: inputs.titular,
@@ -73,12 +69,12 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
             observaciones: inputs.observaciones,
             estado: inputs.estado,
             salidaDate: inputs.salidaDate,
-            proveedoreId: inputs.proveedoreId,
+            destinatarioId: inputs.destinatarioId,
         };
-        data
+        cobro
             ? feathersClient
                   .service("cobros")
-                  .patch(data.id, payload)
+                  .patch(cobro.id, payload)
                   .then(() => {})
                   .catch((error: FeathersErrorJSON) => {
                       console.error(error.message);
@@ -94,15 +90,16 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
 
     useEffect(() => {
         reset();
-    }, [data, isActive, reset]);
+    }, [cobro, isActive, reset]);
 
     return (
         <Form
             isActive={isActive}
             onSubmit={handleSubmit(onSubmit)}
             close={close}
+            length={7}
         >
-            <Label title="Estado">
+            <Label title="Estado" length={2}>
                 <select {...register("estado")}>
                     <option value="A depositar">A depositar</option>
                     <option value="Depositado">Depositado</option>
@@ -115,17 +112,18 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                 </select>
             </Label>
             <Select
-                nameId="clienteId"
-                name="cliente"
-                nameService="clientes"
-                list={clientes}
+                nameId="libradoreId"
+                name="librador"
+                nameService="libradores"
+                list={libradores}
                 register={register}
                 watch={watch}
                 setValue={setValue}
-                error={errors.clienteId?.message}
+                error={errors.libradoreId?.message}
+                length={3}
             />
-            <Label title="Monto" error={errors.monto?.message}>
-                <CurrencyInput control={control} />
+            <Label title="Monto" error={errors.monto?.message} length={2}>
+                <CurrencyInput name="monto" control={control} />
             </Label>
             <Expand
                 isActive={
@@ -137,6 +135,7 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                 <Label
                     title="Fecha de salida"
                     error={errors.salidaDate?.message}
+                    length={2}
                 >
                     <input
                         type="date"
@@ -151,21 +150,22 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     />
                 </Label>
                 <Select
-                    nameId="proveedoreId"
-                    name="proveedor"
-                    nameService="proveedores"
-                    list={proveedores}
+                    nameId="destinatarioId"
+                    name="destinatario"
+                    nameService="destinatarios"
+                    list={destinatarios}
                     register={register}
                     watch={watch}
                     setValue={setValue}
-                    length={2}
-                    error={errors.proveedoreId?.message}
+                    length={5}
+                    error={errors.destinatarioId?.message}
                     disabled={watch("estado") === "Posdatado"}
                 />
             </Expand>
             <Label
                 title="Fecha de deposito"
                 error={errors.depositoDate?.message}
+                length={2}
             >
                 <input
                     type="date"
@@ -175,7 +175,11 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     })}
                 />
             </Label>
-            <Label title="Numero de cheque" error={errors.numero?.message}>
+            <Label
+                title="Numero de cheque"
+                error={errors.numero?.message}
+                length={3}
+            >
                 <input
                     type="text"
                     placeholder="-"
@@ -185,13 +189,17 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     })}
                 />
             </Label>
-            <Label title="Fecha de ingreso" error={errors.ingresoDate?.message}>
+            <Label
+                title="Fecha de emision"
+                error={errors.emisionDate?.message}
+                length={2}
+            >
                 <input
                     type="date"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("ingresoDate", {
-                        required: "Ingrese la fecha de ingreso",
+                    {...register("emisionDate", {
+                        required: "Ingrese la fecha de emision",
                     })}
                 />
             </Label>
@@ -204,8 +212,13 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                 watch={watch}
                 setValue={setValue}
                 error={errors.bancoId?.message}
+                length={2}
             />
-            <Label title="Titular del cheque" error={errors.titular?.message}>
+            <Label
+                title="Titular del cheque"
+                error={errors.titular?.message}
+                length={3}
+            >
                 <input
                     type="text"
                     placeholder="-"
@@ -213,7 +226,7 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     {...register("titular", { required: "Ingrese el titular" })}
                 />
             </Label>
-            <Label title="CUIT" error={errors.cuit?.message}>
+            <Label title="CUIT" error={errors.cuit?.message} length={2}>
                 <Controller
                     name={"cuit"}
                     control={control}
@@ -245,7 +258,7 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
                     )}
                 />
             </Label>
-            <Label title="Observaciones" length={3}>
+            <Label title="Observaciones" length={7}>
                 <input
                     type="text"
                     placeholder="-"
@@ -257,4 +270,4 @@ const CobrarForm = function ({ data, isActive, close }: ComponentProps) {
     );
 };
 
-export default CobrarForm;
+export default CobroForm;
