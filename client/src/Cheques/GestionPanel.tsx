@@ -1,24 +1,13 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
 
-import { ChequesProvider } from "hooks/chequesContext";
+import { ChequesProvider } from "./hooks/chequesContext";
+import Panel from "components/Panel";
 import Section from "components/Section";
 import Header from "./GestionHeader";
-import Pagos from "lists/Pagos";
-import Cobros from "lists/Cobros";
+import Pagos from "Cheques/lists/PagosList";
+import Cobros from "Cheques/lists/CobrosList";
 
-const Container = styled.div`
-    position: relative;
-    height: calc(100vh - 4.75rem);
-    border-radius: 4px;
-    background: var(--surface-variant);
-    outline: var(--border-variant);
-    box-shadow: var(--shadow-variant);
-    display: grid;
-    grid-template-rows: auto 1fr;
-`;
-
-function Gestion() {
+function GestionPanel() {
     const [estado, setEstado] = useState("A pagar");
     const [sort, setSort] = useState("pagoDate");
     const [tab, setTab] = useState(false);
@@ -31,12 +20,12 @@ function Gestion() {
 
     return (
         <ChequesProvider>
-            <Container>
+            <Panel>
                 <Header
-                    tab={tab}
-                    onClick={() => setTab(!tab)}
                     estado={estado}
                     setEstado={setEstado}
+                    tab={tab}
+                    switchTab={() => setTab(!tab)}
                     sort={sort}
                     setSort={setSort}
                     overlay={overlay}
@@ -65,9 +54,9 @@ function Gestion() {
                         />
                     )}
                 </Section>
-            </Container>
+            </Panel>
         </ChequesProvider>
     );
 }
 
-export default Gestion;
+export default GestionPanel;

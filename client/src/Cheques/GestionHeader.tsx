@@ -3,8 +3,8 @@ import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
-import PagoForm from "forms/PagoForm";
-import CobroForm from "forms/CobroForm";
+import PagoForm from "./forms/PagoForm";
+import CobroForm from "./forms/CobroForm";
 import Overlay from "components/Overlay";
 
 const Container = styled.div`
@@ -181,7 +181,7 @@ const Sort = styled.label<Props>`
 
 type ComponentProps = {
     tab: boolean;
-    onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+    switchTab: (e: MouseEvent<HTMLButtonElement>) => void;
     estado: string;
     setEstado: (estado: string) => void;
     sort: string;
@@ -192,7 +192,7 @@ type ComponentProps = {
 
 function GestionHeader({
     tab,
-    onClick,
+    switchTab,
     estado,
     setEstado,
     sort,
@@ -249,10 +249,10 @@ function GestionHeader({
                 </Filter>
             </SwitchTransition>
             <Tabs>
-                <Tab isActive={!tab} onClick={onClick}>
+                <Tab isActive={!tab} onClick={switchTab}>
                     Pagos
                 </Tab>
-                <Tab isActive={tab} onClick={onClick}>
+                <Tab isActive={tab} onClick={switchTab}>
                     Cobros
                 </Tab>
             </Tabs>

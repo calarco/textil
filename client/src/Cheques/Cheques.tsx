@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import Calendar from "./Calendar";
-import Gestion from "./Gestion";
+import Calendar from "./CalendarPanel";
+import Gestion from "./GestionPanel";
 
 const Container = styled.div`
     width: 100vw;

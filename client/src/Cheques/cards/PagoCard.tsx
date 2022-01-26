@@ -1,28 +1,32 @@
 import { MouseEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
+import { useCheques } from "../hooks/chequesContext";
 import Card from "components/Card";
 import Expand from "components/Expand";
-import Details from "components/Details";
+import DetailsComponent from "components/Details";
 import ButtonsComponent from "components/Buttons";
 import Currency from "components/Currency";
 import Day from "components/Day";
 import Remove from "components/Remove";
-import CompraForm from "forms/CompraForm";
+import PagoForm from "../forms/PagoForm";
 
 const Box = styled.ul`
     height: 3rem;
     display: grid;
-    grid-template-columns: 10rem 1fr 1fr [end];
+    grid-template-columns: 10.5rem 3fr 2fr 10.5rem [end];
     gap: 1.5rem;
     align-items: center;
     text-align: center;
 
-    > li:nth-child(2),
     > li:nth-child(3) {
         text-align: right;
-        padding: 0 1.75rem;
+        padding: 0 0.75rem;
     }
+`;
+
+const Details = styled(DetailsComponent)`
+    grid-template-columns: 1fr 2fr 1fr;
 `;
 
 const Buttons = styled(ButtonsComponent)`
@@ -30,7 +34,7 @@ const Buttons = styled(ButtonsComponent)`
 `;
 
 type ComponentProps = {
-    compra: Compra;
+    pago: Pago;
     isActive: boolean;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
@@ -38,8 +42,8 @@ type ComponentProps = {
     className?: string;
 };
 
-function Compra({
-    compra,
+function PagoCard({
+    pago,
     isActive,
     overlay,
     setOverlay,
@@ -48,6 +52,7 @@ function Compra({
 }: ComponentProps) {
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
+    const { getDestinatario } = useCheques();
 
     useEffect(() => {
         !overlay && setForm(false);
@@ -66,20 +71,31 @@ function Compra({
         >
             <Box onClick={onClick}>
                 <li>
-                    <Day date={compra.fecha} />
+                    <Day date={pago.pagoDate} />
                 </li>
                 <li>
-                    <Currency number={compra.debe} />
+                    <p>{getDestinatario(pago.destinatarioId)}</p>
                 </li>
                 <li>
-                    <Currency number={compra.haber} />
+                    <Currency number={pago.monto} />
+                </li>
+                <li>
+                    <Day date={pago.emisionDate} />
                 </li>
             </Box>
-            <Expand isActive={isActive} height={5.75}>
+            <Expand isActive={isActive} height={6}>
                 <Details>
                     <label>
-                        Comprobante
-                        <pre>{compra.comprobante || "-"}</pre>
+                        Numero
+                        <p>{pago.numero}</p>
+                    </label>
+                    <label>
+                        Observaciones
+                        <p>{pago.observaciones || "-"}</p>
+                    </label>
+                    <label>
+                        Estado
+                        <p>{pago.estado}</p>
                     </label>
                 </Details>
                 <Buttons>
@@ -94,15 +110,14 @@ function Compra({
             {isActive && (
                 <>
                     <Remove
-                        id={compra.id}
-                        service="compras"
+                        id={pago.id}
+                        service="pagos"
                         isActive={isActive && remove}
                         exit={() => setRemove(false)}
                     />
-                    <CompraForm
-                        proveedoreId={compra.id}
-                        compra={compra}
-                        isActive={form}
+                    <PagoForm
+                        pago={pago}
+                        isActive={isActive && form ? true : false}
                         close={() => setOverlay(false)}
                     />
                 </>
@@ -111,4 +126,4 @@ function Compra({
     );
 }
 
-export default Compra;
+export default PagoCard;

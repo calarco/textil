@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import useCuentas from "hooks/useCuentas";
+import useCuentas from "../hooks/useCuentas";
 import List from "components/List";
 import Create from "components/Create";
-import Cuenta from "cards/Cuenta";
-import CuentaForm from "forms/CuentaForm";
+import Cuenta from "Saldos/cards/CuentaCard";
+import CuentaForm from "../forms/CuentaForm";
 
 const Empty = styled.h5`
     padding: 2rem;
@@ -21,7 +21,7 @@ type ComponentProps = {
     setOverlay: (overlay: boolean) => void;
 };
 
-function Cuentas({
+function CuentasList({
     service,
     cuentaId,
     setCuentaId,
@@ -73,4 +73,4 @@ function Cuentas({
     );
 }
 
-export default Cuentas;
+export default CuentasList;

@@ -1,32 +1,28 @@
 import { MouseEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
-import { useCheques } from "hooks/chequesContext";
 import Card from "components/Card";
 import Expand from "components/Expand";
-import DetailsComponent from "components/Details";
+import Details from "components/Details";
 import ButtonsComponent from "components/Buttons";
 import Currency from "components/Currency";
 import Day from "components/Day";
 import Remove from "components/Remove";
-import PagoForm from "forms/PagoForm";
+import VentaForm from "../forms/VentaForm";
 
 const Box = styled.ul`
     height: 3rem;
     display: grid;
-    grid-template-columns: 10.5rem 3fr 2fr 10.5rem [end];
+    grid-template-columns: 10rem 1fr 1fr [end];
     gap: 1.5rem;
     align-items: center;
     text-align: center;
 
+    > li:nth-child(2),
     > li:nth-child(3) {
         text-align: right;
-        padding: 0 0.75rem;
+        padding: 0 1.75rem;
     }
-`;
-
-const Details = styled(DetailsComponent)`
-    grid-template-columns: 1fr 2fr 1fr;
 `;
 
 const Buttons = styled(ButtonsComponent)`
@@ -34,7 +30,7 @@ const Buttons = styled(ButtonsComponent)`
 `;
 
 type ComponentProps = {
-    pago: Pago;
+    venta: Venta;
     isActive: boolean;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
@@ -42,8 +38,8 @@ type ComponentProps = {
     className?: string;
 };
 
-function Pago({
-    pago,
+function VentaCard({
+    venta,
     isActive,
     overlay,
     setOverlay,
@@ -52,7 +48,6 @@ function Pago({
 }: ComponentProps) {
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
-    const { getDestinatario } = useCheques();
 
     useEffect(() => {
         !overlay && setForm(false);
@@ -71,31 +66,20 @@ function Pago({
         >
             <Box onClick={onClick}>
                 <li>
-                    <Day date={pago.pagoDate} />
+                    <Day date={venta.fecha} />
                 </li>
                 <li>
-                    <p>{getDestinatario(pago.destinatarioId)}</p>
+                    <Currency number={venta.debe} />
                 </li>
                 <li>
-                    <Currency number={pago.monto} />
-                </li>
-                <li>
-                    <Day date={pago.emisionDate} />
+                    <Currency number={venta.haber} />
                 </li>
             </Box>
-            <Expand isActive={isActive} height={6}>
+            <Expand isActive={isActive} height={5.75}>
                 <Details>
                     <label>
-                        Numero
-                        <p>{pago.numero}</p>
-                    </label>
-                    <label>
-                        Observaciones
-                        <p>{pago.observaciones || "-"}</p>
-                    </label>
-                    <label>
-                        Estado
-                        <p>{pago.estado}</p>
+                        Comprobante
+                        <pre>{venta.comprobante || "-"}</pre>
                     </label>
                 </Details>
                 <Buttons>
@@ -110,14 +94,15 @@ function Pago({
             {isActive && (
                 <>
                     <Remove
-                        id={pago.id}
-                        service="pagos"
+                        id={venta.id}
+                        service="ventas"
                         isActive={isActive && remove}
                         exit={() => setRemove(false)}
                     />
-                    <PagoForm
-                        pago={pago}
-                        isActive={isActive && form ? true : false}
+                    <VentaForm
+                        clienteId={venta.id}
+                        venta={venta}
+                        isActive={form}
                         close={() => setOverlay(false)}
                     />
                 </>
@@ -126,4 +111,4 @@ function Pago({
     );
 }
 
-export default Pago;
+export default VentaCard;

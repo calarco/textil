@@ -2,20 +2,10 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import Header from "./CalendarHeader";
+import Panel from "components/Panel";
 import SectionComponent from "components/Section";
 import List from "components/List";
-import Month from "cards/MonthCheques";
-
-const Container = styled.div`
-    position: relative;
-    height: calc(100vh - 4.75rem);
-    border-radius: 4px;
-    background: var(--surface-variant);
-    outline: var(--border-variant);
-    box-shadow: var(--shadow-variant);
-    display: grid;
-    grid-template-rows: auto 1fr;
-`;
+import Month from "./cards/MonthCard";
 
 const Section = styled(SectionComponent)`
     overflow: auto;
@@ -24,13 +14,13 @@ const Section = styled(SectionComponent)`
     box-shadow: var(--shadow);
 `;
 
-function Calendar() {
+function CalendarPanel() {
     const [year, setYear] = useState(new Date().getFullYear());
     const [month, setMonth] = useState(new Date().getMonth());
     const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
     return (
-        <Container>
+        <Panel>
             <Header year={year} setYear={setYear} />
             <Section>
                 <List>
@@ -45,8 +35,8 @@ function Calendar() {
                     ))}
                 </List>
             </Section>
-        </Container>
+        </Panel>
     );
 }
 
-export default Calendar;
+export default CalendarPanel;

@@ -1,13 +1,13 @@
 import { MouseEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
-import useSaldo from "hooks/useSaldo";
+import useSaldo from "../hooks/useSaldo";
 import Card from "components/Card";
 import Expand from "components/Expand";
 import ButtonsComponent from "components/Buttons";
 import Currency from "components/Currency";
 import Remove from "components/Remove";
-import CuentaForm from "forms/CuentaForm";
+import CuentaForm from "../forms/CuentaForm";
 
 const Box = styled.ul`
     height: 4.5rem;
@@ -46,7 +46,7 @@ type ComponentProps = {
     className?: string;
 };
 
-function Cuenta({
+function CuentaCard({
     service,
     cuenta,
     isActive,
@@ -116,4 +116,4 @@ function Cuenta({
     );
 }
 
-export default Cuenta;
+export default CuentaCard;

@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-import useSaldo from "hooks/useSaldo";
+import useSaldo from "../hooks/useSaldo";
 import Card from "components/Card";
 import Expand from "components/Expand";
 import Details from "components/Details";
@@ -36,7 +36,7 @@ type ComponentProps = {
     setActive: (active: number) => void;
 };
 
-function Month({ year, month, isActive, setActive }: ComponentProps) {
+function MonthCard({ year, month, isActive, setActive }: ComponentProps) {
     const { saldo: compras } = useSaldo({
         service: "compras",
         gte: `${year}-${(month + 1).toString().padStart(2, "0")}-01`,
@@ -87,4 +87,4 @@ function Month({ year, month, isActive, setActive }: ComponentProps) {
     );
 }
 
-export default Month;
+export default MonthCard;

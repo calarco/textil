@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import usePagos from "hooks/usePagos";
+import useCobros from "../hooks/useCobros";
 import List from "components/List";
-import Pago from "cards/Pago";
+import Cobro from "../cards/CobroCard";
 
 const Empty = styled.h5`
     padding: 2rem;
@@ -18,29 +18,29 @@ type ComponentProps = {
     setOverlay: (overlay: boolean) => void;
 };
 
-function Pagos({ estado, sort, overlay, setOverlay }: ComponentProps) {
+function CobrosList({ estado, sort, overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
-    const { pagos } = usePagos({ estado: estado, sort: sort });
+    const { cobros } = useCobros({ estado: estado, sort: sort });
 
     useEffect(() => {
         setOverlay(false);
-    }, [pagos, setOverlay]);
+    }, [cobros, setOverlay]);
 
     return (
         <List switchOn={sort}>
-            {pagos.data[0] ? (
-                pagos.data[0].id !== 0 &&
-                pagos.data.map((pago) => (
-                    <Pago
-                        key={pago.id}
-                        pago={pago}
-                        isActive={pago.id === active}
+            {cobros.data[0] ? (
+                cobros.data[0].id !== 0 &&
+                cobros.data.map((cobro) => (
+                    <Cobro
+                        key={cobro.id}
+                        cobro={cobro}
+                        isActive={cobro.id === active}
                         overlay={overlay}
                         setOverlay={setOverlay}
                         onClick={() =>
-                            pago.id === active
+                            cobro.id === active
                                 ? setActive(0)
-                                : setActive(pago.id)
+                                : setActive(cobro.id)
                         }
                     />
                 ))
@@ -51,4 +51,4 @@ function Pagos({ estado, sort, overlay, setOverlay }: ComponentProps) {
     );
 }
 
-export default Pagos;
+export default CobrosList;

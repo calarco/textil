@@ -16,15 +16,23 @@ const useSaldo = ({ service, id, gte, lte }: HookProps) => {
         feathersClient
             .service(service)
             .find({
-                query: {
-                    $limit: 50,
-                    [service === "compras" ? "proveedoreId" : "clienteId"]: id,
-                    fecha: {
-                        $gte: gte,
-                        $lte: lte,
-                    },
-                    $saldo: true,
-                },
+                query:
+                    gte && lte
+                        ? {
+                              $limit: 50,
+                              fecha: {
+                                  $gte: gte,
+                                  $lte: lte,
+                              },
+                              $saldo: true,
+                          }
+                        : {
+                              $limit: 50,
+                              [service === "compras"
+                                  ? "proveedoreId"
+                                  : "clienteId"]: id,
+                              $saldo: true,
+                          },
             })
             .then((response: Saldo) => {
                 setSaldo(response.data[0].debe - response.data[0].haber);

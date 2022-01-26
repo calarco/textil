@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
-import useSaldo from "hooks/useSaldo";
+import useSaldo from "./hooks/useSaldo";
 import Details from "components/Details";
 import Currency from "components/Currency";
 

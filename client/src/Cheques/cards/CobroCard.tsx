@@ -1,7 +1,7 @@
 import { MouseEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
-import { useCheques } from "hooks/chequesContext";
+import { useCheques } from "../hooks/chequesContext";
 import Card from "components/Card";
 import Expand from "components/Expand";
 import DetailsComponent from "components/Details";
@@ -9,7 +9,7 @@ import ButtonsComponent from "components/Buttons";
 import Currency from "components/Currency";
 import Day from "components/Day";
 import Remove from "components/Remove";
-import CobroForm from "forms/CobroForm";
+import CobroForm from "../forms/CobroForm";
 
 const Box = styled.ul`
     height: 3rem;
@@ -44,7 +44,7 @@ type ComponentProps = {
     className?: string;
 };
 
-function Cobro({
+function CobroCard({
     cobro,
     isActive,
     overlay,
@@ -140,4 +140,4 @@ function Cobro({
     );
 }
 
-export default Cobro;
+export default CobroCard;

@@ -4,7 +4,7 @@ import MaskedInput from "react-text-mask";
 import feathersClient from "feathersClient";
 import styled from "styled-components";
 
-import { useCheques } from "hooks/chequesContext";
+import { useCheques } from "../hooks/chequesContext";
 import Form from "components/Form";
 import ExpandComponent from "components/Expand";
 import Label from "components/Label";

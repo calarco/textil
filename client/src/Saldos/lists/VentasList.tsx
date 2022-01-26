@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import useCompras from "hooks/useCompras";
+import useVentas from "../hooks/useVentas";
 import List from "components/List";
 import Create from "components/Create";
-import Compra from "cards/Compra";
-import CompraForm from "forms/CompraForm";
+import Venta from "Saldos/cards/VentaCard";
+import VentaForm from "../forms/VentaForm";
 
 const Empty = styled.h5`
     padding: 2rem;
@@ -14,15 +14,15 @@ const Empty = styled.h5`
 `;
 
 type ComponentProps = {
-    proveedoreId: number;
+    clienteId: number;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
 };
 
-function Compras({ proveedoreId, overlay, setOverlay }: ComponentProps) {
+function VentasList({ clienteId, overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
     const [create, setCreate] = useState(false);
-    const { compras } = useCompras(proveedoreId);
+    const { ventas } = useVentas(clienteId);
 
     useEffect(() => {
         !overlay && setCreate(false);
@@ -34,38 +34,38 @@ function Compras({ proveedoreId, overlay, setOverlay }: ComponentProps) {
 
     useEffect(() => {
         setOverlay(false);
-    }, [compras, setOverlay]);
+    }, [ventas, setOverlay]);
 
     return (
         <List>
             <Create isActive={create} onClick={() => setCreate(true)}>
-                <CompraForm
-                    proveedoreId={proveedoreId}
+                <VentaForm
+                    clienteId={clienteId}
                     isActive={create}
                     close={() => setOverlay(false)}
                 />
             </Create>
-            {compras.data[0] ? (
-                compras.data[0].id !== 0 &&
-                compras.data.map((compra) => (
-                    <Compra
-                        key={compra.id}
-                        compra={compra}
-                        isActive={active === compra.id}
+            {ventas.data[0] ? (
+                ventas.data[0].id !== 0 &&
+                ventas.data.map((venta) => (
+                    <Venta
+                        key={venta.id}
+                        venta={venta}
+                        isActive={active === venta.id}
                         overlay={overlay}
                         setOverlay={setOverlay}
                         onClick={() =>
-                            compra.id === active
+                            venta.id === active
                                 ? setActive(0)
-                                : setActive(compra.id)
+                                : setActive(venta.id)
                         }
                     />
                 ))
             ) : (
-                <Empty>No se encontraron compras</Empty>
+                <Empty>No se encontraron ventas</Empty>
             )}
         </List>
     );
 }
 
-export default Compras;
+export default VentasList;

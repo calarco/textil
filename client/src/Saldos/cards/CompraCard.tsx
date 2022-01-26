@@ -8,7 +8,7 @@ import ButtonsComponent from "components/Buttons";
 import Currency from "components/Currency";
 import Day from "components/Day";
 import Remove from "components/Remove";
-import VentaForm from "forms/VentaForm";
+import CompraForm from "../forms/CompraForm";
 
 const Box = styled.ul`
     height: 3rem;
@@ -30,7 +30,7 @@ const Buttons = styled(ButtonsComponent)`
 `;
 
 type ComponentProps = {
-    venta: Venta;
+    compra: Compra;
     isActive: boolean;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
@@ -38,8 +38,8 @@ type ComponentProps = {
     className?: string;
 };
 
-function Venta({
-    venta,
+function CompraCard({
+    compra,
     isActive,
     overlay,
     setOverlay,
@@ -66,20 +66,20 @@ function Venta({
         >
             <Box onClick={onClick}>
                 <li>
-                    <Day date={venta.fecha} />
+                    <Day date={compra.fecha} />
                 </li>
                 <li>
-                    <Currency number={venta.debe} />
+                    <Currency number={compra.debe} />
                 </li>
                 <li>
-                    <Currency number={venta.haber} />
+                    <Currency number={compra.haber} />
                 </li>
             </Box>
             <Expand isActive={isActive} height={5.75}>
                 <Details>
                     <label>
                         Comprobante
-                        <pre>{venta.comprobante || "-"}</pre>
+                        <pre>{compra.comprobante || "-"}</pre>
                     </label>
                 </Details>
                 <Buttons>
@@ -94,14 +94,14 @@ function Venta({
             {isActive && (
                 <>
                     <Remove
-                        id={venta.id}
-                        service="ventas"
+                        id={compra.id}
+                        service="compras"
                         isActive={isActive && remove}
                         exit={() => setRemove(false)}
                     />
-                    <VentaForm
-                        clienteId={venta.id}
-                        venta={venta}
+                    <CompraForm
+                        proveedoreId={compra.id}
+                        compra={compra}
                         isActive={form}
                         close={() => setOverlay(false)}
                     />
@@ -111,4 +111,4 @@ function Venta({
     );
 }
 
-export default Venta;
+export default CompraCard;
