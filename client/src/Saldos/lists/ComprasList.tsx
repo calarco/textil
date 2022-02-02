@@ -15,14 +15,23 @@ const Empty = styled.h5`
 
 type ComponentProps = {
     proveedoreId: number;
+    sort: string;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
 };
 
-function ComprasList({ proveedoreId, overlay, setOverlay }: ComponentProps) {
+function ComprasList({
+    proveedoreId,
+    sort,
+    overlay,
+    setOverlay,
+}: ComponentProps) {
     const [active, setActive] = useState(0);
     const [create, setCreate] = useState(false);
-    const { compras } = useCompras(proveedoreId);
+    const { compras, loading, error } = useCompras({
+        proveedoreId: proveedoreId,
+        sort: sort,
+    });
 
     useEffect(() => {
         !overlay && setCreate(false);
@@ -37,7 +46,7 @@ function ComprasList({ proveedoreId, overlay, setOverlay }: ComponentProps) {
     }, [compras, setOverlay]);
 
     return (
-        <List>
+        <List switchOn={`${sort}${error}`} loading={loading}>
             <Create isActive={create} onClick={() => setCreate(true)}>
                 <CompraForm
                     proveedoreId={proveedoreId}
@@ -45,8 +54,9 @@ function ComprasList({ proveedoreId, overlay, setOverlay }: ComponentProps) {
                     close={() => setOverlay(false)}
                 />
             </Create>
-            {compras.data[0] ? (
-                compras.data[0].id !== 0 &&
+            {error ? (
+                <Empty>{error}</Empty>
+            ) : (
                 compras.data.map((compra) => (
                     <Compra
                         key={compra.id}
@@ -61,8 +71,6 @@ function ComprasList({ proveedoreId, overlay, setOverlay }: ComponentProps) {
                         }
                     />
                 ))
-            ) : (
-                <Empty>No se encontraron compras</Empty>
             )}
         </List>
     );

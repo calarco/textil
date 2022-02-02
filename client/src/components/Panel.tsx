@@ -5,7 +5,7 @@ import Overlay from "components/Overlay";
 
 const Container = styled.section`
     position: relative;
-    height: calc(100vh - 4.75rem);
+    height: calc(100vh - 4rem);
     border-radius: 4px;
     background: var(--surface-variant);
     outline: var(--border-variant);
@@ -21,13 +21,13 @@ type ComponentProps = {
     className?: string;
 };
 
-function Section({ overlay, cancel, children, className }: ComponentProps) {
+function Panel({ overlay, cancel, children, className }: ComponentProps) {
     return (
         <Container className={className}>
             {children}
-            <Overlay overlay={overlay} cancel={cancel} long />
+            <Overlay overlay={overlay} cancel={cancel} />
         </Container>
     );
 }
 
-export default Section;
+export default Panel;

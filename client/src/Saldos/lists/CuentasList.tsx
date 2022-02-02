@@ -29,7 +29,7 @@ function CuentasList({
     setOverlay,
 }: ComponentProps) {
     const [create, setCreate] = useState(false);
-    const { cuentas } = useCuentas(service);
+    const { cuentas, loading, error } = useCuentas(service);
 
     useEffect(() => {
         !overlay && setCreate(false);
@@ -45,7 +45,7 @@ function CuentasList({
     }, [cuentas, setOverlay, setCuentaId]);
 
     return (
-        <List switchOn={service}>
+        <List switchOn={`${service}${error}`} loading={loading}>
             <Create isActive={create} onClick={() => setCreate(true)}>
                 <CuentaForm
                     service={service}
@@ -53,8 +53,9 @@ function CuentasList({
                     close={() => setOverlay(false)}
                 />
             </Create>
-            {cuentas.data[0] ? (
-                cuentas.data[0].id !== 0 &&
+            {error ? (
+                <Empty>{error}</Empty>
+            ) : (
                 cuentas.data.map((cuenta) => (
                     <Cuenta
                         key={cuenta.id}
@@ -66,8 +67,6 @@ function CuentasList({
                         onClick={() => setCuentaId(cuenta.id)}
                     />
                 ))
-            ) : (
-                <Empty>No se encontraron {service}</Empty>
             )}
         </List>
     );

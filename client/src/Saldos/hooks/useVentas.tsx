@@ -1,16 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
 import feathersClient from "feathersClient";
 
-const useVentas = (clienteId: number) => {
+type ComponentProps = {
+    clienteId: number;
+    sort: string;
+};
+
+const useVentas = ({ clienteId, sort }: ComponentProps) => {
     const [ventas, setVentas] = useState<Ventas>({
         total: 0,
         limit: 0,
         skip: 0,
         data: [],
     });
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     const loadData = useCallback(() => {
+        setError("");
         feathersClient
             .service("ventas")
             .find({
@@ -18,17 +25,21 @@ const useVentas = (clienteId: number) => {
                     $limit: 50,
                     clienteId: clienteId,
                     $sort: {
-                        updatedAt: 1,
+                        [sort]: 1,
                     },
                 },
             })
             .then((response: Ventas) => {
-                setVentas(response);
+                setLoading(false);
+                response.data[0]
+                    ? setVentas(response)
+                    : setError("No se encontraron ventas");
             })
             .catch((error: FeathersErrorJSON) => {
+                setLoading(false);
                 setError(error.message);
             });
-    }, [clienteId]);
+    }, [clienteId, sort]);
 
     useEffect(() => {
         loadData();
@@ -37,7 +48,7 @@ const useVentas = (clienteId: number) => {
         feathersClient.service("ventas").on("removed", () => loadData());
     }, [loadData]);
 
-    return { ventas, error };
+    return { ventas, loading, error };
 };
 
 export default useVentas;

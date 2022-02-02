@@ -87,9 +87,11 @@ const Sort = styled.label<Props>`
 type ComponentProps = {
     tab: boolean;
     switchTab: (e: MouseEvent<HTMLButtonElement>) => void;
+    sort: string;
+    setSort: (sort: string) => void;
 };
 
-function GestionHeader({ tab, switchTab }: ComponentProps) {
+function GestionHeader({ tab, switchTab, sort, setSort }: ComponentProps) {
     return (
         <Container>
             <Tabs>
@@ -103,13 +105,22 @@ function GestionHeader({ tab, switchTab }: ComponentProps) {
                 </div>
             </Tabs>
             <Columns>
-                <Sort isActive={true} onClick={() => {}}>
+                <Sort
+                    isActive={sort === "fecha"}
+                    onClick={() => setSort("fecha")}
+                >
                     Fecha
                 </Sort>
-                <Sort isActive={false} onClick={() => {}}>
+                <Sort
+                    isActive={sort === "debe"}
+                    onClick={() => setSort("debe")}
+                >
                     Debe
                 </Sort>
-                <Sort isActive={false} onClick={() => {}}>
+                <Sort
+                    isActive={sort === "haber"}
+                    onClick={() => setSort("haber")}
+                >
                     Haber
                 </Sort>
             </Columns>

@@ -20,16 +20,20 @@ type ComponentProps = {
 
 function CobrosList({ estado, sort, overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
-    const { cobros } = useCobros({ estado: estado, sort: sort });
+    const { cobros, loading, error } = useCobros({
+        estado: estado,
+        sort: sort,
+    });
 
     useEffect(() => {
         setOverlay(false);
     }, [cobros, setOverlay]);
 
     return (
-        <List switchOn={sort}>
-            {cobros.data[0] ? (
-                cobros.data[0].id !== 0 &&
+        <List switchOn={`${sort}${error}`} loading={loading}>
+            {error ? (
+                <Empty>{error}</Empty>
+            ) : (
                 cobros.data.map((cobro) => (
                     <Cobro
                         key={cobro.id}
@@ -44,8 +48,6 @@ function CobrosList({ estado, sort, overlay, setOverlay }: ComponentProps) {
                         }
                     />
                 ))
-            ) : (
-                <Empty>No se encontraron cheques</Empty>
             )}
         </List>
     );

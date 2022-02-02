@@ -20,16 +20,17 @@ type ComponentProps = {
 
 function PagosList({ estado, sort, overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
-    const { pagos } = usePagos({ estado: estado, sort: sort });
+    const { pagos, loading, error } = usePagos({ estado: estado, sort: sort });
 
     useEffect(() => {
         setOverlay(false);
     }, [pagos, setOverlay]);
 
     return (
-        <List switchOn={sort}>
-            {pagos.data[0] ? (
-                pagos.data[0].id !== 0 &&
+        <List switchOn={`${sort}${error}`} loading={loading}>
+            {error ? (
+                <Empty>{error}</Empty>
+            ) : (
                 pagos.data.map((pago) => (
                     <Pago
                         key={pago.id}
@@ -44,8 +45,6 @@ function PagosList({ estado, sort, overlay, setOverlay }: ComponentProps) {
                         }
                     />
                 ))
-            ) : (
-                <Empty>No se encontraron cheques</Empty>
             )}
         </List>
     );

@@ -15,9 +15,9 @@ const Container = transition.form.attrs({
     will-change: opacity;
     position: absolute;
     z-index: 1500;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 1px;
+    left: 1px;
+    right: 1px;
     overflow: clip;
     border-radius: 4px;
     outline: 1px solid var(--primary);

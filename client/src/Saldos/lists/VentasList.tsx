@@ -15,14 +15,18 @@ const Empty = styled.h5`
 
 type ComponentProps = {
     clienteId: number;
+    sort: string;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
 };
 
-function VentasList({ clienteId, overlay, setOverlay }: ComponentProps) {
+function VentasList({ clienteId, sort, overlay, setOverlay }: ComponentProps) {
     const [active, setActive] = useState(0);
     const [create, setCreate] = useState(false);
-    const { ventas } = useVentas(clienteId);
+    const { ventas, loading, error } = useVentas({
+        clienteId: clienteId,
+        sort: sort,
+    });
 
     useEffect(() => {
         !overlay && setCreate(false);
@@ -37,7 +41,7 @@ function VentasList({ clienteId, overlay, setOverlay }: ComponentProps) {
     }, [ventas, setOverlay]);
 
     return (
-        <List>
+        <List switchOn={`${sort}${error}`} loading={loading}>
             <Create isActive={create} onClick={() => setCreate(true)}>
                 <VentaForm
                     clienteId={clienteId}
@@ -45,8 +49,9 @@ function VentasList({ clienteId, overlay, setOverlay }: ComponentProps) {
                     close={() => setOverlay(false)}
                 />
             </Create>
-            {ventas.data[0] ? (
-                ventas.data[0].id !== 0 &&
+            {error ? (
+                <Empty>{error}</Empty>
+            ) : (
                 ventas.data.map((venta) => (
                     <Venta
                         key={venta.id}
@@ -61,8 +66,6 @@ function VentasList({ clienteId, overlay, setOverlay }: ComponentProps) {
                         }
                     />
                 ))
-            ) : (
-                <Empty>No se encontraron ventas</Empty>
             )}
         </List>
     );

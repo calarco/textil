@@ -13,6 +13,7 @@ const usePagos = ({ estado, sort }: ComponentProps) => {
         skip: 0,
         data: [],
     });
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     const loadData = useCallback(() => {
@@ -28,7 +29,10 @@ const usePagos = ({ estado, sort }: ComponentProps) => {
                 },
             })
             .then((response: Pagos) => {
-                setPagos(response);
+                setLoading(false);
+                response.data[0]
+                    ? setPagos(response)
+                    : setError("No se encontraron pagos");
             })
             .catch((error: FeathersErrorJSON) => {
                 setError(error.message);
@@ -42,7 +46,7 @@ const usePagos = ({ estado, sort }: ComponentProps) => {
         feathersClient.service("pagos").on("removed", () => loadData());
     }, [loadData]);
 
-    return { pagos, error };
+    return { pagos, loading, error };
 };
 
 export default usePagos;

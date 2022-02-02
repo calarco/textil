@@ -8,6 +8,7 @@ const useCuentas = (service: string) => {
         skip: 0,
         data: [],
     });
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     const loadData = useCallback(() => {
@@ -22,7 +23,10 @@ const useCuentas = (service: string) => {
                 },
             })
             .then((response: Cuentas) => {
-                setCuentas(response);
+                setLoading(false);
+                response.data[0]
+                    ? setCuentas(response)
+                    : setError(`No se encontraron ${service}`);
             })
             .catch((error: FeathersErrorJSON) => {
                 setError(error.message);
@@ -36,7 +40,7 @@ const useCuentas = (service: string) => {
         feathersClient.service(service).on("removed", () => loadData());
     }, [service, loadData]);
 
-    return { cuentas, error };
+    return { cuentas, loading, error };
 };
 
 export default useCuentas;

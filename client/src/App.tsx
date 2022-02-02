@@ -7,9 +7,7 @@ import { SwitchTransition } from "react-transition-group";
 import { themeDark, themeLight } from "themes";
 import GlobalStyle from "globalStyle";
 import Login from "Login/Login";
-import Bar from "Bar";
-import Cheques from "Cheques/Cheques";
-import Saldos from "Saldos/Saldos";
+import Views from "Views";
 
 const Container = transition.main.attrs({
     unmountOnExit: true,
@@ -24,8 +22,8 @@ const Container = transition.main.attrs({
     height: 100vh;
     overflow: clip;
     display: grid;
-    justify-content: center;
-    grid-template-rows: 1.75rem 1fr;
+    grid-template-rows: auto 1fr;
+    justify-items: center;
 
     &:enter {
         opacity: 0;
@@ -55,7 +53,6 @@ function App() {
     const [darkTheme, setDarkTheme] = useState(
         localStorage.getItem("darkTheme") || ""
     );
-    const [route, setRoute] = useState("cheques");
 
     useEffect(() => {
         feathersClient
@@ -79,15 +76,11 @@ function App() {
             <SwitchTransition>
                 <Container nodeRef={nodeRef} ref={nodeRef} key={user}>
                     {user ? (
-                        <>
-                            <Bar
-                                setUser={setUser}
-                                darkTheme={darkTheme}
-                                setDarkTheme={setDarkTheme}
-                                setRoute={setRoute}
-                            />
-                            {route === "cheques" ? <Cheques /> : <Saldos />}
-                        </>
+                        <Views
+                            setUser={setUser}
+                            darkTheme={darkTheme}
+                            setDarkTheme={setDarkTheme}
+                        />
                     ) : (
                         <Login setUser={setUser} />
                     )}

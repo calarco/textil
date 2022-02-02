@@ -13,11 +13,9 @@ const useCompras = ({ proveedoreId, sort }: ComponentProps) => {
         skip: 0,
         data: [],
     });
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     const loadData = useCallback(() => {
-        setError("");
         feathersClient
             .service("compras")
             .find({
@@ -30,13 +28,9 @@ const useCompras = ({ proveedoreId, sort }: ComponentProps) => {
                 },
             })
             .then((response: Compras) => {
-                setLoading(false);
-                response.data[0]
-                    ? setCompras(response)
-                    : setError("No se encontraron compras");
+                setCompras(response);
             })
             .catch((error: FeathersErrorJSON) => {
-                setLoading(false);
                 setError(error.message);
             });
     }, [proveedoreId, sort]);
@@ -48,7 +42,7 @@ const useCompras = ({ proveedoreId, sort }: ComponentProps) => {
         feathersClient.service("compras").on("removed", () => loadData());
     }, [loadData]);
 
-    return { compras, loading, error };
+    return { compras, error };
 };
 
 export default useCompras;

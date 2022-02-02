@@ -13,9 +13,11 @@ const useCobros = ({ estado, sort }: ComponentProps) => {
         skip: 0,
         data: [],
     });
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     const loadData = useCallback(() => {
+        setError("");
         feathersClient
             .service("cobros")
             .find({
@@ -28,7 +30,10 @@ const useCobros = ({ estado, sort }: ComponentProps) => {
                 },
             })
             .then((response: Cobros) => {
-                setCobros(response);
+                setLoading(false);
+                response.data[0]
+                    ? setCobros(response)
+                    : setError("No se encontraron cobros");
             })
             .catch((error: FeathersErrorJSON) => {
                 setError(error.message);
@@ -42,7 +47,7 @@ const useCobros = ({ estado, sort }: ComponentProps) => {
         feathersClient.service("cobros").on("removed", () => loadData());
     }, [loadData]);
 
-    return { cobros, error };
+    return { cobros, loading, error };
 };
 
 export default useCobros;

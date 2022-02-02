@@ -13,6 +13,7 @@ const Panel = styled(PanelComponent)`
 `;
 
 function GestionPanel() {
+    const [sort, setSort] = useState("fecha");
     const [tab, setTab] = useState(false);
     const [cuentaId, setCuentaId] = useState(0);
     const [overlay, setOverlay] = useState(false);
@@ -20,7 +21,12 @@ function GestionPanel() {
 
     return (
         <Panel overlay={overlay} cancel={() => setOverlay(false)}>
-            <Header tab={tab} switchTab={() => setTab(!tab)} />
+            <Header
+                tab={tab}
+                switchTab={() => setTab(!tab)}
+                sort={sort}
+                setSort={setSort}
+            />
             <Cuentas
                 service={tab ? "clientes" : "proveedores"}
                 overlay={overlay}
@@ -28,27 +34,29 @@ function GestionPanel() {
                 cuentaId={cuentaId}
                 setCuentaId={setCuentaId}
             />
-            <Section
-                switchOn={`${tab}${cuentaId}`}
-                overlay={overlaySection}
-                cancel={() => setOverlaySection(false)}
-            >
-                {cuentaId !== 0 && tab ? (
-                    <Ventas
-                        clienteId={cuentaId}
-                        overlay={overlaySection}
-                        setOverlay={setOverlaySection}
-                    />
-                ) : cuentaId !== 0 && !tab ? (
-                    <Compras
-                        proveedoreId={cuentaId}
-                        overlay={overlaySection}
-                        setOverlay={setOverlaySection}
-                    />
-                ) : (
-                    "Seleccione una cuenta"
-                )}
-            </Section>
+            {cuentaId !== 0 && (
+                <Section
+                    switchOn={`${tab}${cuentaId}`}
+                    overlay={overlaySection}
+                    cancel={() => setOverlaySection(false)}
+                >
+                    {tab ? (
+                        <Ventas
+                            clienteId={cuentaId}
+                            sort={sort}
+                            overlay={overlaySection}
+                            setOverlay={setOverlaySection}
+                        />
+                    ) : (
+                        <Compras
+                            proveedoreId={cuentaId}
+                            sort={sort}
+                            overlay={overlaySection}
+                            setOverlay={setOverlaySection}
+                        />
+                    )}
+                </Section>
+            )}
         </Panel>
     );
 }
