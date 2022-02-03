@@ -96,7 +96,7 @@ type ComponentProps = {
 
 function CalendarHeader({ year, setYear }: ComponentProps) {
     const nodeRef = useRef(null);
-    const { pagos, cobros } = useTotal({
+    const { pagos, cobros, loadingPagos, loadingCobros } = useTotal({
         gte: `${year}-01-01`,
         lte: `${year}-12-31`,
     });
@@ -115,16 +115,20 @@ function CalendarHeader({ year, setYear }: ComponentProps) {
                     </div>
                     <button onClick={() => setYear(year + 1)}>{">"}</button>
                 </Selector>
-                <Currency number={cobros - pagos} integer />
+                <Currency
+                    number={cobros - pagos}
+                    loading={loadingPagos || loadingCobros}
+                    integer
+                />
             </Box>
             <Details fixed>
                 <label>
                     Pagos
-                    <Currency number={pagos} integer />
+                    <Currency number={pagos} loading={loadingPagos} integer />
                 </label>
                 <label>
                     Cobros
-                    <Currency number={cobros} integer />
+                    <Currency number={cobros} loading={loadingCobros} integer />
                 </label>
             </Details>
         </Container>

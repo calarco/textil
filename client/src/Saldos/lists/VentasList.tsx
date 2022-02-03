@@ -41,7 +41,7 @@ function VentasList({ clienteId, sort, overlay, setOverlay }: ComponentProps) {
     }, [ventas, setOverlay]);
 
     return (
-        <List switchOn={`${sort}${error}`} loading={loading}>
+        <List switchOn={sort} loading={loading}>
             <Create isActive={create} onClick={() => setCreate(true)}>
                 <VentaForm
                     clienteId={clienteId}

@@ -12,6 +12,8 @@ const useCuentas = (service: string) => {
     const [error, setError] = useState("");
 
     const loadData = useCallback(() => {
+        setLoading(true);
+        setError("");
         feathersClient
             .service(service)
             .find({
@@ -23,10 +25,10 @@ const useCuentas = (service: string) => {
                 },
             })
             .then((response: Cuentas) => {
-                setLoading(false);
                 response.data[0]
                     ? setCuentas(response)
                     : setError(`No se encontraron ${service}`);
+                setLoading(false);
             })
             .catch((error: FeathersErrorJSON) => {
                 setError(error.message);

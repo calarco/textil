@@ -9,9 +9,13 @@ type HookProps = {
 const useTotal = ({ gte, lte }: HookProps) => {
     const [pagos, setPagos] = useState(0);
     const [cobros, setCobros] = useState(0);
+    const [loadingPagos, setLoadingPagos] = useState(true);
+    const [loadingCobros, setLoadingCobros] = useState(true);
     const [error, setError] = useState("");
 
     const loadPagos = useCallback(() => {
+        setLoadingPagos(true);
+        setError("");
         feathersClient
             .service("pagos")
             .find({
@@ -26,15 +30,21 @@ const useTotal = ({ gte, lte }: HookProps) => {
                 },
             })
             .then((response: Total) => {
-                setPagos(response.data[0].total);
+                response.data[0]
+                    ? setPagos(response.data[0].total)
+                    : setPagos(0);
+                setLoadingPagos(false);
             })
             .catch((error: FeathersErrorJSON) => {
                 setPagos(0);
+                setLoadingPagos(false);
                 setError(error.message);
             });
     }, [gte, lte]);
 
     const loadCobros = useCallback(() => {
+        setLoadingCobros(true);
+        setError("");
         feathersClient
             .service("cobros")
             .find({
@@ -49,10 +59,14 @@ const useTotal = ({ gte, lte }: HookProps) => {
                 },
             })
             .then((response: Total) => {
-                setCobros(response.data[0].total);
+                response.data[0]
+                    ? setCobros(response.data[0].total)
+                    : setCobros(0);
+                setLoadingCobros(false);
             })
             .catch((error: FeathersErrorJSON) => {
                 setCobros(0);
+                setLoadingCobros(false);
                 setError(error.message);
             });
     }, [gte, lte]);
@@ -71,7 +85,7 @@ const useTotal = ({ gte, lte }: HookProps) => {
         feathersClient.service("cobros").on("removed", () => loadCobros());
     }, [loadCobros]);
 
-    return { pagos, cobros, error };
+    return { pagos, cobros, loadingPagos, loadingCobros, error };
 };
 
 export default useTotal;

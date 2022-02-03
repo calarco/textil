@@ -17,6 +17,8 @@ const usePagos = ({ estado, sort }: ComponentProps) => {
     const [error, setError] = useState("");
 
     const loadData = useCallback(() => {
+        setLoading(true);
+        setError("");
         feathersClient
             .service("pagos")
             .find({
@@ -29,10 +31,10 @@ const usePagos = ({ estado, sort }: ComponentProps) => {
                 },
             })
             .then((response: Pagos) => {
-                setLoading(false);
                 response.data[0]
                     ? setPagos(response)
                     : setError("No se encontraron pagos");
+                setLoading(false);
             })
             .catch((error: FeathersErrorJSON) => {
                 setError(error.message);

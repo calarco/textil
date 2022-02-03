@@ -96,12 +96,12 @@ type ComponentProps = {
 
 function CalendarHeader({ year, setYear }: ComponentProps) {
     const nodeRef = useRef(null);
-    const { saldo: compras } = useSaldo({
+    const { saldo: compras, loading: loadingCompras } = useSaldo({
         service: "compras",
         gte: `${year}-01-01`,
         lte: `${year}-12-31`,
     });
-    const { saldo: ventas } = useSaldo({
+    const { saldo: ventas, loading: loadingVentas } = useSaldo({
         service: "ventas",
         gte: `${year}-01-01`,
         lte: `${year}-12-31`,
@@ -121,16 +121,24 @@ function CalendarHeader({ year, setYear }: ComponentProps) {
                     </div>
                     <button onClick={() => setYear(year + 1)}>{">"}</button>
                 </Selector>
-                <Currency number={ventas - compras} integer />
+                <Currency
+                    number={ventas - compras}
+                    loading={loadingCompras || loadingVentas}
+                    integer
+                />
             </Box>
             <Details fixed>
                 <label>
                     Compras
-                    <Currency number={compras} integer />
+                    <Currency
+                        number={compras}
+                        loading={loadingCompras}
+                        integer
+                    />
                 </label>
                 <label>
                     Ventas
-                    <Currency number={ventas} integer />
+                    <Currency number={ventas} loading={loadingVentas} integer />
                 </label>
             </Details>
         </Container>

@@ -171,7 +171,7 @@ const Sort = styled.label<Props>`
         props.isActive &&
         css`
             pointer-events: none;
-            color: var(--primary);
+            color: var(--secondary);
 
             &:focus {
                 background: var(--primary-variant);

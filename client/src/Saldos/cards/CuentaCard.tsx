@@ -57,7 +57,7 @@ function CuentaCard({
 }: ComponentProps) {
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
-    const { saldo } = useSaldo({
+    const { saldo, loading } = useSaldo({
         service: service === "clientes" ? "ventas" : "compras",
         id: cuenta.id,
     });
@@ -83,7 +83,7 @@ function CuentaCard({
                     <p>{cuenta.descripcion}</p>
                 </li>
                 <li>
-                    <Currency number={saldo} />
+                    <Currency number={saldo} loading={loading} />
                 </li>
             </Box>
             <Expand isActive={isActive} height={3}>

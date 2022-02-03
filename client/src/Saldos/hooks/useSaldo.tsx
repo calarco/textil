@@ -10,9 +10,12 @@ type HookProps = {
 
 const useSaldo = ({ service, id, gte, lte }: HookProps) => {
     const [saldo, setSaldo] = useState(0);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     const loadSaldo = useCallback(() => {
+        setLoading(true);
+        setError("");
         feathersClient
             .service(service)
             .find({
@@ -35,10 +38,14 @@ const useSaldo = ({ service, id, gte, lte }: HookProps) => {
                           },
             })
             .then((response: Saldo) => {
-                setSaldo(response.data[0].debe - response.data[0].haber);
+                response.data[0]
+                    ? setSaldo(response.data[0].debe - response.data[0].haber)
+                    : setSaldo(0);
+                setLoading(false);
             })
             .catch((error: FeathersErrorJSON) => {
                 setSaldo(0);
+                setLoading(false);
                 setError(error.message);
             });
     }, [service, id, gte, lte]);
@@ -50,7 +57,7 @@ const useSaldo = ({ service, id, gte, lte }: HookProps) => {
         feathersClient.service(service).on("removed", () => loadSaldo());
     }, [service, loadSaldo]);
 
-    return { saldo, error };
+    return { saldo, loading, error };
 };
 
 export default useSaldo;

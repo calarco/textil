@@ -37,7 +37,7 @@ type ComponentProps = {
 };
 
 function MonthCard({ year, month, isActive, setActive }: ComponentProps) {
-    const { saldo: compras } = useSaldo({
+    const { saldo: compras, loading: loadingCompras } = useSaldo({
         service: "compras",
         gte: `${year}-${(month + 1).toString().padStart(2, "0")}-01`,
         lte: `${year}-${(month + 1).toString().padStart(2, "0")}-${new Date(
@@ -46,7 +46,7 @@ function MonthCard({ year, month, isActive, setActive }: ComponentProps) {
             0
         ).getDate()}`,
     });
-    const { saldo: ventas } = useSaldo({
+    const { saldo: ventas, loading: loadingVentas } = useSaldo({
         service: "ventas",
         gte: `${year}-${(month + 1).toString().padStart(2, "0")}-01`,
         lte: `${year}-${(month + 1).toString().padStart(2, "0")}-${new Date(
@@ -69,17 +69,29 @@ function MonthCard({ year, month, isActive, setActive }: ComponentProps) {
                         month: "long",
                     })}
                 </h4>
-                <Currency number={ventas - compras} integer />
+                <Currency
+                    number={ventas - compras}
+                    loading={loadingCompras || loadingVentas}
+                    integer
+                />
             </Box>
             <Expand isActive={isActive} height={3}>
                 <Details fixed>
                     <label>
                         Compras
-                        <Currency number={compras} integer />
+                        <Currency
+                            number={compras}
+                            loading={loadingCompras}
+                            integer
+                        />
                     </label>
                     <label>
                         Ventas
-                        <Currency number={ventas} integer />
+                        <Currency
+                            number={ventas}
+                            loading={loadingVentas}
+                            integer
+                        />
                     </label>
                 </Details>
             </Expand>

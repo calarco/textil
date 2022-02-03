@@ -46,7 +46,7 @@ function ComprasList({
     }, [compras, setOverlay]);
 
     return (
-        <List switchOn={`${sort}${error}`} loading={loading}>
+        <List switchOn={sort} loading={loading}>
             <Create isActive={create} onClick={() => setCreate(true)}>
                 <CompraForm
                     proveedoreId={proveedoreId}

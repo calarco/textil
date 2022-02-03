@@ -3,16 +3,15 @@ import styled, { css } from "styled-components";
 const Container = styled.nav`
     width: 100%;
     position: relative;
-    height: 100%;
-    padding: 0 0.5rem;
+    height: 3.25rem;
     border-radius: 0 4px 4px 0;
 `;
 
 const Views = styled.div`
     height: 100%;
-    padding: 0.25rem;
     display: grid;
     grid-auto-flow: column;
+    align-items: center;
     justify-content: center;
     gap: 1px;
 `;
@@ -58,12 +57,14 @@ const Buttons = styled.div`
     position: absolute;
     top: 0;
     right: 0;
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: end;
     gap: 1px;
 
     > button {
         width: 100%;
-        padding: 0.25rem 0.55rem;
+        padding: 0.25rem 1rem;
         border: none;
         font: var(--label);
         font: 500 0.75rem/1.25rem var(--font-family);

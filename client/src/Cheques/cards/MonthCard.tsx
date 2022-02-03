@@ -37,7 +37,7 @@ type ComponentProps = {
 };
 
 function MonthCard({ year, month, isActive, setActive }: ComponentProps) {
-    const { pagos, cobros } = useTotal({
+    const { pagos, cobros, loadingPagos, loadingCobros } = useTotal({
         gte: `${year}-${(month + 1).toString().padStart(2, "0")}-01`,
         lte: `${year}-${(month + 1).toString().padStart(2, "0")}-${new Date(
             year,
@@ -59,17 +59,29 @@ function MonthCard({ year, month, isActive, setActive }: ComponentProps) {
                         month: "long",
                     })}
                 </h4>
-                <Currency number={cobros - pagos} integer />
+                <Currency
+                    number={cobros - pagos}
+                    loading={loadingPagos || loadingCobros}
+                    integer
+                />
             </Box>
             <Expand isActive={isActive} height={3}>
                 <Details fixed>
                     <label>
                         Pagos
-                        <Currency number={pagos} integer />
+                        <Currency
+                            number={pagos}
+                            loading={loadingPagos}
+                            integer
+                        />
                     </label>
                     <label>
                         Cobros
-                        <Currency number={cobros} integer />
+                        <Currency
+                            number={cobros}
+                            loading={loadingCobros}
+                            integer
+                        />
                     </label>
                 </Details>
             </Expand>

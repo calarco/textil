@@ -1,6 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import { css } from "styled-components";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
+
+type Props = {
+    readonly loading?: boolean;
+};
 
 const Container = transition.pre.attrs({
     unmountOnExit: true,
@@ -8,7 +13,7 @@ const Container = transition.pre.attrs({
         enter: 300,
         exit: 150,
     },
-})`
+})<Props>`
     will-change: opacity;
     text-align: right;
     font: var(--label-alt);
@@ -17,6 +22,12 @@ const Container = transition.pre.attrs({
     span {
         font: var(--label-alt);
     }
+
+    ${(props: Props) =>
+        props.loading &&
+        css`
+            opacity: 0;
+        `};
     
     &:enter {
         opacity: 0;
@@ -41,16 +52,25 @@ const Container = transition.pre.attrs({
 
 type ComponentProps = {
     number: number;
+    loading?: boolean;
     integer?: boolean;
 };
 
-const Currency = function ({ number, integer }: ComponentProps) {
+const Currency = function ({ number, loading, integer }: ComponentProps) {
     const nodeRef = useRef(null);
-    const numbers = number.toString().split(".");
+    const [numbers, setNumbers] = useState([""]);
 
-    return (
+    useEffect(() => {
+        !loading && setNumbers(number.toString().split("."));
+    }, [number, loading]);
+
+    return numbers[0] !== "" ? (
         <SwitchTransition>
-            <Container nodeRef={nodeRef} ref={nodeRef} key={number}>
+            <Container
+                nodeRef={nodeRef}
+                ref={nodeRef}
+                key={!loading && numbers[0]}
+            >
                 $
                 <span>
                     {numbers[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
@@ -58,6 +78,8 @@ const Currency = function ({ number, integer }: ComponentProps) {
                 </span>
             </Container>
         </SwitchTransition>
+    ) : (
+        <></>
     );
 };
 

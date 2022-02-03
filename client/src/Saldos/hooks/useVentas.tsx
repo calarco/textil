@@ -17,6 +17,7 @@ const useVentas = ({ clienteId, sort }: ComponentProps) => {
     const [error, setError] = useState("");
 
     const loadData = useCallback(() => {
+        setLoading(true);
         setError("");
         feathersClient
             .service("ventas")
@@ -30,10 +31,10 @@ const useVentas = ({ clienteId, sort }: ComponentProps) => {
                 },
             })
             .then((response: Ventas) => {
-                setLoading(false);
                 response.data[0]
                     ? setVentas(response)
                     : setError("No se encontraron ventas");
+                setLoading(false);
             })
             .catch((error: FeathersErrorJSON) => {
                 setLoading(false);

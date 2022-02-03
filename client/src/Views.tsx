@@ -21,7 +21,7 @@ const Container = transition.main.attrs({
 
     &:enter {
         opacity: 0;
-        transform: scale(1.1);
+        transform: translateY(-1rem);
     }
 
     &:enter-active {
