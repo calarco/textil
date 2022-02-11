@@ -5,7 +5,7 @@ import { SwitchTransition } from "react-transition-group";
 
 import PagoForm from "./forms/PagoForm";
 import CobroForm from "./forms/CobroForm";
-import Overlay from "components/Overlay";
+import { Overlay } from "components/Overlay";
 
 const Container = styled.div`
     position: relative;

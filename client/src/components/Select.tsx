@@ -8,7 +8,7 @@ import {
 } from "react-hook-form";
 import feathersClient from "feathersClient";
 
-import Label from "components/Label";
+import { Label } from "components/Label";
 
 type Props = {
     isSelected?: boolean;

@@ -7,7 +7,7 @@ const View = styled.div`
     height: 100%;
     padding: 1px 0.5rem;
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    justify-items: center;
     gap: 0.5rem;
 
     @media ${Device.desktop} {

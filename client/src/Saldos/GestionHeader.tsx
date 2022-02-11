@@ -6,7 +6,7 @@ const Container = styled.div`
     position: relative;
     height: 3rem;
     display: grid;
-    grid-template-columns: 4fr 5fr;
+    grid-template-columns: 2fr 3fr;
 `;
 
 const Tabs = styled.div`

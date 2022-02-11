@@ -1,11 +1,17 @@
 type Precio = {
     id: number;
+    articulo: number;
     descripcion: string;
-    hilado: number;
-    tejido: number;
-    confeccion: number;
-    cierre: number;
-    fin: number;
+    kg: number;
+    costo?: number;
+    costos?: { nombre: string; monto: number }[];
     createdAt: string;
     updatedAt: string;
+};
+
+type Precios = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Precio[];
 };

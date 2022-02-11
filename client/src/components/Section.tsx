@@ -2,7 +2,7 @@ import { MouseEvent, ReactNode, useRef } from "react";
 import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
-import Overlay from "components/Overlay";
+import { Overlay } from "components/Overlay";
 
 const Container = transition.section.attrs({
     unmountOnExit: true,

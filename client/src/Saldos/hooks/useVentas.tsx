@@ -26,7 +26,7 @@ const useVentas = ({ clienteId, sort }: ComponentProps) => {
                     $limit: 50,
                     clienteId: clienteId,
                     $sort: {
-                        [sort]: 1,
+                        [sort]: -1,
                     },
                 },
             })

@@ -3,22 +3,16 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import feathersClient from "feathersClient";
 
 import Form from "components/Form";
-import Label from "components/Label";
+import { Label } from "components/Label";
 import CurrencyInput from "components/CurrencyInput";
 
 type ComponentProps = {
-    proveedoreId: number;
-    compra?: Compra;
+    precio?: Precio;
     isActive?: boolean;
     close?: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-const VentaForm = function ({
-    proveedoreId,
-    compra,
-    isActive,
-    close,
-}: ComponentProps) {
+const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
     const {
         register,
         handleSubmit,
@@ -26,17 +20,7 @@ const VentaForm = function ({
         control,
         formState: { errors },
     } = useForm<Inputs>({
-        defaultValues: {
-            fecha: compra?.fecha || new Date().toISOString().substring(0, 10),
-            debe: compra?.debe
-                ? `$${compra.debe.toString().replace(/\./g, ",")}`
-                : "",
-            haber: compra?.haber
-                ? `$${compra.haber.toString().replace(/\./g, ",")}`
-                : "",
-            comprobante: compra?.comprobante || "",
-            proveedoreId: compra?.proveedoreId || proveedoreId,
-        },
+        defaultValues: {},
     });
 
     const onSubmit: SubmitHandler<Inputs> = (inputs) => {
@@ -47,16 +31,16 @@ const VentaForm = function ({
             comprobante: inputs.comprobante,
             proveedoreId: inputs.proveedoreId,
         };
-        compra
+        precio
             ? feathersClient
-                  .service("compras")
-                  .patch(compra.id, payload)
+                  .service("precios")
+                  .patch(precio.id, payload)
                   .then(() => {})
                   .catch((error: FeathersErrorJSON) => {
                       console.error(error.message);
                   })
             : feathersClient
-                  .service("compras")
+                  .service("precios")
                   .create(payload)
                   .then(() => {})
                   .catch((error: FeathersErrorJSON) => {
@@ -66,26 +50,16 @@ const VentaForm = function ({
 
     useEffect(() => {
         reset();
-    }, [isActive, compra, reset]);
+    }, [isActive, precio, reset]);
 
     return (
         <Form
             isActive={isActive}
             close={close}
             onSubmit={handleSubmit(onSubmit)}
-            length={2}
+            length={6}
         >
-            <Label title="Fecha" error={errors.fecha?.message} length={1}>
-                <input
-                    type="date"
-                    placeholder="-"
-                    autoComplete="off"
-                    {...register("fecha", {
-                        required: "Ingrese la fecha",
-                    })}
-                />
-            </Label>
-            <Label title="Comprobante" length={1}>
+            <Label title="articulo" length={1}>
                 <input
                     type="text"
                     placeholder="-"
@@ -93,14 +67,42 @@ const VentaForm = function ({
                     {...register("comprobante")}
                 />
             </Label>
-            <Label title="Debe" error={errors.debe?.message} length={1}>
+            <Label title="descripcion" length={4}>
+                <input
+                    type="text"
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("comprobante")}
+                />
+            </Label>
+            <Label title="kg" length={1}>
+                <input
+                    type="text"
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("comprobante")}
+                />
+            </Label>
+            <Label title="costo" error={errors.debe?.message} length={1}>
                 <CurrencyInput name="debe" control={control} />
             </Label>
-            <Label title="Haber" error={errors.haber?.message} length={1}>
+            <Label title="hilado" error={errors.debe?.message} length={1}>
+                <CurrencyInput name="debe" control={control} />
+            </Label>
+            <Label title="tejido" error={errors.haber?.message} length={1}>
+                <CurrencyInput name="haber" control={control} />
+            </Label>
+            <Label title="confeccion" error={errors.debe?.message} length={1}>
+                <CurrencyInput name="debe" control={control} />
+            </Label>
+            <Label title="cierre" error={errors.haber?.message} length={1}>
+                <CurrencyInput name="haber" control={control} />
+            </Label>
+            <Label title="fin" error={errors.haber?.message} length={1}>
                 <CurrencyInput name="haber" control={control} />
             </Label>
         </Form>
     );
 };
 
-export default VentaForm;
+export default PrecioForm;

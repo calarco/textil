@@ -1,9 +1,10 @@
 import { MouseEvent, ReactNode } from "react";
 import styled from "styled-components";
 
-import Overlay from "components/Overlay";
+import { Overlay } from "components/Overlay";
 
-const Container = styled.section`
+const Container = styled.div`
+    width: 100%;
     position: relative;
     height: calc(100vh - 4rem);
     border-radius: 4px;

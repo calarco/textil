@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import feathersClient from "feathersClient";
 
 import Form from "components/Form";
-import Label from "components/Label";
+import { Label } from "components/Label";
 
 type ComponentProps = {
     service: string;

@@ -12,7 +12,7 @@ const Container = styled.div<Props>`
     grid-auto-columns: 1fr;
     grid-auto-flow: column;
 
-    label {
+    > label {
         position: relative;
         padding: 0.75rem 1rem;
         display: grid;

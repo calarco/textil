@@ -37,6 +37,7 @@ const useCobros = ({ estado, sort }: ComponentProps) => {
                 setLoading(false);
             })
             .catch((error: FeathersErrorJSON) => {
+                setLoading(false);
                 setError(error.message);
             });
     }, [estado, sort]);

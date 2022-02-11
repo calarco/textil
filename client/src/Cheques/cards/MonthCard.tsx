@@ -4,7 +4,7 @@ import useTotal from "../hooks/useTotal";
 import Card from "components/Card";
 import Expand from "components/Expand";
 import Details from "components/Details";
-import Currency from "components/Currency";
+import { Currency } from "components/Currency";
 
 type Props = {
     readonly isCurrent?: boolean;

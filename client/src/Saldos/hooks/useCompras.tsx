@@ -26,7 +26,7 @@ const useCompras = ({ proveedoreId, sort }: ComponentProps) => {
                     $limit: 50,
                     proveedoreId: proveedoreId,
                     $sort: {
-                        [sort]: 1,
+                        [sort]: -1,
                     },
                 },
             })

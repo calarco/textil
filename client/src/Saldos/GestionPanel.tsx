@@ -9,7 +9,7 @@ import Compras from "./lists/ComprasList";
 import Header from "./GestionHeader";
 
 const Panel = styled(PanelComponent)`
-    grid-template-columns: 4fr 5fr;
+    grid-template-columns: 2fr 3fr;
 `;
 
 function GestionPanel() {

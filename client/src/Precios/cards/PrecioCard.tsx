@@ -6,25 +6,36 @@ import Expand from "components/Expand";
 import DetailsComponent from "components/Details";
 import ButtonsComponent from "components/Buttons";
 import Remove from "components/Remove";
-import Currency from "components/Currency";
+import { Currency } from "components/Currency";
+import PrecioForm from "../forms/PrecioForm";
 
 const Box = styled.ul`
     height: 3rem;
     display: grid;
-    grid-template-columns: 1fr 1fr [end];
-    gap: 1.5rem;
+    grid-template-columns: 5rem 1fr 10rem 10rem 10rem 10rem 10rem[end];
+    gap: 1px;
     align-items: center;
     text-align: center;
 
-    > li:nth-child(3) {
+    > li:nth-child(3),
+    > li:nth-child(4),
+    > li:nth-child(5),
+    > li:nth-child(6),
+    > li:nth-child(7) {
         text-align: right;
-        padding: 0 1.75rem;
+        padding: 0 1rem;
     }
 `;
 
 const Details = styled(DetailsComponent)`
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 10rem 10rem 10rem 10rem [end];
     grid-auto-flow: row;
+`;
+
+const Items = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 `;
 
 const Buttons = styled(ButtonsComponent)`
@@ -67,32 +78,57 @@ function PrecioCard({
             className={className}
         >
             <Box onClick={onClick}>
-                <li>{precio.descripcion}</li>
+                <li>
+                    <pre>{precio.articulo}</pre>
+                </li>
+                <li>
+                    <p>
+                        {precio.descripcion}
+                        <small>{precio.kg} kg</small>
+                    </p>
+                </li>
                 <li>
                     <Currency number={946.34} />
+                </li>
+                <li>
+                    <Currency number={1430.34} />
+                </li>
+                <li>
+                    <Currency number={1490.34} />
+                </li>
+                <li>
+                    <Currency number={1266.34} />
+                </li>
+                <li>
+                    <Currency number={1590.34} integer />
                 </li>
             </Box>
             <Expand isActive={isActive} height={8.5}>
                 <Details>
+                    <Items>
+                        {precio.costos &&
+                            precio.costos.map((costo) => (
+                                <label key={0}>
+                                    {costo.nombre}
+                                    <Currency number={costo.monto} />
+                                </label>
+                            ))}
+                    </Items>
                     <label>
-                        hilado
-                        <Currency number={precio.hilado} />
+                        Ganancia
+                        <Currency number={483} />
                     </label>
                     <label>
-                        tejido
-                        <Currency number={precio.tejido} />
+                        Ganancia
+                        <Currency number={320} />
                     </label>
                     <label>
-                        confeccion
-                        <Currency number={precio.confeccion} />
+                        Inversion
+                        <Currency number={163} />
                     </label>
                     <label>
-                        cierre
-                        <Currency number={precio.cierre} />
-                    </label>
-                    <label>
-                        fin
-                        <Currency number={precio.fin} />
+                        sin comision
+                        <Currency number={1272} />
                     </label>
                 </Details>
                 <Buttons>
@@ -111,6 +147,11 @@ function PrecioCard({
                         service="cobros"
                         isActive={isActive && remove}
                         exit={() => setRemove(false)}
+                    />
+                    <PrecioForm
+                        precio={precio}
+                        isActive={form}
+                        close={() => setOverlay(false)}
                     />
                 </>
             )}

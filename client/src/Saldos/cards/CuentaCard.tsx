@@ -5,7 +5,7 @@ import useSaldo from "../hooks/useSaldo";
 import Card from "components/Card";
 import Expand from "components/Expand";
 import ButtonsComponent from "components/Buttons";
-import Currency from "components/Currency";
+import { Currency } from "components/Currency";
 import Remove from "components/Remove";
 import CuentaForm from "../forms/CuentaForm";
 
@@ -14,7 +14,7 @@ const Box = styled.ul`
     padding: 0 1.5rem;
     display: grid;
     grid-template-columns: 1fr auto [end];
-    gap: 1.5rem;
+    gap: 1rem;
     align-items: center;
     text-align: left;
 

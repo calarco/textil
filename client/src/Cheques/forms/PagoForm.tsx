@@ -4,7 +4,7 @@ import feathersClient from "feathersClient";
 
 import { useCheques } from "../hooks/chequesContext";
 import Form from "components/Form";
-import Label from "components/Label";
+import { Label } from "components/Label";
 import CurrencyInput from "components/CurrencyInput";
 import Select from "components/Select";
 

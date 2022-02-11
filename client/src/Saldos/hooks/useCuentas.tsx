@@ -31,6 +31,7 @@ const useCuentas = (service: string) => {
                 setLoading(false);
             })
             .catch((error: FeathersErrorJSON) => {
+                setLoading(false);
                 setError(error.message);
             });
     }, [service]);

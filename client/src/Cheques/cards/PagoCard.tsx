@@ -6,8 +6,8 @@ import Card from "components/Card";
 import Expand from "components/Expand";
 import DetailsComponent from "components/Details";
 import ButtonsComponent from "components/Buttons";
-import Currency from "components/Currency";
-import Day from "components/Day";
+import { Currency } from "components/Currency";
+import { Day } from "components/Day";
 import Remove from "components/Remove";
 import PagoForm from "../forms/PagoForm";
 

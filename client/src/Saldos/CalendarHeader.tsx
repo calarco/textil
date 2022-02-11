@@ -5,7 +5,7 @@ import { SwitchTransition } from "react-transition-group";
 
 import useSaldo from "./hooks/useSaldo";
 import Details from "components/Details";
-import Currency from "components/Currency";
+import { Currency } from "components/Currency";
 
 const Container = styled.div`
     width: 100%;

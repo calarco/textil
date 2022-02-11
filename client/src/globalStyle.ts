@@ -49,6 +49,20 @@ const GlobalStyle = createGlobalStyle`
 	    scroll-behavior: smooth;
     }
     
+    @font-face {
+        font-family: "Supreme-Variable";
+        src: url("./Supreme-Variable.woff2") format("woff2");
+        font-weight: 100 800;
+        font-display: swap;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "SpaceMono-Regular";
+        src: url("./SpaceMono-Regular.ttf") format("truetype");
+        font-weight: 700;
+    }
+    
     body {
         --shadow: ${(props) => props.theme.shadows.surface};
         --shadow-variant: ${(props) => props.theme.shadows.surfaceVariant};

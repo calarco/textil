@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { useCheques } from "../hooks/chequesContext";
 import Form from "components/Form";
 import ExpandComponent from "components/Expand";
-import Label from "components/Label";
+import { Label } from "components/Label";
 import CurrencyInput from "components/CurrencyInput";
 import Select from "components/Select";
 
