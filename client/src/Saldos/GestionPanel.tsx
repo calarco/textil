@@ -1,14 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import PanelComponent from "components/Panel";
-import Section from "components/Section";
+import { Panel } from "components/Panel";
+import { Section } from "components/Section";
 import Cuentas from "./lists/CuentasList";
 import Ventas from "./lists/VentasList";
 import Compras from "./lists/ComprasList";
 import Header from "./GestionHeader";
 
-const Panel = styled(PanelComponent)`
+const PanelMod = styled(Panel)`
     grid-template-columns: 2fr 3fr;
 `;
 
@@ -20,7 +20,7 @@ function GestionPanel() {
     const [overlaySection, setOverlaySection] = useState(false);
 
     return (
-        <Panel overlay={overlay} cancel={() => setOverlay(false)}>
+        <PanelMod overlay={overlay} cancel={() => setOverlay(false)}>
             <Header
                 tab={tab}
                 switchTab={() => setTab(!tab)}
@@ -57,7 +57,7 @@ function GestionPanel() {
                     )}
                 </Section>
             )}
-        </Panel>
+        </PanelMod>
     );
 }
 

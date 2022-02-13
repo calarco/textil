@@ -2,13 +2,13 @@ import { MouseEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { useCheques } from "../hooks/chequesContext";
-import Card from "components/Card";
-import Expand from "components/Expand";
-import DetailsComponent from "components/Details";
-import ButtonsComponent from "components/Buttons";
+import { Card } from "components/Card";
+import { Expand } from "components/Expand";
+import { Details } from "components/Details";
+import { Buttons } from "components/Buttons";
 import { Currency } from "components/Currency";
 import { Day } from "components/Day";
-import Remove from "components/Remove";
+import { Remove } from "components/Remove";
 import CobroForm from "../forms/CobroForm";
 
 const Box = styled.ul`
@@ -25,13 +25,13 @@ const Box = styled.ul`
     }
 `;
 
-const Details = styled(DetailsComponent)`
+const DetailsMod = styled(Details)`
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: auto auto;
     grid-auto-flow: row;
 `;
 
-const Buttons = styled(ButtonsComponent)`
+const ButtonsMod = styled(Buttons)`
     grid-row-start: 2;
 `;
 
@@ -86,7 +86,7 @@ function CobroCard({
                 </li>
             </Box>
             <Expand isActive={isActive} height={8.5}>
-                <Details>
+                <DetailsMod>
                     <label>
                         Banco
                         <p>{getBanco(cobro.bancoId)}</p>
@@ -111,15 +111,15 @@ function CobroCard({
                         Estado
                         <p>{cobro.estado}</p>
                     </label>
-                </Details>
-                <Buttons>
+                </DetailsMod>
+                <ButtonsMod>
                     <button type="button" onClick={() => setRemove(true)}>
                         Borrar
                     </button>
                     <button type="button" onClick={() => setForm(true)}>
                         Editar
                     </button>
-                </Buttons>
+                </ButtonsMod>
             </Expand>
             {isActive && (
                 <>

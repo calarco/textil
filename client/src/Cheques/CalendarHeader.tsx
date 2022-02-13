@@ -4,7 +4,7 @@ import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
 import useTotal from "./hooks/useTotal";
-import Details from "components/Details";
+import { Details } from "components/Details";
 import { Currency } from "components/Currency";
 
 const Container = styled.div`

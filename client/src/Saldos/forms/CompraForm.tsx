@@ -2,9 +2,9 @@ import { MouseEvent, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import feathersClient from "feathersClient";
 
-import Form from "components/Form";
+import { Form } from "components/Form";
 import { Label } from "components/Label";
-import CurrencyInput from "components/CurrencyInput";
+import { CurrencyInput } from "components/CurrencyInput";
 
 type ComponentProps = {
     proveedoreId: number;

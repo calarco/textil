@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import useCuentas from "../hooks/useCuentas";
-import List from "components/List";
-import Create from "components/Create";
-import Cuenta from "Saldos/cards/CuentaCard";
+import { List } from "components/List";
+import { Create } from "components/Create";
+import Cuenta from "../cards/CuentaCard";
 import CuentaForm from "../forms/CuentaForm";
 
 const Empty = styled.h5`

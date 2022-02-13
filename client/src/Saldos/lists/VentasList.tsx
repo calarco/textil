@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import useVentas from "../hooks/useVentas";
-import List from "components/List";
-import Create from "components/Create";
-import Venta from "Saldos/cards/VentaCard";
+import { List } from "components/List";
+import { Create } from "components/Create";
+import Venta from "../cards/VentaCard";
 import VentaForm from "../forms/VentaForm";
 
 const Empty = styled.h5`

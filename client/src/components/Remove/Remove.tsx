@@ -3,7 +3,7 @@ import feathersClient from "feathersClient";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 
-import ButtonsComponent from "components/Buttons";
+import { Buttons } from "components/Buttons";
 
 type Props = {
     inline?: boolean;
@@ -72,7 +72,7 @@ const Container = transition.div.attrs({
     }
 `;
 
-const Buttons = styled(ButtonsComponent)<Props>`
+const ButtonsMod = styled(Buttons)<Props>`
     transition: 0.25s ease-out;
 
     ${(props) =>
@@ -130,14 +130,14 @@ const Remove = function ({
             inline={inline}
         >
             <h5>¿Borrar ?</h5>
-            <Buttons inline={inline}>
+            <ButtonsMod inline={inline}>
                 <button type="button" onClick={exit}>
                     Cancelar
                 </button>
                 <button type="reset" onClick={handleDelete}>
                     Borrar
                 </button>
-            </Buttons>
+            </ButtonsMod>
         </Container>
     );
 };

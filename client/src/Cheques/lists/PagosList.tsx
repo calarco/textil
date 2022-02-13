@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import usePagos from "../hooks/usePagos";
-import List from "components/List";
+import { List } from "components/List";
 import Pago from "../cards/PagoCard";
 
 const Empty = styled.h5`

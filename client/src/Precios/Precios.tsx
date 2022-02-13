@@ -1,4 +1,4 @@
-import View from "components/View";
+import { View } from "components/View";
 import GestionPanel from "./GestionPanel";
 
 function Precios() {

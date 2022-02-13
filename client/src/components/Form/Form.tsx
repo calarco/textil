@@ -2,7 +2,7 @@ import { MouseEvent, FormEvent, ReactNode, useRef } from "react";
 import styled, { css } from "styled-components";
 import transition from "styled-transition-group";
 
-import ButtonsComponent from "components/Buttons";
+import { Buttons } from "components/Buttons";
 
 const Container = transition.form.attrs({
     unmountOnExit: true,
@@ -52,10 +52,9 @@ const Container = transition.form.attrs({
 
 type Props = {
     length?: number;
-    error?: boolean;
 };
 
-const Buttons = styled(ButtonsComponent)<Props>`
+const ButtonsMod = styled(Buttons)<Props>`
     background: var(--surface);
 
     ${(props) =>
@@ -68,7 +67,7 @@ const Buttons = styled(ButtonsComponent)<Props>`
 type ComponentProps = {
     isActive?: boolean;
     close?: (e: MouseEvent<HTMLButtonElement>) => void;
-    onSubmit: (e: FormEvent) => void;
+    onSubmit?: (e: FormEvent) => void;
     length?: number;
     children: ReactNode;
     className?: string;
@@ -96,12 +95,12 @@ const Form = function ({
         >
             {children}
             {!noButtons && (
-                <Buttons length={length}>
+                <ButtonsMod length={length}>
                     <button type="button" onClick={close}>
                         Cancelar
                     </button>
                     <button type="submit">Guardar</button>
-                </Buttons>
+                </ButtonsMod>
             )}
         </Container>
     );

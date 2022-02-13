@@ -5,13 +5,13 @@ import feathersClient from "feathersClient";
 import styled from "styled-components";
 
 import { useCheques } from "../hooks/chequesContext";
-import Form from "components/Form";
-import ExpandComponent from "components/Expand";
+import { Form } from "components/Form";
+import { Expand } from "components/Expand";
 import { Label } from "components/Label";
-import CurrencyInput from "components/CurrencyInput";
-import Select from "components/Select";
+import { CurrencyInput } from "components/CurrencyInput";
+import { Select } from "components/Select";
 
-const Expand = styled(ExpandComponent)`
+const ExpandMod = styled(Expand)`
     grid-column-end: span 7;
     gap: inherit;
     grid-template-columns: inherit;
@@ -125,7 +125,7 @@ const CobroForm = function ({ cobro, isActive, close }: ComponentProps) {
             <Label title="Monto" error={errors.monto?.message} length={2}>
                 <CurrencyInput name="monto" control={control} />
             </Label>
-            <Expand
+            <ExpandMod
                 isActive={
                     watch("estado") === "Endosado" ||
                     watch("estado") === "Posdatado"
@@ -161,7 +161,7 @@ const CobroForm = function ({ cobro, isActive, close }: ComponentProps) {
                     error={errors.destinatarioId?.message}
                     disabled={watch("estado") === "Posdatado"}
                 />
-            </Expand>
+            </ExpandMod>
             <Label
                 title="Fecha de deposito"
                 error={errors.depositoDate?.message}

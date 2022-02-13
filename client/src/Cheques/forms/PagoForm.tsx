@@ -3,10 +3,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import feathersClient from "feathersClient";
 
 import { useCheques } from "../hooks/chequesContext";
-import Form from "components/Form";
+import { Form } from "components/Form";
 import { Label } from "components/Label";
-import CurrencyInput from "components/CurrencyInput";
-import Select from "components/Select";
+import { CurrencyInput } from "components/CurrencyInput";
+import { Select } from "components/Select";
 
 type ComponentProps = {
     pago?: Pago;

@@ -2,11 +2,11 @@ import { MouseEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
 import useSaldo from "../hooks/useSaldo";
-import Card from "components/Card";
-import Expand from "components/Expand";
-import ButtonsComponent from "components/Buttons";
+import { Card } from "components/Card";
+import { Expand } from "components/Expand";
+import { Buttons } from "components/Buttons";
 import { Currency } from "components/Currency";
-import Remove from "components/Remove";
+import { Remove } from "components/Remove";
 import CuentaForm from "../forms/CuentaForm";
 
 const Box = styled.ul`
@@ -32,7 +32,7 @@ const Box = styled.ul`
     }
 `;
 
-const Buttons = styled(ButtonsComponent)`
+const ButtonsMod = styled(Buttons)`
     grid-row-start: 2;
 `;
 
@@ -87,14 +87,14 @@ function CuentaCard({
                 </li>
             </Box>
             <Expand isActive={isActive} height={3}>
-                <Buttons>
+                <ButtonsMod>
                     <button type="button" onClick={() => setRemove(true)}>
                         Borrar
                     </button>
                     <button type="button" onClick={() => setForm(true)}>
                         Editar
                     </button>
-                </Buttons>
+                </ButtonsMod>
             </Expand>
             {isActive && (
                 <>

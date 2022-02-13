@@ -1,19 +1,19 @@
 import styled from "styled-components";
 
-import ViewComponent from "components/View";
+import { View } from "components/View";
 import CalendarPanel from "./CalendarPanel";
 import GestionPanel from "./GestionPanel";
 
-const View = styled(ViewComponent)`
+const ViewMod = styled(View)`
     grid-template-columns: 2fr 1fr;
 `;
 
 function Cheques() {
     return (
-        <View>
+        <ViewMod>
             <GestionPanel />
             <CalendarPanel />
-        </View>
+        </ViewMod>
     );
 }
 

@@ -1,9 +1,9 @@
 import styled, { css } from "styled-components";
 
 import useSaldo from "../hooks/useSaldo";
-import Card from "components/Card";
-import Expand from "components/Expand";
-import Details from "components/Details";
+import { Card } from "components/Card";
+import { Expand } from "components/Expand";
+import { Details } from "components/Details";
 import { Currency } from "components/Currency";
 
 type Props = {

@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import useCompras from "../hooks/useCompras";
-import List from "components/List";
-import Create from "components/Create";
-import Compra from "Saldos/cards/CompraCard";
+import { List } from "components/List";
+import { Create } from "components/Create";
+import Compra from "../cards/CompraCard";
 import CompraForm from "../forms/CompraForm";
 
 const Empty = styled.h5`

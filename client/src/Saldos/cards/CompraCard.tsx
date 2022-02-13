@@ -1,13 +1,13 @@
 import { MouseEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
-import Card from "components/Card";
-import Expand from "components/Expand";
-import Details from "components/Details";
-import ButtonsComponent from "components/Buttons";
+import { Card } from "components/Card";
+import { Expand } from "components/Expand";
+import { Details } from "components/Details";
+import { Buttons } from "components/Buttons";
 import { Currency } from "components/Currency";
 import { Day } from "components/Day";
-import Remove from "components/Remove";
+import { Remove } from "components/Remove";
 import CompraForm from "../forms/CompraForm";
 
 const Box = styled.ul`
@@ -25,7 +25,7 @@ const Box = styled.ul`
     }
 `;
 
-const Buttons = styled(ButtonsComponent)`
+const ButtonsMod = styled(Buttons)`
     grid-row-start: 2;
 `;
 
@@ -82,14 +82,14 @@ function CompraCard({
                         <pre>{compra.comprobante || "-"}</pre>
                     </label>
                 </Details>
-                <Buttons>
+                <ButtonsMod>
                     <button type="button" onClick={() => setRemove(true)}>
                         Borrar
                     </button>
                     <button type="button" onClick={() => setForm(true)}>
                         Editar
                     </button>
-                </Buttons>
+                </ButtonsMod>
             </Expand>
             {isActive && (
                 <>

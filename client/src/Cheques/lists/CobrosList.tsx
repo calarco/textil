@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import useCobros from "../hooks/useCobros";
-import List from "components/List";
+import { List } from "components/List";
 import Cobro from "../cards/CobroCard";
 
 const Empty = styled.h5`

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import usePrecios from "../hooks/usePrecios";
-import List from "components/List";
+import { List } from "components/List";
 import PrecioCard from "../cards/PrecioCard";
 
 type ComponentProps = {

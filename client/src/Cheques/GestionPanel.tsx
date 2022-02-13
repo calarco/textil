@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
 import { ChequesProvider } from "./hooks/chequesContext";
-import Panel from "components/Panel";
-import Section from "components/Section";
+import { Panel } from "components/Panel";
+import { Section } from "components/Section";
 import Header from "./GestionHeader";
-import Pagos from "Cheques/lists/PagosList";
-import Cobros from "Cheques/lists/CobrosList";
+import Pagos from "./lists/PagosList";
+import Cobros from "./lists/CobrosList";
 
 function GestionPanel() {
     const [estado, setEstado] = useState("A pagar");

@@ -1,18 +1,18 @@
 import { MouseEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
-import Card from "components/Card";
-import Expand from "components/Expand";
-import DetailsComponent from "components/Details";
-import ButtonsComponent from "components/Buttons";
-import Remove from "components/Remove";
+import { Card } from "components/Card";
+import { Expand } from "components/Expand";
+import { Details } from "components/Details";
+import { Buttons } from "components/Buttons";
+import { Remove } from "components/Remove";
 import { Currency } from "components/Currency";
 import PrecioForm from "../forms/PrecioForm";
 
 const Box = styled.ul`
     height: 3rem;
     display: grid;
-    grid-template-columns: 5rem 1fr 10rem 10rem 10rem 10rem 10rem[end];
+    grid-template-columns: 5rem 1fr 10rem 10rem 10rem 10rem 10rem [end];
     gap: 1px;
     align-items: center;
     text-align: center;
@@ -27,18 +27,23 @@ const Box = styled.ul`
     }
 `;
 
-const Details = styled(DetailsComponent)`
+const DetailsMod = styled(Details)`
     grid-template-columns: 1fr 10rem 10rem 10rem 10rem [end];
     grid-auto-flow: row;
 `;
 
 const Items = styled.div`
+    outline: var(--border);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+
+    > label {
+        outline: var(--border);
+    }
 `;
 
-const Buttons = styled(ButtonsComponent)`
+const ButtonsMod = styled(Buttons)`
     grid-row-start: 2;
 `;
 
@@ -104,7 +109,7 @@ function PrecioCard({
                 </li>
             </Box>
             <Expand isActive={isActive} height={8.5}>
-                <Details>
+                <DetailsMod>
                     <Items>
                         {precio.costos &&
                             precio.costos.map((costo) => (
@@ -130,15 +135,15 @@ function PrecioCard({
                         sin comision
                         <Currency number={1272} />
                     </label>
-                </Details>
-                <Buttons>
+                </DetailsMod>
+                <ButtonsMod>
                     <button type="button" onClick={() => setRemove(true)}>
                         Borrar
                     </button>
                     <button type="button" onClick={() => setForm(true)}>
                         Editar
                     </button>
-                </Buttons>
+                </ButtonsMod>
             </Expand>
             {isActive && (
                 <>
