@@ -11,11 +11,18 @@ const Container = styled.div`
     position: relative;
     height: 6.25rem;
     display: grid;
-    grid-template-columns: 11.25rem 1fr 11.25rem;
     grid-template-rows: 1fr auto;
-    justify-content: space-between;
     align-items: center;
     gap: 0 0.5rem;
+`;
+
+const Columns1 = styled.div`
+    padding: 0 0.75rem;
+    display: grid;
+    grid-template-columns: 2fr 5fr 2fr;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const Filter = transition.div.attrs({
@@ -26,7 +33,6 @@ const Filter = transition.div.attrs({
     },
 })`
     position: relative;
-    padding: 0 0.5rem;
     display: grid;
     align-items: center;
 
@@ -90,7 +96,6 @@ const New = styled.div`
     position: relative;
     border-radius: 0 4px 0 0;
     overflow: clip;
-    padding: 0 0.5rem;
     display: grid;
     align-items: center;
 
@@ -121,11 +126,10 @@ const Columns = transition.div.attrs({
         exit: 150,
     },
 })`
-    grid-row-start: 2;
-    grid-column-end: span 3;
+    padding: 0 0.75rem;
     border-top: var(--border-variant);
     display: grid;
-    grid-template-columns: 11.25rem 3fr 2fr 11.25rem;
+    grid-template-columns: 2fr 3fr 2fr 2fr;
     gap: 1px;
 
     &:enter {
@@ -220,45 +224,49 @@ function GestionHeader({
 
     return (
         <Container>
-            <SwitchTransition>
-                <Filter nodeRef={nodeRef} ref={nodeRef} key={tab}>
-                    {tab ? (
-                        <select
-                            name="estado"
-                            value={estado}
-                            onChange={handleInputChange}
-                        >
-                            <option value="A depositar">A depositar</option>
-                            <option value="Depositado">Depositado</option>
-                            <option value="Anulado">Anulado</option>
-                            <option value="Posdatado">Posdatado</option>
-                            <option value="Endosado">Endosado</option>
-                            <option value="Devuelto">Devuelto</option>
-                            <option value="Falla tecnica">Falla tecnica</option>
-                            <option value="Rechazado">Rechazado</option>
-                        </select>
-                    ) : (
-                        <select value={estado} onChange={handleInputChange}>
-                            <option value="A pagar">A pagar</option>
-                            <option value="Pagado">Pagado</option>
-                            <option value="Anulado">Anulado</option>
-                            <option value="Recuperado">Recuperado</option>
-                            <option value="Vencido">Vencido</option>
-                        </select>
-                    )}
-                </Filter>
-            </SwitchTransition>
-            <Tabs>
-                <Tab isActive={!tab} onClick={switchTab}>
-                    Pagos
-                </Tab>
-                <Tab isActive={tab} onClick={switchTab}>
-                    Cobros
-                </Tab>
-            </Tabs>
-            <New>
-                <button onClick={() => setCreate(true)}>Nuevo</button>
-            </New>
+            <Columns1>
+                <SwitchTransition>
+                    <Filter nodeRef={nodeRef} ref={nodeRef} key={tab}>
+                        {tab ? (
+                            <select
+                                name="estado"
+                                value={estado}
+                                onChange={handleInputChange}
+                            >
+                                <option value="A depositar">A depositar</option>
+                                <option value="Depositado">Depositado</option>
+                                <option value="Anulado">Anulado</option>
+                                <option value="Posdatado">Posdatado</option>
+                                <option value="Endosado">Endosado</option>
+                                <option value="Devuelto">Devuelto</option>
+                                <option value="Falla tecnica">
+                                    Falla tecnica
+                                </option>
+                                <option value="Rechazado">Rechazado</option>
+                            </select>
+                        ) : (
+                            <select value={estado} onChange={handleInputChange}>
+                                <option value="A pagar">A pagar</option>
+                                <option value="Pagado">Pagado</option>
+                                <option value="Anulado">Anulado</option>
+                                <option value="Recuperado">Recuperado</option>
+                                <option value="Vencido">Vencido</option>
+                            </select>
+                        )}
+                    </Filter>
+                </SwitchTransition>
+                <Tabs>
+                    <Tab isActive={!tab} onClick={switchTab}>
+                        Pagos
+                    </Tab>
+                    <Tab isActive={tab} onClick={switchTab}>
+                        Cobros
+                    </Tab>
+                </Tabs>
+                <New>
+                    <button onClick={() => setCreate(true)}>Nuevo</button>
+                </New>
+            </Columns1>
             <SwitchTransition>
                 <Columns nodeRef={nodeRef} ref={nodeRef} key={tab}>
                     {tab ? (

@@ -10,7 +10,7 @@ type ComponentProps = {
 
 const CurrencyInput = ({ name, control, required }: ComponentProps) => {
     const currencyMask = createNumberMask({
-        prefix: "$",
+        prefix: "",
         suffix: "",
         includeThousandsSeparator: true,
         thousandsSeparatorSymbol: ".",
@@ -32,7 +32,7 @@ const CurrencyInput = ({ name, control, required }: ComponentProps) => {
                     mask={currencyMask}
                     type="text"
                     inputMode="numeric"
-                    placeholder="-"
+                    placeholder="0"
                     autoComplete="off"
                     {...field}
                 />

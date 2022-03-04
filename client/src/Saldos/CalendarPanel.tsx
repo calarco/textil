@@ -1,18 +1,10 @@
 import { useState } from "react";
-import styled from "styled-components";
 
 import Header from "./CalendarHeader";
 import { Panel } from "components/Panel";
 import { Section } from "components/Section";
 import { List } from "components/List";
 import Month from "./cards/MonthCard";
-
-const SectionMod = styled(Section)`
-    overflow: auto;
-    border-radius: 4px;
-    background: var(--surface-t);
-    box-shadow: var(--shadow);
-`;
 
 function CalendarPanel() {
     const [year, setYear] = useState(new Date().getFullYear());
@@ -22,7 +14,7 @@ function CalendarPanel() {
     return (
         <Panel>
             <Header year={year} setYear={setYear} />
-            <SectionMod>
+            <Section>
                 <List>
                     {months.map((number) => (
                         <Month
@@ -34,7 +26,7 @@ function CalendarPanel() {
                         />
                     ))}
                 </List>
-            </SectionMod>
+            </Section>
         </Panel>
     );
 }

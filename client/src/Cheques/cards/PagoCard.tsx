@@ -14,7 +14,7 @@ import PagoForm from "../forms/PagoForm";
 const Box = styled.ul`
     height: 3rem;
     display: grid;
-    grid-template-columns: 10.5rem 3fr 2fr 10.5rem [end];
+    grid-template-columns: 2fr 3fr 2fr 2fr [end];
     gap: 1.5rem;
     align-items: center;
     text-align: center;

@@ -44,6 +44,7 @@ const Tab = styled.button<Props>`
 `;
 
 const Columns = styled.div`
+    padding: 0 0.75rem;
     border-left: var(--border-variant);
     display: grid;
     grid-template-columns: 10rem 1fr 1fr [end];

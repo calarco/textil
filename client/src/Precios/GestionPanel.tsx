@@ -1,30 +1,39 @@
 import { useState } from "react";
-import styled from "styled-components";
 
 import { Panel } from "components/Panel";
 import { Section } from "components/Section";
 import PreciosList from "./lists/PreciosList";
 import Header from "./GestionHeader";
 
-const PanelMod = styled(Panel)`
-    max-width: 80rem;
-`;
-
 function GestionPanel() {
-    const [sort, setSort] = useState("fecha");
+    const [columns, setColumns] = useState([
+        { nombre: "costo", porcentage: 181, base: "total" },
+        { nombre: "fabrica", porcentage: 151, base: "costo" },
+        { nombre: "vendedor", porcentage: 104, base: "fabrica" },
+        { nombre: "venta", porcentage: 85, base: "vendedor" },
+        { nombre: "signori", porcentage: 168, base: "costo" },
+    ]);
+    const [sort, setSort] = useState("articulo");
     const [overlay, setOverlay] = useState(false);
 
     return (
-        <PanelMod>
-            <Header sort={sort} setSort={setSort} />
-            <Section
-                switchOn={`eoau`}
+        <Panel>
+            <Header
+                columns={columns}
+                setColumns={setColumns}
+                sort={sort}
+                setSort={setSort}
                 overlay={overlay}
-                cancel={() => setOverlay(false)}
-            >
-                <PreciosList overlay={overlay} setOverlay={setOverlay} />
+                setOverlay={setOverlay}
+            />
+            <Section overlay={overlay} cancel={() => setOverlay(false)}>
+                <PreciosList
+                    columns={columns}
+                    overlay={overlay}
+                    setOverlay={setOverlay}
+                />
             </Section>
-        </PanelMod>
+        </Panel>
     );
 }
 

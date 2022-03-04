@@ -5,11 +5,12 @@ import { List } from "components/List";
 import PrecioCard from "../cards/PrecioCard";
 
 type ComponentProps = {
+    columns: Column[];
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
 };
 
-function PreciosList({ overlay, setOverlay }: ComponentProps) {
+function PreciosList({ columns, overlay, setOverlay }: ComponentProps) {
     const [create, setCreate] = useState(false);
     const [active, setActive] = useState(0);
     const { precios } = usePrecios();
@@ -32,7 +33,8 @@ function PreciosList({ overlay, setOverlay }: ComponentProps) {
                 <PrecioCard
                     key={precio.id}
                     precio={precio}
-                    isActive={active === 1}
+                    columns={columns}
+                    isActive={active === precio.id}
                     onClick={() =>
                         precio.id === active
                             ? setActive(0)

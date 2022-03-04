@@ -74,7 +74,13 @@ const Currency = function ({ number, loading, integer }: ComponentProps) {
                 $
                 <span>
                     {numbers[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-                    {!integer && <small>{numbers[1]}</small>}
+                    {!integer && (
+                        <small>
+                            {numbers[1]
+                                ? (numbers[1] + "0").substring(0, 2)
+                                : "00"}
+                        </small>
+                    )}
                 </span>
             </Container>
         </SwitchTransition>

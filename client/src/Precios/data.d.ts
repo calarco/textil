@@ -5,6 +5,7 @@ type Precio = {
     kg: number;
     costo?: number;
     costos?: { nombre: string; monto: number }[];
+    aumentoId?: number;
     createdAt: string;
     updatedAt: string;
 };
@@ -14,4 +15,10 @@ type Precios = {
     limit: number;
     skip: number;
     data: Precio[];
+};
+
+type Column = {
+    nombre: string;
+    porcentage: number;
+    base: string;
 };

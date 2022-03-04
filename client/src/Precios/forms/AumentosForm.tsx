@@ -4,7 +4,6 @@ import feathersClient from "feathersClient";
 
 import { Form } from "components/Form";
 import { Label } from "components/Label";
-import { CurrencyInput } from "components/CurrencyInput";
 
 type ComponentProps = {
     precio?: Precio;
@@ -12,14 +11,8 @@ type ComponentProps = {
     close?: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
-    const {
-        register,
-        handleSubmit,
-        reset,
-        control,
-        formState: { errors },
-    } = useForm<Inputs>({
+const AumentosForm = function ({ precio, isActive, close }: ComponentProps) {
+    const { register, handleSubmit, reset } = useForm<Inputs>({
         defaultValues: {},
     });
 
@@ -57,68 +50,76 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
             isActive={isActive}
             close={close}
             onSubmit={handleSubmit(onSubmit)}
-            length={6}
+            length={8}
         >
-            <Label title="articulo" length={1}>
-                <input
-                    type="text"
-                    placeholder="-"
-                    autoComplete="off"
-                    {...register("comprobante")}
-                />
-            </Label>
-            <Label title="descripcion" length={3}>
-                <input
-                    type="text"
-                    placeholder="-"
-                    autoComplete="off"
-                    {...register("comprobante")}
-                />
-            </Label>
-            <Label title="peso" length={1}>
-                kg
-                <input
-                    type="text"
-                    placeholder="-"
-                    autoComplete="off"
-                    {...register("comprobante")}
-                />
-            </Label>
-            <Label title="aumento" length={1}>
+            <Label title="fabrica" length={2}>
                 %
                 <input
-                    type="text"
+                    type="number"
                     placeholder="-"
                     autoComplete="off"
                     {...register("comprobante")}
                 />
             </Label>
-            <Label title="costo" error={errors.debe?.message} length={1}>
-                $
-                <CurrencyInput name="debe" control={control} />
+            <Label title="vendedor" length={2}>
+                %
+                <input
+                    type="number"
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("comprobante")}
+                />
             </Label>
-            <Label title="hilado" error={errors.debe?.message} length={1}>
-                $
-                <CurrencyInput name="debe" control={control} />
+            <Label title="venta" length={2}>
+                %
+                <input
+                    type="number"
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("comprobante")}
+                />
             </Label>
-            <Label title="tejido" error={errors.haber?.message} length={1}>
-                $
-                <CurrencyInput name="haber" control={control} />
+            <Label title="signori" length={2}>
+                %
+                <input
+                    type="number"
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("comprobante")}
+                />
             </Label>
-            <Label title="confeccion" error={errors.debe?.message} length={1}>
-                $
-                <CurrencyInput name="debe" control={control} />
-            </Label>
-            <Label title="cierre" error={errors.haber?.message} length={1}>
-                $
-                <CurrencyInput name="haber" control={control} />
-            </Label>
-            <Label title="fin" error={errors.haber?.message} length={1}>
-                $
-                <CurrencyInput name="haber" control={control} />
+            <Label title="aumentos" length={8}>
+                %
+                <input
+                    type="number"
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("comprobante")}
+                />
+                %
+                <input
+                    type="number"
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("comprobante")}
+                />
+                %
+                <input
+                    type="number"
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("comprobante")}
+                />
+                %
+                <input
+                    type="number"
+                    placeholder="-"
+                    autoComplete="off"
+                    {...register("comprobante")}
+                />
             </Label>
         </Form>
     );
 };
 
-export default PrecioForm;
+export default AumentosForm;

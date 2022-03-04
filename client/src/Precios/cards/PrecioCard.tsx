@@ -12,34 +12,100 @@ import PrecioForm from "../forms/PrecioForm";
 const Box = styled.ul`
     height: 3rem;
     display: grid;
-    grid-template-columns: 5rem 1fr 10rem 10rem 10rem 10rem 10rem [end];
+    grid-template-columns: 1fr 5fr 1fr 2fr 2fr 2fr 2fr 2fr [end];
     gap: 1px;
     align-items: center;
     text-align: center;
+
+    > li {
+        position: relative;
+    }
 
     > li:nth-child(3),
     > li:nth-child(4),
     > li:nth-child(5),
     > li:nth-child(6),
-    > li:nth-child(7) {
+    > li:nth-child(7),
+    > li:nth-child(8) {
         text-align: right;
         padding: 0 1rem;
+    }
+
+    > li:nth-child(3)::after,
+    > li:nth-child(5)::after,
+    > li:nth-child(6)::after,
+    > li:nth-child(7)::after,
+    > li:nth-child(8)::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -1px;
+        border-left: var(--border-variant);
     }
 `;
 
 const DetailsMod = styled(Details)`
-    grid-template-columns: 1fr 10rem 10rem 10rem 10rem [end];
+    grid-template-columns: 9fr 2fr 2fr 2fr 2fr [end];
     grid-auto-flow: row;
+    align-items: start;
+    border-top: none;
 `;
 
 const Items = styled.div`
-    outline: var(--border);
+    position: relative;
+    padding: 0.5rem 1rem;
+    border-top: var(--border-variant);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
 
     > label {
-        outline: var(--border);
+        position: relative;
+        padding: 0.5rem;
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 1rem;
+        justify-content: center;
+
+        &:not(:first-child)::after {
+            content: "";
+            position: absolute;
+            top: 0.25rem;
+            bottom: 0.25rem;
+            left: -0.75rem;
+            border-left: var(--border-variant);
+        }
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0.75rem;
+        bottom: 0.75rem;
+        right: -1px;
+        border-left: var(--border-variant);
+    }
+`;
+
+const Label = styled.div`
+    position: relative;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 1px;
+    text-align: center;
+
+    &:not(:nth-child(2))::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        border-left: var(--border-variant);
     }
 `;
 
@@ -49,6 +115,7 @@ const ButtonsMod = styled(Buttons)`
 
 type ComponentProps = {
     precio: Precio;
+    columns: Column[];
     isActive: boolean;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
@@ -58,14 +125,50 @@ type ComponentProps = {
 
 function PrecioCard({
     precio,
+    columns,
     isActive,
     overlay,
     setOverlay,
     onClick,
     className,
 }: ComponentProps) {
+    const [total, setTotal] = useState(0);
+    const [costo, setCosto] = useState(0);
+    const [fabrica, setFabrica] = useState(0);
+    const [vendedor, setVendedor] = useState(0);
+    const [venta, setVenta] = useState(0);
+    const [signori, setSignori] = useState(0);
     const [form, setForm] = useState(false);
     const [remove, setRemove] = useState(false);
+
+    useEffect(() => {
+        precio.costos &&
+            setTotal(
+                precio.costos.reduce(function (a, b) {
+                    return a + b.monto;
+                }, 0)
+            );
+    }, [precio, columns, setTotal]);
+
+    useEffect(() => {
+        setCosto((total * columns[0].porcentage) / 100);
+    }, [total, columns, setCosto]);
+
+    useEffect(() => {
+        setFabrica((costo * columns[1].porcentage) / 100);
+    }, [costo, columns, setFabrica]);
+
+    useEffect(() => {
+        setVendedor((fabrica * columns[2].porcentage) / 100);
+    }, [fabrica, columns, setVendedor]);
+
+    useEffect(() => {
+        setVenta((vendedor * columns[3].porcentage) / 100);
+    }, [vendedor, columns, setVenta]);
+
+    useEffect(() => {
+        setSignori((costo * columns[4].porcentage) / 100);
+    }, [costo, columns, setSignori]);
 
     useEffect(() => {
         !overlay && setForm(false);
@@ -93,19 +196,22 @@ function PrecioCard({
                     </p>
                 </li>
                 <li>
-                    <Currency number={946.34} />
+                    <pre>%{columns[0].porcentage}</pre>
                 </li>
                 <li>
-                    <Currency number={1430.34} />
+                    <Currency number={total} />
                 </li>
                 <li>
-                    <Currency number={1490.34} />
+                    <Currency number={fabrica} />
                 </li>
                 <li>
-                    <Currency number={1266.34} />
+                    <Currency number={vendedor} />
                 </li>
                 <li>
-                    <Currency number={1590.34} integer />
+                    <Currency number={venta} />
+                </li>
+                <li>
+                    <Currency number={signori} integer />
                 </li>
             </Box>
             <Expand isActive={isActive} height={8.5}>
@@ -119,22 +225,22 @@ function PrecioCard({
                                 </label>
                             ))}
                     </Items>
-                    <label>
-                        Ganancia
-                        <Currency number={483} />
-                    </label>
-                    <label>
-                        Ganancia
-                        <Currency number={320} />
-                    </label>
-                    <label>
-                        Inversion
-                        <Currency number={163} />
-                    </label>
-                    <label>
-                        sin comision
-                        <Currency number={1272} />
-                    </label>
+                    <Label>
+                        <label>Ganancia</label>
+                        <Currency number={fabrica - costo} />
+                    </Label>
+                    <Label>
+                        <label>Ganancia</label>
+                        <Currency number={venta - costo} />
+                    </Label>
+                    <Label>
+                        <label>Inversion</label>
+                        <Currency number={fabrica - venta} />
+                    </Label>
+                    <Label>
+                        <label>Sin comision</label>
+                        <Currency number={signori * 0.8} integer />
+                    </Label>
                 </DetailsMod>
                 <ButtonsMod>
                     <button type="button" onClick={() => setRemove(true)}>

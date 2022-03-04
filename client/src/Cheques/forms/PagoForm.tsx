@@ -27,9 +27,7 @@ const PagoForm = function ({ pago, isActive, close }: ComponentProps) {
         defaultValues: {
             destinatario: "",
             pagoDate: pago?.pagoDate,
-            monto: pago?.monto
-                ? `$${pago.monto.toString().replace(/\./g, ",")}`
-                : "",
+            monto: pago?.monto ? pago.monto.toString().replace(/\./g, ",") : "",
             destinatarioId: pago?.destinatarioId || 0,
             emisionDate:
                 pago?.emisionDate || new Date().toISOString().substring(0, 10),
@@ -43,7 +41,7 @@ const PagoForm = function ({ pago, isActive, close }: ComponentProps) {
     const onSubmit: SubmitHandler<Inputs> = (inputs) => {
         const payload = {
             pagoDate: inputs.pagoDate,
-            monto: inputs.monto.slice(1).replace(/\./g, "").replace(/,/g, "."),
+            monto: inputs.monto.replace(/\./g, "").replace(/,/g, "."),
             destinatarioId: inputs.destinatarioId,
             emisionDate: inputs.emisionDate,
             numero: inputs.numero,
@@ -99,7 +97,7 @@ const PagoForm = function ({ pago, isActive, close }: ComponentProps) {
                 length={3}
             />
             <Label title="Monto" error={errors.monto?.message} length={2}>
-                <CurrencyInput name="monto" control={control} />
+                $<CurrencyInput name="monto" control={control} required />
             </Label>
             <Label
                 title="Fecha de pago"

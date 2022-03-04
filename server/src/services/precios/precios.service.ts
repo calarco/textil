@@ -1,14 +1,14 @@
-// Initializes the `cobros` service on path `/cobros`
+// Initializes the `precios` service on path `/precios`
 import { ServiceAddons } from "@feathersjs/feathers";
 import { Application } from "../../declarations";
-import { Cobros } from "./cobros.class";
-import createModel from "../../models/cobros.model";
-import hooks from "./cobros.hooks";
+import { Precios } from "./precios.class";
+import createModel from "../../models/precios.model";
+import hooks from "./precios.hooks";
 
 // Add this service to the service type index
 declare module "../../declarations" {
     interface ServiceTypes {
-        cobros: Cobros & ServiceAddons<any>;
+        precios: Precios & ServiceAddons<any>;
     }
 }
 
@@ -19,10 +19,10 @@ export default function (app: Application): void {
     };
 
     // Initialize our service with any options it requires
-    app.use("/cobros", new Cobros(options, app));
+    app.use("/precios", new Precios(options, app));
 
     // Get our initialized service so that we can register hooks
-    const service = app.service("cobros");
+    const service = app.service("precios");
 
     service.hooks(hooks);
 }

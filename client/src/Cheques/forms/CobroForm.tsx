@@ -39,7 +39,7 @@ const CobroForm = function ({ cobro, isActive, close }: ComponentProps) {
             destinatario: "",
             depositoDate: cobro?.depositoDate,
             monto: cobro?.monto
-                ? `$${cobro.monto.toString().replace(/\./g, ",")}`
+                ? cobro.monto.toString().replace(/\./g, ",")
                 : "",
             libradoreId: cobro?.libradoreId || 0,
             emisionDate:
@@ -59,7 +59,7 @@ const CobroForm = function ({ cobro, isActive, close }: ComponentProps) {
     const onSubmit: SubmitHandler<Inputs> = (inputs) => {
         const payload = {
             depositoDate: inputs.depositoDate,
-            monto: inputs.monto.slice(1).replace(/\./g, "").replace(/,/g, "."),
+            monto: inputs.monto.replace(/\./g, "").replace(/,/g, "."),
             libradoreId: inputs.libradoreId,
             emisionDate: inputs.emisionDate,
             bancoId: inputs.bancoId,
@@ -123,7 +123,7 @@ const CobroForm = function ({ cobro, isActive, close }: ComponentProps) {
                 length={3}
             />
             <Label title="Monto" error={errors.monto?.message} length={2}>
-                <CurrencyInput name="monto" control={control} />
+                $<CurrencyInput name="monto" control={control} required />
             </Label>
             <ExpandMod
                 isActive={

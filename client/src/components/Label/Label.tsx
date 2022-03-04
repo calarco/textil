@@ -88,6 +88,13 @@ const Span = transition.span.attrs({
     }
 `;
 
+const Children = styled.div`
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.5rem;
+    align-items: center;
+`;
+
 type ComponentProps = {
     title: string;
     length?: number;
@@ -119,7 +126,7 @@ const Label = function ({
                     {error ? error : title}
                 </Span>
             </SwitchTransition>
-            {children}
+            <Children>{children}</Children>
         </Container>
     );
 };

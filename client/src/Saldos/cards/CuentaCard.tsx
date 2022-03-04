@@ -83,7 +83,7 @@ function CuentaCard({
                     <p>{cuenta.descripcion}</p>
                 </li>
                 <li>
-                    <Currency number={saldo} loading={loading} />
+                    <Currency number={saldo} loading={loading} integer />
                 </li>
             </Box>
             <Expand isActive={isActive} height={3}>
