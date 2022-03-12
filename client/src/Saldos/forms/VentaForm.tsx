@@ -25,7 +25,7 @@ const VentaForm = function ({
         reset,
         control,
         formState: { errors },
-    } = useForm<Inputs>({
+    } = useForm<VentaInputs>({
         defaultValues: {
             fecha: venta?.fecha || new Date().toISOString().substring(0, 10),
             debe: venta?.debe ? venta.debe.toString().replace(/\./g, ",") : "",
@@ -37,11 +37,11 @@ const VentaForm = function ({
         },
     });
 
-    const onSubmit: SubmitHandler<Inputs> = (inputs) => {
+    const onSubmit: SubmitHandler<VentaInputs> = (inputs) => {
         const payload = {
             fecha: inputs.fecha,
-            debe: inputs.debe.replace(/\./g, "").replace(/,/g, ".") || 0,
-            haber: inputs.haber.replace(/\./g, "").replace(/,/g, ".") || 0,
+            debe: inputs.debe?.replace(/\./g, "").replace(/,/g, ".") || 0,
+            haber: inputs.haber?.replace(/\./g, "").replace(/,/g, ".") || 0,
             comprobante: inputs.comprobante,
             clienteId: inputs.clienteId,
         };
@@ -92,10 +92,10 @@ const VentaForm = function ({
                 />
             </Label>
             <Label title="Debe" error={errors.debe?.message} length={1}>
-                $<CurrencyInput name="debe" control={control} />
+                <CurrencyInput name="debe" control={control} />
             </Label>
             <Label title="Haber" error={errors.haber?.message} length={1}>
-                $<CurrencyInput name="haber" control={control} />
+                <CurrencyInput name="haber" control={control} />
             </Label>
         </Form>
     );

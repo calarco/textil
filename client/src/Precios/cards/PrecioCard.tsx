@@ -192,7 +192,7 @@ function PrecioCard({
                 <li>
                     <p>
                         {precio.descripcion}
-                        <small>{precio.kg} kg</small>
+                        <small>{precio.peso} kg</small>
                     </p>
                 </li>
                 <li>
@@ -220,7 +220,7 @@ function PrecioCard({
                         {precio.costos &&
                             precio.costos.map((costo) => (
                                 <label key={0}>
-                                    {costo.nombre}
+                                    {costo.detalle}
                                     <Currency number={costo.monto} />
                                 </label>
                             ))}
@@ -255,7 +255,7 @@ function PrecioCard({
                 <>
                     <Remove
                         id={precio.id}
-                        service="cobros"
+                        service="precios"
                         isActive={isActive && remove}
                         exit={() => setRemove(false)}
                     />

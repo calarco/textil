@@ -19,17 +19,15 @@ export default function (app: Application): typeof Model {
             },
             peso: {
                 type: DataTypes.DECIMAL(10, 2),
-                allowNull: false,
-                defaultValue: 0,
+                allowNull: true,
             },
             costo: {
                 type: DataTypes.DECIMAL(10, 2),
-                allowNull: false,
-                defaultValue: 0,
+                allowNull: true,
             },
             costos: {
                 type: DataTypes.JSON,
-                allowNull: false,
+                allowNull: true,
             },
         },
         {

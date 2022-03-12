@@ -4,20 +4,35 @@ import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
 type Props = {
+    label?: boolean;
     length?: number;
     error?: boolean;
 };
 
 const Container = styled.label<Props>`
     position: relative;
+    height: 100%;
     min-height: 5rem;
     padding: 0.5rem 1rem 0.75rem 1rem;
     background: var(--surface);
     display: grid;
     align-content: space-between;
-    gap: 0.25rem;
+    gap: 0.25rem 1rem;
     text-transform: capitalize;
     transition: 0.15s ease-in;
+
+    ${(props) =>
+        !props.label &&
+        css`
+            grid-auto-flow: column;
+            justify-content: start;
+        `};
+
+    ${(props) =>
+        props.length &&
+        css`
+            grid-column-end: span ${props.length};
+        `};
 
     ${(props) =>
         !props.error &&
@@ -25,12 +40,6 @@ const Container = styled.label<Props>`
             &:focus-within {
                 color: var(--primary);
             }
-        `};
-
-    ${(props) =>
-        props.length &&
-        css`
-            grid-column-end: span ${props.length};
         `};
 
     ${(props) =>
@@ -55,7 +64,7 @@ const Container = styled.label<Props>`
         `};
 `;
 
-const Span = transition.span.attrs({
+const Title = transition.span.attrs({
     unmountOnExit: true,
     timeout: {
         enter: 200,
@@ -66,6 +75,13 @@ const Span = transition.span.attrs({
     font: inherit;
     color: inherit;
     margin: 0;
+    display: grid;
+    gap: 1rem;
+
+    span {
+        font: inherit;
+        color: inherit;
+    }
 
     &:enter {
         opacity: 0;
@@ -91,12 +107,12 @@ const Span = transition.span.attrs({
 const Children = styled.div`
     display: grid;
     grid-auto-flow: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
     align-items: center;
 `;
 
 type ComponentProps = {
-    title: string;
+    title?: string;
     length?: number;
     error?: string;
     onBlur?: FocusEventHandler<HTMLLabelElement>;
@@ -116,16 +132,19 @@ const Label = function ({
 
     return (
         <Container
+            label={title ? true : false}
             error={error ? true : false}
             length={length}
             onBlur={onBlur}
             className={className}
         >
-            <SwitchTransition>
-                <Span nodeRef={nodeRef} ref={nodeRef} key={error ? 0 : 1}>
-                    {error ? error : title}
-                </Span>
-            </SwitchTransition>
+            {title && (
+                <SwitchTransition>
+                    <Title nodeRef={nodeRef} ref={nodeRef} key={error ? 0 : 1}>
+                        {error ? error : title}
+                    </Title>
+                </SwitchTransition>
+            )}
             <Children>{children}</Children>
         </Container>
     );

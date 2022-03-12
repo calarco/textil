@@ -1,10 +1,15 @@
+type Items = {
+    detalle: string;
+    monto: number;
+}[];
+
 type Precio = {
     id: number;
     articulo: number;
     descripcion: string;
-    kg: number;
+    peso: number;
     costo?: number;
-    costos?: { nombre: string; monto: number }[];
+    costos?: Items;
     aumentoId?: number;
     createdAt: string;
     updatedAt: string;
@@ -21,4 +26,13 @@ type Column = {
     nombre: string;
     porcentage: number;
     base: string;
+};
+
+type PrecioInputs = {
+    articulo?: number;
+    descripcion?: string;
+    peso?: number;
+    detalle?: string;
+    monto?: string;
+    costo?: string;
 };

@@ -49,3 +49,32 @@ type Total = {
     skip: number;
     data: [{ total: number }];
 };
+
+type PagoInputs = {
+    pagoDate?: string;
+    monto?: string;
+    destinatarioId?: number;
+    destinatario?: string;
+    emisionDate?: string;
+    numero?: string;
+    observaciones?: string;
+    estado?: string;
+};
+
+type CobroInputs = {
+    depositoDate?: string;
+    monto?: string;
+    destinatarioId?: number;
+    destinatario?: string;
+    libradoreId?: number;
+    librador?: string;
+    emisionDate?: string;
+    salidaDate?: string;
+    bancoId?: number;
+    banco?: string;
+    numero?: string;
+    titular?: string;
+    cuit?: string;
+    observaciones?: string;
+    estado?: string;
+};

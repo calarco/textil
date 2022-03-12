@@ -108,7 +108,7 @@ const Bar = function ({
                     isActive={route === "saldos"}
                     onClick={() => setRoute("saldos")}
                 >
-                    Saldos
+                    Cuentas
                 </View>
                 <View
                     isActive={route === "precios"}

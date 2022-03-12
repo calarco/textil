@@ -23,14 +23,14 @@ const CuentaForm = function ({
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<Inputs>({
+    } = useForm<CuentaInputs>({
         defaultValues: {
             nombre: cuenta?.nombre || "",
             descripcion: cuenta?.descripcion || "",
         },
     });
 
-    const onSubmit: SubmitHandler<Inputs> = (inputs) => {
+    const onSubmit: SubmitHandler<CuentaInputs> = (inputs) => {
         const payload = {
             nombre: inputs.nombre,
             descripcion: inputs.descripcion,

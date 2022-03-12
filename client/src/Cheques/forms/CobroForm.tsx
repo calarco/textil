@@ -32,7 +32,7 @@ const CobroForm = function ({ cobro, isActive, close }: ComponentProps) {
         reset,
         control,
         formState: { errors },
-    } = useForm<Inputs>({
+    } = useForm<CobroInputs>({
         defaultValues: {
             librador: "",
             banco: "",
@@ -56,10 +56,10 @@ const CobroForm = function ({ cobro, isActive, close }: ComponentProps) {
     });
     const { libradores, destinatarios, bancos } = useCheques();
 
-    const onSubmit: SubmitHandler<Inputs> = (inputs) => {
+    const onSubmit: SubmitHandler<CobroInputs> = (inputs) => {
         const payload = {
             depositoDate: inputs.depositoDate,
-            monto: inputs.monto.replace(/\./g, "").replace(/,/g, "."),
+            monto: inputs.monto?.replace(/\./g, "").replace(/,/g, "."),
             libradoreId: inputs.libradoreId,
             emisionDate: inputs.emisionDate,
             bancoId: inputs.bancoId,
@@ -123,7 +123,7 @@ const CobroForm = function ({ cobro, isActive, close }: ComponentProps) {
                 length={3}
             />
             <Label title="Monto" error={errors.monto?.message} length={2}>
-                $<CurrencyInput name="monto" control={control} required />
+                <CurrencyInput name="monto" control={control} required />
             </Label>
             <ExpandMod
                 isActive={

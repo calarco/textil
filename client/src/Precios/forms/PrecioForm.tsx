@@ -1,10 +1,11 @@
-import { MouseEvent, useEffect } from "react";
+import { MouseEvent, useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import feathersClient from "feathersClient";
 
 import { Form } from "components/Form";
 import { Label } from "components/Label";
 import { CurrencyInput } from "components/CurrencyInput";
+import { ItemsInput } from "components/ItemsInput";
 
 type ComponentProps = {
     precio?: Precio;
@@ -19,17 +20,23 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
         reset,
         control,
         formState: { errors },
-    } = useForm<Inputs>({
-        defaultValues: {},
+    } = useForm<PrecioInputs>({
+        defaultValues: {
+            articulo: precio?.articulo,
+            descripcion: precio?.descripcion,
+            peso: precio?.peso,
+            costo: precio?.costo?.toString().replace(/\./g, ","),
+        },
     });
+    const [items, setItems] = useState<Items>([]);
 
-    const onSubmit: SubmitHandler<Inputs> = (inputs) => {
+    const onSubmit: SubmitHandler<PrecioInputs> = (inputs) => {
         const payload = {
-            fecha: inputs.fecha,
-            debe: inputs.debe.replace(/\./g, "").replace(/,/g, "."),
-            haber: inputs.haber.replace(/\./g, "").replace(/,/g, "."),
-            comprobante: inputs.comprobante,
-            proveedoreId: inputs.proveedoreId,
+            articulo: inputs.articulo,
+            descripcion: inputs.descripcion,
+            peso: inputs.peso || null,
+            costos: items,
+            costo: inputs.costo?.replace(/\./g, "").replace(/,/g, "."),
         };
         precio
             ? feathersClient
@@ -49,6 +56,7 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
     };
 
     useEffect(() => {
+        precio?.costos && setItems(precio.costos);
         reset();
     }, [isActive, precio, reset]);
 
@@ -59,20 +67,28 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
             onSubmit={handleSubmit(onSubmit)}
             length={6}
         >
-            <Label title="articulo" length={1}>
+            <Label title="articulo" error={errors.articulo?.message} length={1}>
                 <input
-                    type="text"
+                    type="number"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("articulo", {
+                        required: "Ingrese el articulo",
+                    })}
                 />
             </Label>
-            <Label title="descripcion" length={3}>
+            <Label
+                title="descripcion"
+                error={errors.descripcion?.message}
+                length={3}
+            >
                 <input
                     type="text"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("descripcion", {
+                        required: "Ingrese la descripcion",
+                    })}
                 />
             </Label>
             <Label title="peso" length={1}>
@@ -81,41 +97,25 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
                     type="text"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("peso")}
                 />
             </Label>
             <Label title="aumento" length={1}>
                 %
-                <input
-                    type="text"
-                    placeholder="-"
-                    autoComplete="off"
-                    {...register("comprobante")}
+                <input type="text" placeholder="-" autoComplete="off" />
+            </Label>
+            <ItemsInput items={items} setItems={setItems} length={5} />
+            <Label
+                title="costo"
+                error={items[0] ? undefined : errors.costo?.message}
+                length={1}
+            >
+                <CurrencyInput
+                    name="costo"
+                    control={control}
+                    required={items[0] ? false : true}
+                    disabled={items[0] ? true : false}
                 />
-            </Label>
-            <Label title="costo" error={errors.debe?.message} length={1}>
-                $
-                <CurrencyInput name="debe" control={control} />
-            </Label>
-            <Label title="hilado" error={errors.debe?.message} length={1}>
-                $
-                <CurrencyInput name="debe" control={control} />
-            </Label>
-            <Label title="tejido" error={errors.haber?.message} length={1}>
-                $
-                <CurrencyInput name="haber" control={control} />
-            </Label>
-            <Label title="confeccion" error={errors.debe?.message} length={1}>
-                $
-                <CurrencyInput name="debe" control={control} />
-            </Label>
-            <Label title="cierre" error={errors.haber?.message} length={1}>
-                $
-                <CurrencyInput name="haber" control={control} />
-            </Label>
-            <Label title="fin" error={errors.haber?.message} length={1}>
-                $
-                <CurrencyInput name="haber" control={control} />
             </Label>
         </Form>
     );

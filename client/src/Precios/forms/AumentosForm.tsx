@@ -12,18 +12,12 @@ type ComponentProps = {
 };
 
 const AumentosForm = function ({ precio, isActive, close }: ComponentProps) {
-    const { register, handleSubmit, reset } = useForm<Inputs>({
+    const { register, handleSubmit, reset } = useForm<PrecioInputs>({
         defaultValues: {},
     });
 
-    const onSubmit: SubmitHandler<Inputs> = (inputs) => {
-        const payload = {
-            fecha: inputs.fecha,
-            debe: inputs.debe.replace(/\./g, "").replace(/,/g, "."),
-            haber: inputs.haber.replace(/\./g, "").replace(/,/g, "."),
-            comprobante: inputs.comprobante,
-            proveedoreId: inputs.proveedoreId,
-        };
+    const onSubmit: SubmitHandler<PrecioInputs> = () => {
+        const payload = {};
         precio
             ? feathersClient
                   .service("precios")
@@ -58,7 +52,7 @@ const AumentosForm = function ({ precio, isActive, close }: ComponentProps) {
                     type="number"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("articulo")}
                 />
             </Label>
             <Label title="vendedor" length={2}>
@@ -67,7 +61,7 @@ const AumentosForm = function ({ precio, isActive, close }: ComponentProps) {
                     type="number"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("articulo")}
                 />
             </Label>
             <Label title="venta" length={2}>
@@ -76,7 +70,7 @@ const AumentosForm = function ({ precio, isActive, close }: ComponentProps) {
                     type="number"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("articulo")}
                 />
             </Label>
             <Label title="signori" length={2}>
@@ -85,7 +79,7 @@ const AumentosForm = function ({ precio, isActive, close }: ComponentProps) {
                     type="number"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("articulo")}
                 />
             </Label>
             <Label title="aumentos" length={8}>
@@ -94,28 +88,28 @@ const AumentosForm = function ({ precio, isActive, close }: ComponentProps) {
                     type="number"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("articulo")}
                 />
                 %
                 <input
                     type="number"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("articulo")}
                 />
                 %
                 <input
                     type="number"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("articulo")}
                 />
                 %
                 <input
                     type="number"
                     placeholder="-"
                     autoComplete="off"
-                    {...register("comprobante")}
+                    {...register("articulo")}
                 />
             </Label>
         </Form>

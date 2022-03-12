@@ -308,6 +308,7 @@ const GlobalStyle = createGlobalStyle`
     textarea {
         display: block;
         width: 100%;
+        height: 2rem;
         padding: 0.25rem 0.5rem;
         border-radius: 4px;
         background: none;
@@ -356,6 +357,7 @@ const GlobalStyle = createGlobalStyle`
         display: block;
         appearance: none;
         width: 100%;
+        height: 2rem;
         padding: 0.25rem 0.5rem;
         border-radius: 4px;
         background: var(--secondary-variant);
@@ -430,10 +432,11 @@ const GlobalStyle = createGlobalStyle`
     input[name="banco"]:disabled,
     select:disabled {
         pointer-events: none;
+        outline: none;
         
-        &::placeholder {
-            color: var(--on-background-disabled);
-        }
+        //&::placeholder {
+        //    color: var(--on-background-disabled);
+        //}
     }
 
     input:-webkit-autofill,

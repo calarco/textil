@@ -55,3 +55,28 @@ type Venta = {
     createdAt: string;
     updatedAt: string;
 };
+
+type CuentaInputs = {
+    nombre?: string;
+    descripcion?: string;
+};
+
+type CompraInputs = {
+    nombre?: string;
+    descripcion?: string;
+    comprobante?: string;
+    fecha?: string;
+    debe?: string;
+    haber?: string;
+    proveedoreId?: number;
+};
+
+type VentaInputs = {
+    nombre?: string;
+    descripcion?: string;
+    comprobante?: string;
+    fecha?: string;
+    debe?: string;
+    haber?: string;
+    clienteId?: number;
+};

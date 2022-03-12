@@ -20,3 +20,16 @@ type FeathersErrorJSON = {
     data?: any;
     errors?: any;
 };
+
+type Inputs = {
+    monto?: string;
+    debe?: string;
+    haber?: string;
+    costo?: string;
+    destinatarioId?: number;
+    destinatario?: string;
+    libradoreId?: number;
+    librador?: string;
+    bancoId?: number;
+    banco?: string;
+};

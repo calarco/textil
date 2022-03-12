@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import feathersClient from "feathersClient";
 
 const usePrecios = () => {
     const [precios, setPrecios] = useState<Precios>({
@@ -7,47 +8,42 @@ const usePrecios = () => {
         skip: 0,
         data: [],
     });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    useEffect(() => {
-        setPrecios({
-            total: 0,
-            limit: 0,
-            skip: 0,
-            data: [
-                {
-                    id: 1,
-                    articulo: 158,
-                    descripcion: "Escote V sin manga",
-                    kg: 0.4,
-                    costos: [
-                        { nombre: "hilado", monto: 587.4 },
-                        { nombre: "tejido", monto: 120 },
-                        { nombre: "confeccion", monto: 213.44 },
-                        { nombre: "fin", monto: 25.5 },
-                    ],
-                    createdAt: "",
-                    updatedAt: "",
+    const loadData = useCallback(() => {
+        setLoading(true);
+        setError("");
+        feathersClient
+            .service("precios")
+            .find({
+                query: {
+                    $limit: 50,
+                    $sort: {
+                        articulo: 1,
+                    },
                 },
-                {
-                    id: 2,
-                    articulo: 159,
-                    descripcion: "Camp pull 1Cabo",
-                    kg: 0.4,
-                    costos: [
-                        { nombre: "hilado", monto: 890.4 },
-                        { nombre: "tejido", monto: 240 },
-                        { nombre: "confeccion", monto: 213.44 },
-                        { nombre: "cierre", monto: 148.5 },
-                        { nombre: "fin", monto: 25 },
-                    ],
-                    createdAt: "",
-                    updatedAt: "",
-                },
-            ],
-        });
+            })
+            .then((response: Precios) => {
+                response.data[0]
+                    ? setPrecios(response)
+                    : setError("No se encontraron precios");
+                setLoading(false);
+            })
+            .catch((error: FeathersErrorJSON) => {
+                setLoading(false);
+                setError(error.message);
+            });
     }, []);
 
-    return { precios };
+    useEffect(() => {
+        loadData();
+        feathersClient.service("precios").on("created", () => loadData());
+        feathersClient.service("precios").on("patched", () => loadData());
+        feathersClient.service("precios").on("removed", () => loadData());
+    }, [loadData]);
+
+    return { precios, loading, error };
 };
 
 export default usePrecios;

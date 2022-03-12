@@ -23,7 +23,7 @@ const PagoForm = function ({ pago, isActive, close }: ComponentProps) {
         reset,
         control,
         formState: { errors },
-    } = useForm<Inputs>({
+    } = useForm<PagoInputs>({
         defaultValues: {
             destinatario: "",
             pagoDate: pago?.pagoDate,
@@ -38,10 +38,10 @@ const PagoForm = function ({ pago, isActive, close }: ComponentProps) {
     });
     const { destinatarios } = useCheques();
 
-    const onSubmit: SubmitHandler<Inputs> = (inputs) => {
+    const onSubmit: SubmitHandler<PagoInputs> = (inputs) => {
         const payload = {
             pagoDate: inputs.pagoDate,
-            monto: inputs.monto.replace(/\./g, "").replace(/,/g, "."),
+            monto: inputs.monto?.replace(/\./g, "").replace(/,/g, "."),
             destinatarioId: inputs.destinatarioId,
             emisionDate: inputs.emisionDate,
             numero: inputs.numero,
@@ -97,7 +97,7 @@ const PagoForm = function ({ pago, isActive, close }: ComponentProps) {
                 length={3}
             />
             <Label title="Monto" error={errors.monto?.message} length={2}>
-                $<CurrencyInput name="monto" control={control} required />
+                <CurrencyInput name="monto" control={control} required />
             </Label>
             <Label
                 title="Fecha de pago"
