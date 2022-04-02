@@ -10,6 +10,7 @@ import libradores from './libradores/libradores.service';
 import compras from './compras/compras.service';
 import ventas from './ventas/ventas.service';
 import precios from './precios/precios.service';
+import aumentos from './aumentos/aumentos.service';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 export default function (app: Application): void {
@@ -24,4 +25,5 @@ export default function (app: Application): void {
     app.configure(compras);
     app.configure(ventas);
     app.configure(precios);
+    app.configure(aumentos);
 }

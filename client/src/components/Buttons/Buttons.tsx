@@ -1,17 +1,21 @@
 import { ReactNode } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const Container = styled.div`
+type Props = {
+    readonly hide?: boolean;
+};
+
+const Container = styled.div<Props>`
     grid-column-start: 1;
     grid-column-end: span end;
     position: relative;
     width: 100%;
-    height: 3rem;
+    max-height: 3rem;
     border-radius: 0 0 4px 4px;
     overflow: clip;
-    border-top: var(--border-variant);
     display: flex;
     gap: 1px;
+    transition: 0.15s ease-in;
 
     button {
         width: 100%;
@@ -28,15 +32,26 @@ const Container = styled.div`
             border-left: var(--border-variant);
         }
     }
+
+    ${(props) =>
+        props.hide &&
+        css`
+            max-height: 0;
+        `};
 `;
 
 type ComponentProps = {
+    hide?: boolean;
     children: ReactNode;
     className?: string;
 };
 
-const Buttons = function ({ children, className }: ComponentProps) {
-    return <Container className={className}>{children}</Container>;
+const Buttons = function ({ hide, children, className }: ComponentProps) {
+    return (
+        <Container hide={hide} className={className}>
+            {children}
+        </Container>
+    );
 };
 
 export default Buttons;

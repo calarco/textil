@@ -1,6 +1,7 @@
 import { MouseEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
+import { usePrecios } from "../hooks/preciosContext";
 import { Card } from "components/Card";
 import { Expand } from "components/Expand";
 import { Details } from "components/Details";
@@ -19,6 +20,12 @@ const Box = styled.ul`
 
     > li {
         position: relative;
+    }
+
+    > li:nth-child(3) {
+        pre {
+            color: var(--on-background-variant);
+        }
     }
 
     > li:nth-child(3),
@@ -65,41 +72,25 @@ const Items = styled.div`
 
     > label {
         position: relative;
-        padding: 0.5rem;
+        padding: 0 0.5rem;
+        border-radius: 4px;
+        outline: var(--border-variant);
         display: grid;
-        grid-template-columns: auto auto;
-        gap: 1rem;
+        grid-template-rows: auto auto;
+        gap: 0 1rem;
         justify-content: center;
-
-        &:not(:first-child)::after {
-            content: "";
-            position: absolute;
-            top: 0.25rem;
-            bottom: 0.25rem;
-            left: -0.75rem;
-            border-left: var(--border-variant);
-        }
-    }
-
-    &::after {
-        content: "";
-        position: absolute;
-        top: 0.75rem;
-        bottom: 0.75rem;
-        right: -1px;
-        border-left: var(--border-variant);
     }
 `;
 
 const Label = styled.div`
     position: relative;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
     display: grid;
     grid-template-rows: auto auto;
     gap: 1px;
     text-align: center;
 
-    &:not(:nth-child(2))::after {
+    &:not(:first-child)::after {
         content: "";
         position: absolute;
         top: 0;
@@ -115,7 +106,6 @@ const ButtonsMod = styled(Buttons)`
 
 type ComponentProps = {
     precio: Precio;
-    columns: Column[];
     isActive: boolean;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
@@ -125,13 +115,18 @@ type ComponentProps = {
 
 function PrecioCard({
     precio,
-    columns,
     isActive,
     overlay,
     setOverlay,
     onClick,
     className,
 }: ComponentProps) {
+    const {
+        fabrica: fabricaPorcentage,
+        vendedor: vendedorPorcentage,
+        venta: ventaPorcentage,
+        signori: signoriPorcentage,
+    } = usePrecios();
     const [total, setTotal] = useState(0);
     const [costo, setCosto] = useState(0);
     const [fabrica, setFabrica] = useState(0);
@@ -148,27 +143,27 @@ function PrecioCard({
                     return a + b.monto;
                 }, 0)
             );
-    }, [precio, columns, setTotal]);
+    }, [precio, setTotal]);
 
     useEffect(() => {
-        setCosto((total * columns[0].porcentage) / 100);
-    }, [total, columns, setCosto]);
+        setCosto((total * 181) / 100);
+    }, [total, setCosto]);
 
     useEffect(() => {
-        setFabrica((costo * columns[1].porcentage) / 100);
-    }, [costo, columns, setFabrica]);
+        setFabrica((costo * fabricaPorcentage.porcentage) / 100);
+    }, [costo, fabricaPorcentage, setFabrica]);
 
     useEffect(() => {
-        setVendedor((fabrica * columns[2].porcentage) / 100);
-    }, [fabrica, columns, setVendedor]);
+        setVendedor((fabrica * vendedorPorcentage.porcentage) / 100);
+    }, [fabrica, vendedorPorcentage, setVendedor]);
 
     useEffect(() => {
-        setVenta((vendedor * columns[3].porcentage) / 100);
-    }, [vendedor, columns, setVenta]);
+        setVenta((vendedor * ventaPorcentage.porcentage) / 100);
+    }, [vendedor, ventaPorcentage, setVenta]);
 
     useEffect(() => {
-        setSignori((costo * columns[4].porcentage) / 100);
-    }, [costo, columns, setSignori]);
+        setSignori((costo * signoriPorcentage.porcentage) / 100);
+    }, [costo, signoriPorcentage, setSignori]);
 
     useEffect(() => {
         !overlay && setForm(false);
@@ -196,7 +191,7 @@ function PrecioCard({
                     </p>
                 </li>
                 <li>
-                    <pre>%{columns[0].porcentage}</pre>
+                    <pre>%181</pre>
                 </li>
                 <li>
                     <Currency number={total} />

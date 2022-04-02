@@ -4,20 +4,21 @@ import styled, { css } from "styled-components";
 import { Overlay } from "components/Overlay";
 import PrecioForm from "./forms/PrecioForm";
 import AumentosForm from "./forms/AumentosForm";
+import PorcentagesForm from "./forms/PorcentagesForm";
 
 const Container = styled.div`
     position: relative;
     height: 6.25rem;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    align-items: center;
-`;
-
-const Columns1 = styled.div`
-    height: 100%;
     padding: 0 0.75rem;
     display: grid;
-    grid-template-columns: 6fr 3fr 8fr;
+    grid-template-columns: 9fr 8fr;
+    grid-template-rows: 1fr auto;
+`;
+
+const Row = styled.div`
+    height: 100%;
+    display: grid;
+    grid-template-columns: 6fr 3fr;
     gap: 1px;
     align-items: center;
 `;
@@ -36,33 +37,6 @@ const New = styled.div`
         &:hover {
             background: var(--primary-variant);
         }
-    }
-`;
-
-const Columns2 = styled.div`
-    position: relative;
-    display: grid;
-    grid-template-columns: 4fr 4fr 4fr 4fr;
-    gap: 1px;
-`;
-
-const Sort1 = styled.div`
-    position: relative;
-    padding: 0 1rem;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    grid-auto-flow: column;
-    gap: 0.5rem;
-    transition: 0.15s ease-in;
-
-    &::after {
-        content: "";
-        position: absolute;
-        top: calc(50% - 1rem);
-        left: -1px;
-        height: 2rem;
-        border-left: var(--border-variant);
     }
 `;
 
@@ -89,10 +63,14 @@ const Costo = styled.div`
     }
 `;
 
+const Porcentages = styled.div`
+    grid-row-end: span 2;
+    position: relative;
+`;
+
 const Columns = styled.div`
-    padding: 0 0.75rem;
     display: grid;
-    grid-template-columns: 1fr 5fr 3fr 2fr 2fr 2fr 2fr [end];
+    grid-template-columns: 1fr 5fr 3fr [end];
     gap: 1px;
 `;
 
@@ -135,74 +113,63 @@ const Sort = styled.div<Props>`
 `;
 
 type ComponentProps = {
-    columns: Column[];
-    setColumns: (columns: Column[]) => void;
     sort: string;
     setSort: (sort: string) => void;
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
 };
 
-function GestionHeader({
-    columns,
-    sort,
-    setSort,
-    overlay,
-    setOverlay,
-}: ComponentProps) {
+function GestionHeader({ sort, setSort, overlay, setOverlay }: ComponentProps) {
     const [create, setCreate] = useState(false);
-    const [edit, setEdit] = useState(false);
+    const [editAumentos, setEditAumentos] = useState(false);
+    const [editPorcentages, setEditPorcentages] = useState(false);
 
     useEffect(() => {
         !overlay && setCreate(false);
-        !overlay && setEdit(false);
-    }, [overlay, setCreate, setEdit]);
+        !overlay && setEditAumentos(false);
+        !overlay && setEditPorcentages(false);
+    }, [overlay, setCreate, setEditAumentos, setEditPorcentages]);
 
     useEffect(() => {
         create && setOverlay(true);
     }, [create, setOverlay]);
 
     useEffect(() => {
-        edit && setOverlay(true);
-    }, [edit, setOverlay]);
+        editAumentos && setOverlay(true);
+    }, [editAumentos, setOverlay]);
+
+    useEffect(() => {
+        editPorcentages ? setOverlay(true) : setOverlay(false);
+    }, [editPorcentages, setOverlay]);
 
     return (
         <Container>
-            <Columns1>
+            <Row>
                 <New>
                     <button onClick={() => setCreate(true)}>Nuevo</button>
                 </New>
                 <Costo>
-                    <button onClick={() => setEdit(true)}>Editar</button>
                     <select>
-                        <option>Filtrar</option>
-                        <option>%{columns[0].porcentage}</option>
+                        <option>Aumentos</option>
+                        <option>%0</option>
+                        <option>%181</option>
                         <option>%104</option>
                     </select>
-                </Costo>
-                <Columns2>
-                    <Sort1>
-                        <pre>% {columns[1].porcentage}</pre>
-                        <label>x costo</label>
-                    </Sort1>
-                    <Sort1>
-                        <pre>% {columns[2].porcentage}</pre>
-                        <label>x fabrica</label>
-                    </Sort1>
-                    <Sort1>
-                        <pre>% {columns[3].porcentage}</pre>
-                        <label>x vendedor</label>
-                    </Sort1>
-                    <Sort1>
-                        <pre>% {columns[4].porcentage}</pre>
-                        <label>x costo</label>
-                    </Sort1>
+                    <button onClick={() => setEditAumentos(true)}>
+                        Editar
+                    </button>
                     <AumentosForm
-                        isActive={edit}
+                        isActive={editAumentos}
                         close={() => setOverlay(false)}
                     />
-                </Columns2>
-            </Columns1>
+                </Costo>
+            </Row>
+            <Porcentages>
+                <PorcentagesForm
+                    isActive={editPorcentages}
+                    setActive={setEditPorcentages}
+                />
+            </Porcentages>
             <Columns>
                 <Sort
                     isActive={sort === "articulo"}
@@ -220,31 +187,7 @@ function GestionHeader({
                     isActive={sort === "emisionDate"}
                     onClick={() => setSort("emisionDate")}
                 >
-                    {columns[0].nombre}
-                </Sort>
-                <Sort
-                    isActive={sort === "emisionDate"}
-                    onClick={() => setSort("emisionDate")}
-                >
-                    {columns[1].nombre}
-                </Sort>
-                <Sort
-                    isActive={sort === "emisionDate"}
-                    onClick={() => setSort("emisionDate")}
-                >
-                    {columns[2].nombre}
-                </Sort>
-                <Sort
-                    isActive={sort === "emisionDate"}
-                    onClick={() => setSort("emisionDate")}
-                >
-                    {columns[3].nombre}
-                </Sort>
-                <Sort
-                    isActive={sort === "monto"}
-                    onClick={() => setSort("monto")}
-                >
-                    {columns[4].nombre}
+                    Costo
                 </Sort>
             </Columns>
             <PrecioForm isActive={create} close={() => setOverlay(false)} />

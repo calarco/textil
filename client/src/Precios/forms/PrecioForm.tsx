@@ -17,6 +17,7 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
     const {
         register,
         handleSubmit,
+        setValue,
         reset,
         control,
         formState: { errors },
@@ -56,9 +57,23 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
     };
 
     useEffect(() => {
-        precio?.costos && setItems(precio.costos);
+        precio?.costos ? setItems(precio.costos) : setItems([]);
         reset();
     }, [isActive, precio, reset]);
+
+    useEffect(() => {
+        items[0]
+            ? setValue(
+                  "costo",
+                  items
+                      .reduce(function (a, b) {
+                          return a + b.monto;
+                      }, 0)
+                      .toFixed(2)
+                      .replace(/\./g, ",")
+              )
+            : setValue("costo", "");
+    }, [items, setValue]);
 
     return (
         <Form
@@ -104,7 +119,6 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
                 %
                 <input type="text" placeholder="-" autoComplete="off" />
             </Label>
-            <ItemsInput items={items} setItems={setItems} length={5} />
             <Label
                 title="costo"
                 error={items[0] ? undefined : errors.costo?.message}
@@ -117,6 +131,7 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
                     disabled={items[0] ? true : false}
                 />
             </Label>
+            <ItemsInput items={items} setItems={setItems} length={5} />
         </Form>
     );
 };

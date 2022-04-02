@@ -3,6 +3,19 @@ type Items = {
     monto: number;
 }[];
 
+type Aumento = {
+    id?: number;
+    nombre?: string;
+    porcentage: number;
+};
+
+type Aumentos = {
+    total: number;
+    limit: number;
+    skip: number;
+    data: Aumento[];
+};
+
 type Precio = {
     id: number;
     articulo: number;
@@ -22,12 +35,6 @@ type Precios = {
     data: Precio[];
 };
 
-type Column = {
-    nombre: string;
-    porcentage: number;
-    base: string;
-};
-
 type PrecioInputs = {
     articulo?: number;
     descripcion?: string;
@@ -35,4 +42,12 @@ type PrecioInputs = {
     detalle?: string;
     monto?: string;
     costo?: string;
+};
+
+type AumentoInputs = {
+    fabrica?: number;
+    vendedor?: number;
+    venta?: number;
+    signori?: number;
+    porcentage?: number;
 };

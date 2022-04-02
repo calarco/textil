@@ -12,12 +12,11 @@ const Empty = styled.h5`
 `;
 
 type ComponentProps = {
-    columns: Column[];
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
 };
 
-function PreciosList({ columns, overlay, setOverlay }: ComponentProps) {
+function PreciosList({  overlay, setOverlay }: ComponentProps) {
     const [create, setCreate] = useState(false);
     const [active, setActive] = useState(0);
     const { precios, loading, error } = usePrecios();
@@ -43,7 +42,6 @@ function PreciosList({ columns, overlay, setOverlay }: ComponentProps) {
                     <PrecioCard
                         key={precio.id}
                         precio={precio}
-                        columns={columns}
                         isActive={active === precio.id}
                         onClick={() =>
                             precio.id === active

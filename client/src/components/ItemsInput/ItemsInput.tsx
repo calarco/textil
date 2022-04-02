@@ -59,9 +59,11 @@ const ItemsInput = function ({
     length,
     className,
 }: ComponentProps) {
-    const { register, handleSubmit, reset, control } = useForm<PrecioInputs>({
-        defaultValues: {},
-    });
+    const { register, handleSubmit, setValue, control } = useForm<PrecioInputs>(
+        {
+            defaultValues: {},
+        }
+    );
 
     const onSubmit: SubmitHandler<PrecioInputs> = (inputs) => {
         setItems([
@@ -73,7 +75,8 @@ const ItemsInput = function ({
                 ),
             },
         ]);
-        reset();
+        setValue("detalle", "");
+        setValue("monto", "");
     };
 
     const removeItem = (index: number) => {

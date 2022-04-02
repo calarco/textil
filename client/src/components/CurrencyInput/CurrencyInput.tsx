@@ -16,11 +16,11 @@ const Container = styled.div`
     }
 
     input[type="text"] {
-        font: var(--body-alt);
         grid-row-end: 1;
         grid-column-start: 1;
         grid-column-end: span 2;
         padding-left: 2rem;
+        font: var(--body-alt);
     }
 `;
 

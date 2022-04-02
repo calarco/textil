@@ -4,7 +4,7 @@ import transition from "styled-transition-group";
 import { SwitchTransition } from "react-transition-group";
 
 type Props = {
-    label?: boolean;
+    text?: boolean;
     length?: number;
     error?: boolean;
 };
@@ -22,7 +22,7 @@ const Container = styled.label<Props>`
     transition: 0.15s ease-in;
 
     ${(props) =>
-        !props.label &&
+        !props.text &&
         css`
             grid-auto-flow: column;
             justify-content: start;
@@ -132,7 +132,7 @@ const Label = function ({
 
     return (
         <Container
-            label={title ? true : false}
+            text={title ? true : false}
             error={error ? true : false}
             length={length}
             onBlur={onBlur}
