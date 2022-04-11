@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 
+import { usePrecios } from "./hooks/preciosContext";
 import { Overlay } from "components/Overlay";
 import PrecioForm from "./forms/PrecioForm";
 import AumentosForm from "./forms/AumentosForm";
@@ -120,6 +121,7 @@ type ComponentProps = {
 };
 
 function GestionHeader({ sort, setSort, overlay, setOverlay }: ComponentProps) {
+    const { aumentos } = usePrecios();
     const [create, setCreate] = useState(false);
     const [editAumentos, setEditAumentos] = useState(false);
     const [editPorcentages, setEditPorcentages] = useState(false);
@@ -150,10 +152,13 @@ function GestionHeader({ sort, setSort, overlay, setOverlay }: ComponentProps) {
                 </New>
                 <Costo>
                     <select>
-                        <option>Aumentos</option>
-                        <option>%0</option>
-                        <option>%181</option>
-                        <option>%104</option>
+                        <option value={""}>-</option>
+                        {aumentos[0] &&
+                            aumentos.map((aumento) => (
+                                <option key={aumento.id} value={aumento.id}>
+                                    {aumento.porcentage}
+                                </option>
+                            ))}
                     </select>
                     <button onClick={() => setEditAumentos(true)}>
                         Editar

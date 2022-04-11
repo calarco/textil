@@ -1,9 +1,58 @@
-import { MouseEvent, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { MouseEvent, FormEvent, ChangeEvent, useState, useRef } from "react";
 import styled from "styled-components";
+import transition from "styled-transition-group";
+import feathersClient from "feathersClient";
 
-import { Form } from "components/Form";
+import { usePrecios } from "../hooks/preciosContext";
+import AumentoCard from "../cards/AumentoCard";
 import { Label } from "components/Label";
+import { Buttons } from "components/Buttons";
+
+const Container = transition.div.attrs({
+    unmountOnExit: true,
+    timeout: {
+        enter: 200,
+        exit: 150,
+    },
+})`
+    content-visibility: auto;
+    will-change: opacity;
+    position: absolute;
+    z-index: 1500;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    overflow: clip;
+    border-radius: 4px;
+    outline: 1px solid var(--primary);
+    background: var(--primary);
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-auto-columns: 1fr;
+    gap: 1px;
+    align-items: start;
+
+    &:enter {
+        opacity: 0;
+        transform: translateY(-1rem);
+    }
+
+    &:enter-active {
+        opacity: 1;
+        transform: initial;
+        transition: 0.2s ease-out;
+    }
+
+    &:exit {
+        opacity: 1;
+    }
+
+    &:exit-active {
+        opacity: 0;
+        transform: translateY(-1rem);
+        transition: 0.15s ease-in;
+    }
+`;
 
 const List = styled.div`
     display: grid;
@@ -11,7 +60,7 @@ const List = styled.div`
     gap: 0.75rem;
 `;
 
-const Add = styled.div`
+const Add = styled.form`
     border-radius: 4px;
     background: var(--primary-variant);
     box-shadow: var(--shadow-variant);
@@ -30,24 +79,8 @@ const Add = styled.div`
     }
 `;
 
-const Item = styled.div`
-    border-radius: 4px;
-    outline: var(--border-variant);
-    display: grid;
-    grid-auto-flow: column;
-    align-items: center;
-
-    div {
-        padding: 0.5rem 1.5rem;
-        display: grid;
-        gap: 0.5rem;
-        text-align: center;
-    }
-
-    button {
-        height: 100%;
-        border-left: var(--border-variant);
-    }
+const ButtonsMod = styled(Buttons)`
+    background: var(--surface);
 `;
 
 type ComponentProps = {
@@ -56,75 +89,57 @@ type ComponentProps = {
 };
 
 const AumentosForm = function ({ isActive, close }: ComponentProps) {
-    const { register, handleSubmit, setValue } = useForm<AumentoInputs>({
-        defaultValues: {},
+    const [inputs, setInputs] = useState<AumentoInputs>({
+        porcentage: 0,
     });
-    const [aumentos, setAumentos] = useState<Aumento[]>([
-        { porcentage: 181 },
-        { porcentage: 104 },
-    ]);
+    const { aumentos } = usePrecios();
+    const nodeRef = useRef(null);
 
-    const onSubmit: SubmitHandler<AumentoInputs> = (inputs) => {
-        setAumentos([
-            ...aumentos,
-            {
-                porcentage: inputs.porcentage || 0,
-            },
-        ]);
-        setValue("porcentage", 0);
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        feathersClient
+            .service("aumentos")
+            .create({ porcentage: inputs.porcentage })
+            .then(() => {})
+            .catch((error: FeathersErrorJSON) => {
+                console.error(error.message);
+            });
     };
 
-    const removeItem = (index: number) => {
-        const newRepuestos = [...aumentos];
-        newRepuestos.splice(index, 1);
-        setAumentos(newRepuestos);
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        event.persist();
+        setInputs((inputs) => ({
+            ...inputs,
+            [event.target.name]: event.target.value,
+        }));
     };
 
     return (
-        <Form
-            isActive={isActive}
-            close={close}
-            onSubmit={handleSubmit(onSubmit)}
-            length={8}
-        >
-            <Label title="Aumentos" length={8}>
+        <Container nodeRef={nodeRef} ref={nodeRef} in={isActive}>
+            <Label title="Aumentos">
                 <List>
-                    <Add>
+                    <Add onSubmit={handleSubmit}>
                         <input
                             type="number"
                             placeholder="-"
-                            {...register("porcentage", {
-                                required: "Ingrese el porcentage",
-                            })}
+                            name="porcentage"
+                            value={inputs.porcentage}
+                            onChange={handleInputChange}
                         />
-                        <button type="button" onClick={handleSubmit(onSubmit)}>
-                            Agregar
-                        </button>
+                        <button type="submit">Agregar</button>
                     </Add>
                     {aumentos[0] &&
-                        aumentos.map(
-                            (aumento, index) =>
-                                !aumento.nombre && (
-                                    <Item key={index}>
-                                        <div>
-                                            <input
-                                                type="number"
-                                                placeholder="-"
-                                                value={aumento.porcentage}
-                                            />
-                                        </div>
-                                        <button
-                                            type="button"
-                                            onClick={() => removeItem(index)}
-                                        >
-                                            Borrar
-                                        </button>
-                                    </Item>
-                                )
-                        )}
+                        aumentos.map((aumento) => (
+                            <AumentoCard aumento={aumento} key={aumento.id} />
+                        ))}
                 </List>
             </Label>
-        </Form>
+            <ButtonsMod>
+                <button type="button" onClick={close}>
+                    Cancelar
+                </button>
+            </ButtonsMod>
+        </Container>
     );
 };
 

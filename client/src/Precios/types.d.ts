@@ -4,7 +4,7 @@ type Items = {
 }[];
 
 type Aumento = {
-    id?: number;
+    id: number;
     nombre?: string;
     porcentage: number;
 };
@@ -42,6 +42,7 @@ type PrecioInputs = {
     detalle?: string;
     monto?: string;
     costo?: string;
+    aumentoId?: number;
 };
 
 type AumentoInputs = {

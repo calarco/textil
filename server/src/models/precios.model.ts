@@ -43,6 +43,7 @@ export default function (app: Application): typeof Model {
     (precios as any).associate = function (models: any): void {
         // Define associations here
         // See https://sequelize.org/master/manual/assocs.html
+        precios.belongsTo(models.aumentos);
     };
 
     return precios;

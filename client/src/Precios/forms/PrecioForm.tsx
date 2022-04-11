@@ -2,6 +2,7 @@ import { MouseEvent, useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import feathersClient from "feathersClient";
 
+import { usePrecios } from "../hooks/preciosContext";
 import { Form } from "components/Form";
 import { Label } from "components/Label";
 import { CurrencyInput } from "components/CurrencyInput";
@@ -14,6 +15,7 @@ type ComponentProps = {
 };
 
 const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
+    const { aumentos } = usePrecios();
     const {
         register,
         handleSubmit,
@@ -27,6 +29,7 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
             descripcion: precio?.descripcion,
             peso: precio?.peso,
             costo: precio?.costo?.toString().replace(/\./g, ","),
+            aumentoId: precio?.aumentoId,
         },
     });
     const [items, setItems] = useState<Items>([]);
@@ -36,8 +39,9 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
             articulo: inputs.articulo,
             descripcion: inputs.descripcion,
             peso: inputs.peso || null,
-            costos: items,
             costo: inputs.costo?.replace(/\./g, "").replace(/,/g, "."),
+            costos: items,
+            aumentoId: inputs.aumentoId || null,
         };
         precio
             ? feathersClient
@@ -116,8 +120,15 @@ const PrecioForm = function ({ precio, isActive, close }: ComponentProps) {
                 />
             </Label>
             <Label title="aumento" length={1}>
-                %
-                <input type="text" placeholder="-" autoComplete="off" />
+                <select {...register("aumentoId")}>
+                    <option value={""}>-</option>
+                    {aumentos[0] &&
+                        aumentos.map((aumento) => (
+                            <option key={aumento.id} value={aumento.id}>
+                                {aumento.porcentage}
+                            </option>
+                        ))}
+                </select>
             </Label>
             <Label
                 title="costo"

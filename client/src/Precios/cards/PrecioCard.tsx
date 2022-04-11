@@ -110,7 +110,6 @@ type ComponentProps = {
     overlay: boolean;
     setOverlay: (overlay: boolean) => void;
     onClick?: (e: MouseEvent<HTMLUListElement>) => void;
-    className?: string;
 };
 
 function PrecioCard({
@@ -119,13 +118,13 @@ function PrecioCard({
     overlay,
     setOverlay,
     onClick,
-    className,
 }: ComponentProps) {
     const {
         fabrica: fabricaPorcentage,
         vendedor: vendedorPorcentage,
         venta: ventaPorcentage,
         signori: signoriPorcentage,
+        getAumento,
     } = usePrecios();
     const [total, setTotal] = useState(0);
     const [costo, setCosto] = useState(0);
@@ -137,17 +136,20 @@ function PrecioCard({
     const [remove, setRemove] = useState(false);
 
     useEffect(() => {
-        precio.costos &&
-            setTotal(
-                precio.costos.reduce(function (a, b) {
-                    return a + b.monto;
-                }, 0)
-            );
+        precio.costos && precio.costos[0]
+            ? setTotal(
+                  precio.costos.reduce(function (a, b) {
+                      return a + b.monto;
+                  }, 0)
+              )
+            : setTotal(precio.costo || 0);
     }, [precio, setTotal]);
 
     useEffect(() => {
-        setCosto((total * 181) / 100);
-    }, [total, setCosto]);
+        precio.aumentoId
+            ? setCosto((total * getAumento(precio.aumentoId)) / 100)
+            : setCosto(total);
+    }, [precio, total, setCosto, getAumento]);
 
     useEffect(() => {
         setFabrica((costo * fabricaPorcentage.porcentage) / 100);
@@ -174,12 +176,7 @@ function PrecioCard({
     }, [form, setOverlay]);
 
     return (
-        <Card
-            isActive={isActive}
-            isRemove={remove}
-            isForm={form}
-            className={className}
-        >
+        <Card isActive={isActive} isRemove={remove} isForm={form}>
             <Box onClick={onClick}>
                 <li>
                     <pre>{precio.articulo}</pre>
@@ -187,14 +184,16 @@ function PrecioCard({
                 <li>
                     <p>
                         {precio.descripcion}
-                        <small>{precio.peso} kg</small>
+                        {precio.peso && <small>{precio.peso} kg</small>}
                     </p>
                 </li>
                 <li>
-                    <pre>%181</pre>
+                    <pre>
+                        {precio.aumentoId ? getAumento(precio.aumentoId) : "-"}
+                    </pre>
                 </li>
                 <li>
-                    <Currency number={total} />
+                    <Currency number={costo} />
                 </li>
                 <li>
                     <Currency number={fabrica} />
@@ -212,13 +211,16 @@ function PrecioCard({
             <Expand isActive={isActive} height={8.5}>
                 <DetailsMod>
                     <Items>
-                        {precio.costos &&
-                            precio.costos.map((costo) => (
-                                <label key={0}>
+                        {precio.costos && precio.costos[0] ? (
+                            precio.costos.map((costo, index) => (
+                                <label key={index}>
                                     {costo.detalle}
                                     <Currency number={costo.monto} />
                                 </label>
-                            ))}
+                            ))
+                        ) : (
+                            <label>Sin detalle</label>
+                        )}
                     </Items>
                     <Label>
                         <label>Ganancia</label>
